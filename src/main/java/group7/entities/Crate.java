@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.URL;
 @Data // Write all getters and setters automatically
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("CRATE") // Discriminator value to differentiate in the table
-public class CrateEntity extends BeverageEntity {
+public class Crate extends Beverage {
 
     // id, name and price comes from BeverageEntity
 
@@ -36,6 +36,6 @@ public class CrateEntity extends BeverageEntity {
 
     @ManyToOne
     @JoinColumn(name = "bottle_id")
-    private BottleEntity bottle;
+    private Bottle bottle;
 
 }

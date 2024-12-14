@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
-public class AddressEntity {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

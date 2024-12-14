@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
-public class OrderItemEntity {
+public class OrderItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +29,10 @@ public class OrderItemEntity {
 
     @ManyToOne
     @JoinColumn(name = "beverage_id")
-    private BeverageEntity beverage;
+    private Beverage beverage;
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private OrderEntity order;
+    private Order order;
 
 }
