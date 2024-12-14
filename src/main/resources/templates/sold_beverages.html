@@ -23,8 +23,8 @@
         <td>Volume</td>
         <td>Alcohol percent</td>
         <td>Supplier</td>
-        <td>Items in stock</td>
-        <td>Item price</td>
+        <td>Bottles in stock</td>
+        <td>Bottle price</td>
     </tr></thead>
     <!--/*@thymesVar id="bottles" type="group7.entities.BottleEntity[]"*/-->
     <tr th:each="bottle: ${bottles}">
@@ -38,5 +38,28 @@
     </tr>
 </table>
 <h2>Crates</h2>
+<table class="table bg-light text-dark">
+    <thead><tr>
+        <td>Picture</td>
+        <td>Contained bottles</td>
+        <td>Bottles per crate</td>
+        <td>Bottle volume</td>
+        <td>Alcohol percent</td>
+        <td>Bottle supplier</td>
+        <td>Crates in stock</td>
+        <td>Crate price</td>
+    </tr></thead>
+    <!--/*@thymesVar id="crates" type="group7.entities.CrateEntity[]"*/-->
+    <tr th:each="crate: ${crates}">
+        <td><img th:src="${crate.cratePic}" /></td>
+        <td th:text="${crate.bottle.name}"></td>
+        <td th:text="${crate.noOfBottles}"></td>
+        <td th:text="${crate.bottle.volume}"></td>
+        <td th:text="${crate.bottle.volumePercent}"></td>
+        <td th:text="${crate.bottle.supplier}"></td>
+        <td th:text="${crate.cratesInStock}"></td>
+        <td th:text="${crate.price}"></td>
+    </tr>
+</table>
 </body>
 </html>
