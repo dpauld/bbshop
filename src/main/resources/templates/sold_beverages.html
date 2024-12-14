@@ -38,7 +38,7 @@
         <td th:text="${bottle.price}"></td>
         <td><form method="POST" target="_blank">
 <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${bottle.inStock > 0}" value="+" th:formaction="@{|basket/${bottle.getId()}/increment|}" />
+            <input type="submit" class="btn" th:disabled="${bottle.inStock <= 0}" value="+" th:formaction="@{|basket/${bottle.getId()}/increment|}" />
         </form></td>
     </tr>
 </table>
@@ -67,7 +67,7 @@
         <td th:text="${crate.price}"></td>
         <td><form method="POST" target="_blank">
             <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${crate.cratesInStock > 0}" value="+" th:formaction="@{|basket/${crate.getId()}/increment|}" />
+            <input type="submit" class="btn" th:disabled="${crate.cratesInStock <= 0}" value="+" th:formaction="@{|basket/${crate.getId()}/increment|}" />
         </form></td>
     </tr>
 </table>
