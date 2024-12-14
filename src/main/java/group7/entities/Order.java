@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
-public class OrderEntity {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +26,7 @@ public class OrderEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    private User user;
 
     @OneToMany
     @JoinTable(
@@ -34,6 +34,6 @@ public class OrderEntity {
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "order_item_id")}
     )
-    private List<OrderItemEntity> orderItems;
+    private List<OrderItem> orderItems;
 
 }

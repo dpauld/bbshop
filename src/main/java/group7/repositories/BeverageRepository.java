@@ -1,16 +1,18 @@
 package group7.repositories;
 
-import group7.entities.BeverageEntity;
+import group7.entities.Beverage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface BeverageRepository extends JpaRepository<BeverageEntity, Long> {
+public interface BeverageRepository extends JpaRepository<Beverage, Long> {
 
-    @Query("SELECT b FROM BeverageEntity b WHERE TYPE(b) = BottleEntity")
-    List<BeverageEntity> findAllBottles();
+    // This repository handles both Bottle and Crate entities at the same time
 
-    @Query("SELECT b FROM BeverageEntity b WHERE TYPE(b) = CrateEntity")
-    List<BeverageEntity> findAllCrates();
+    @Query("SELECT b FROM Beverage b WHERE TYPE(b) = Bottle")
+    List<Beverage> findAllBottles();
+
+    @Query("SELECT b FROM Beverage b WHERE TYPE(b) = Crate")
+    List<Beverage> findAllCrates();
 }

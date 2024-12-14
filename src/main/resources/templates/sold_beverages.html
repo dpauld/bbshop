@@ -26,7 +26,7 @@
         <td>Bottles in stock</td>
         <td>Bottle price</td>
     </tr></thead>
-    <!--/*@thymesVar id="bottles" type="group7.entities.BottleEntity[]"*/-->
+    <!--/*@thymesVar id="bottles" type="group7.entities.Bottle[]"*/-->
     <tr th:each="bottle: ${bottles}">
         <td><img th:src="${bottle.bottlePic}" /></td>
         <td th:text="${bottle.name}"></td>
@@ -49,7 +49,7 @@
         <td>Crates in stock</td>
         <td>Crate price</td>
     </tr></thead>
-    <!--/*@thymesVar id="crates" type="group7.entities.CrateEntity[]"*/-->
+    <!--/*@thymesVar id="crates" type="group7.entities.Crate[]"*/-->
     <tr th:each="crate: ${crates}">
         <td><img th:src="${crate.cratePic}" /></td>
         <td th:text="${crate.bottle.name}"></td>

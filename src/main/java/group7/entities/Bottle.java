@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data // Write all getters and setters automatically
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("BOTTLE") // Discriminator value to differentiate in the table
-public class BottleEntity extends BeverageEntity{
+public class Bottle extends Beverage {
 
     // id, name and price comes from BeverageEntity
 

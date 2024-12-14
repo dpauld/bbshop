@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
-public class UserEntity {
+public class User {
 
     @Id
     @NotEmpty
@@ -37,7 +37,7 @@ public class UserEntity {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "address_id")}
     )
-    private List<AddressEntity> addresses;
+    private List<Address> addresses;
 
     @OneToMany
     @JoinTable(
@@ -45,6 +45,6 @@ public class UserEntity {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "order_id")}
     )
-    private List<OrderEntity> orders;
+    private List<Order> orders;
 
 }
