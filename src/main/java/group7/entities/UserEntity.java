@@ -31,11 +31,20 @@ public class UserEntity {
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    @OneToMany(
-            //cascade = CascadeType.ALL,
-            orphanRemoval = true//,
-            //fetch = FetchType.EAGER
+    @OneToMany
+    @JoinTable(
+            name = "users-addresses",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "address_id")}
     )
     private List<AddressEntity> addresses;
+
+    @OneToMany
+    @JoinTable(
+            name = "users-orders",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")}
+    )
+    private List<OrderEntity> orders;
 
 }

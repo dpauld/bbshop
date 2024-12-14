@@ -5,22 +5,21 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.URL;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "bottle")
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
-public class BottleEntity {
+@EqualsAndHashCode(callSuper = true)
+@DiscriminatorValue("BOTTLE") // Discriminator value to differentiate in the table
+public class BottleEntity extends BeverageEntity{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
+    // id, name and price comes from BeverageEntity
 
     @NotEmpty
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Bottle name must contain only letters and digits")
@@ -41,10 +40,6 @@ public class BottleEntity {
 
     @Column(name = "volume_percent")
     private double volumePercent;
-
-    @Positive(message = "Price must be greater than 0")
-    @Column(name = "price")
-    private double price;
 
     @NotEmpty
     @Column(name = "supplier", nullable = false)
