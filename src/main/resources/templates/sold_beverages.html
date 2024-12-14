@@ -28,19 +28,21 @@
         <td>Add to basket</td>
     </tr></thead>
     <!--/*@thymesVar id="bottles" type="group7.entities.Bottle[]"*/-->
-    <tr th:each="bottle: ${bottles}">
-        <td><img th:src="${bottle.bottlePic}" /></td>
-        <td th:text="${bottle.name}"></td>
-        <td th:text="${bottle.volume}"></td>
-        <td th:text="${bottle.volumePercent}"></td>
-        <td th:text="${bottle.supplier}"></td>
-        <td th:text="${bottle.inStock}"></td>
-        <td th:text="${bottle.price}"></td>
-        <td><form method="POST" target="_blank">
-<!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${bottle.inStock <= 0}" value="+" th:formaction="@{|basket/${bottle.getId()}/increment|}" />
-        </form></td>
-    </tr>
+    <a th:each="bottle: ${bottles}" th:name="@{|item_${bottle.getId()}|}">
+        <tr>
+            <td><img th:src="${bottle.bottlePic}" /></td>
+            <td th:text="${bottle.name}"></td>
+            <td th:text="${bottle.volume}"></td>
+            <td th:text="${bottle.volumePercent}"></td>
+            <td th:text="${bottle.supplier}"></td>
+            <td th:text="${bottle.inStock}"></td>
+            <td th:text="${bottle.price}"></td>
+            <td><form method="POST" target="_blank">
+                <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+                <input type="submit" class="btn" th:disabled="${bottle.inStock <= 0}" value="+" th:formaction="@{|basket/${bottle.getId()}/increment|}" />
+            </form></td>
+        </tr>
+    </a>
 </table>
 <h2>Crates</h2>
 <table class="table bg-light text-dark">
@@ -56,20 +58,22 @@
         <td>Add to basket</td>
     </tr></thead>
     <!--/*@thymesVar id="crates" type="group7.entities.Crate[]"*/-->
-    <tr th:each="crate: ${crates}">
-        <td><img th:src="${crate.cratePic}" /></td>
-        <td th:text="${crate.bottle.name}"></td>
-        <td th:text="${crate.noOfBottles}"></td>
-        <td th:text="${crate.bottle.volume}"></td>
-        <td th:text="${crate.bottle.volumePercent}"></td>
-        <td th:text="${crate.bottle.supplier}"></td>
-        <td th:text="${crate.cratesInStock}"></td>
-        <td th:text="${crate.price}"></td>
-        <td><form method="POST" target="_blank">
-            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${crate.cratesInStock <= 0}" value="+" th:formaction="@{|basket/${crate.getId()}/increment|}" />
-        </form></td>
-    </tr>
+    <a th:each="crate: ${crates}" th:name="@{|item_${crate.getId()}|}">
+        <tr>
+            <td><img th:src="${crate.cratePic}" /></td>
+            <td th:text="${crate.bottle.name}"></td>
+            <td th:text="${crate.noOfBottles}"></td>
+            <td th:text="${crate.bottle.volume}"></td>
+            <td th:text="${crate.bottle.volumePercent}"></td>
+            <td th:text="${crate.bottle.supplier}"></td>
+            <td th:text="${crate.cratesInStock}"></td>
+            <td th:text="${crate.price}"></td>
+            <td><form method="POST" target="_blank">
+                <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+                <input type="submit" class="btn" th:disabled="${crate.cratesInStock <= 0}" value="+" th:formaction="@{|basket/${crate.getId()}/increment|}" />
+            </form></td>
+        </tr>
+    </a>
 </table>
 </body>
 </html>
