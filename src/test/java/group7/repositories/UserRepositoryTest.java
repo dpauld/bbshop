@@ -12,7 +12,9 @@ import org.springframework.test.context.TestPropertySource;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestPropertySource(locations = "classpath:application-test.properties")
@@ -29,6 +31,15 @@ public class UserRepositoryTest {
     public void init() {
         userRepository.deleteAll();
         invalidUsers = new ArrayList<>();
+    }
+
+    @Test
+    public void testSavingAndRetrievingValidUser() {
+        User user = new User(null, "John Doe", "123", LocalDate.of(1970, 1, 1), null, null);
+        User savedUser = userRepository.save(user);
+        Optional<User> retrievedUser = userRepository.findById(savedUser.getId());
+
+        assertThat(retrievedUser).isPresent();
     }
 
     @Test

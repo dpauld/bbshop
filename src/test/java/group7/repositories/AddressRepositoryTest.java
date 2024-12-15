@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,10 +26,25 @@ public class AddressRepositoryTest {
     @Autowired
     AddressRepository addressRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
     @BeforeEach
     public void init() {
         addressRepository.deleteAll();
         invalidAddresses = new ArrayList<>();
+    }
+
+    @Test
+    public void testSavingAndRetrievingValidAddress() {
+        User user = new User(null, "John Doe", "123", LocalDate.of(1970, 1, 1), null, null);
+        User savedUser = userRepository.save(user);
+
+        Address address = new Address(null, "Wall Street", "1", "12345", savedUser);
+        Address savedAddress = addressRepository.save(address);
+        Optional<Address> retrievedAddress = addressRepository.findById(savedAddress.getId());
+
+        assertThat(retrievedAddress).isPresent();
     }
 
     @Test
