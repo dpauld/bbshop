@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit beverages</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <!-- bootstrap dependency -->
+    <script crossorigin="anonymous"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h2>Separate bottles</h2>
+<table class="table bg-light text-dark">
+    <thead><tr>
+        <td>Picture</td>
+        <td>Name</td>
+        <td>Volume</td>
+        <td>Alcohol percent</td>
+        <td>Supplier</td>
+        <td>Bottles in stock</td>
+        <td>Bottle price</td>
+        <td>Actions</td>
+    </tr></thead>
+    <form>
+        <tr>
+            <td>
+                <input name="bottlePic" th:field="*{bottlePic}" type="text" />
+            </td>
+            <td><input name="name" th:field="*{name}" type="text" /></td>
+            <td><input name="volume" th:field="*{volume}" type="text" /></td>
+            <td><input name="volumePercent" th:field="*{volumePercent}" type="text" /></td>
+            <td><input name="supplier" th:field="*{supplier}" type="text" /></td>
+            <td><input name="inStock" th:field="*{inStock}" type="text" /></td>
+            <td><input name="price" th:field="*{price}" type="text" /></td>
+            <td>
+                <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+                <input name="id" th:field="*{id}" type="hidden" />
+                <b>Create new:</b>
+                <input type="submit" method="POST" class="btn" value="Save" />
+            </td>
+        </tr>
+    </form>
+    <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.entities.Bottle>"*/-->
+    <a th:each="bottle: ${bottles}" th:name="@{|item_${bottle.getId()}|}">
+        <form>
+            <tr>
+                <td>
+                    <img th:src="${bottle.bottlePic}" />
+                    <input name="bottlePic" th:field="*{bottlePic}" th:value="${bottle.bottlePic}" type="text" />
+                </td>
+                <td><input name="name" th:field="*{name}" th:value="${bottle.name}" type="text" /></td>
+                <td><input name="volume" th:field="*{volume}" th:value="${bottle.volume}" type="text" /></td>
+                <td><input name="volumePercent" th:field="*{volumePercent}" th:value="${bottle.volumePercent}" type="text" /></td>
+                <td><input name="supplier" th:field="*{supplier}" th:value="${bottle.supplier}" type="text" /></td>
+                <td><input name="inStock" th:field="*{inStock}" th:value="${bottle.inStock}" type="text" /></td>
+                <td><input name="price" th:field="*{price}" th:value="${bottle.price}" type="text" /></td>
+                <td>
+                    <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+                    <input name="id" th:field="*{id}" th:value="${bottle.id}" type="hidden" />
+                    <input type="submit" method="PATCH" class="btn" value="Update" />
+                    <input type="submit" method="DELETE" class="btn btn-danger" value="Delete" />
+                </td>
+            </tr>
+        </form>
+    </a>
+</table>
+</body>
+</html>
