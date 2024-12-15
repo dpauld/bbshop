@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity
 @Table(name = "beverage")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Use this to allow inheritance
@@ -31,4 +33,6 @@ public abstract class Beverage {
     @Column(name = "price")
     private double price;
 
+    @OneToMany
+    private List<OrderItem> orderItems;
 }
