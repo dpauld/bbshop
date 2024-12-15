@@ -29,7 +29,7 @@ public class User {
     private String username;
 
 //    @Pattern(regexp = ".*[0-9].*", message = "password must contain one digit")
-//    @Size(min=5, message = "password must be 5 charachters long.")
+//    @Size(min=5, message = "password must be 5 charachters long.")git checkout -b new-branch-name
 //    @Size(max=15, message = "password can not exceed 15 charachter.")
 //    @Pattern(regexp = ".*[0-9].*", message = "password must contain one digit")
     @Column(name = "password", nullable = false)
