@@ -15,24 +15,29 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Use this to allow inheritance
 @DiscriminatorColumn(name = "beverage_type", discriminatorType = DiscriminatorType.STRING)
 @NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
 public abstract class Beverage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long id;
+    protected Long id;
 
     @NotEmpty
     @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Beverage name must contain only letters and digits")
     @Column(name = "name", nullable = false)
-    private String name;
+    protected String name;
 
     @Positive(message = "Price must be greater than 0")
     @Column(name = "price")
-    private double price;
+    protected double price;
 
     @OneToMany
-    private List<OrderItem> orderItems;
+    protected List<OrderItem> orderItems;
+
+    protected Beverage(String name, double price, List<OrderItem> orderItems) {
+        this.name = name;
+        this.price = price;
+        this.orderItems = orderItems;
+    }
 }

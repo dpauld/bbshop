@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
-public class BirthdayValidatorTest {
+public class BirthdayValidatorUnitTest {
 
     private BirthdayValidator birthdayValidator;
     private ConstraintValidatorContext context;

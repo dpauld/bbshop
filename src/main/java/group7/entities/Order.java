@@ -31,4 +31,10 @@ public class Order {
    // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //Unidirectional
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //Bidirectional
     private List<OrderItem> orderItems;
+
+    public Order(double price, User user, List<OrderItem> orderItems) {
+        this.price = price;
+        this.user = user;
+        this.orderItems = orderItems;
+    }
 }

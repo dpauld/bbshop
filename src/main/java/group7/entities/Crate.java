@@ -4,30 +4,27 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
+import java.util.List;
+
 @Entity
 @NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("CRATE") // Discriminator value to differentiate in the table
 public class Crate extends Beverage {
-
-    // id, name and price comes from BeverageEntity
 
     @NotEmpty
     @URL(message = "Must be a valid URL")
     @Column(name = "crate_pic")
     private String cratePic;
 
-    @NotEmpty
     @Min(value = 0, message = "Quantity must be greater than or equal to zero")
-    @Column(name = "crates_in_stock", nullable = false)
+    @Column(name = "crates_in_stock")
     private int cratesInStock;
 
     @Positive(message = "Number of bottles must be greater than 0")
@@ -38,4 +35,20 @@ public class Crate extends Beverage {
     @JoinColumn(name = "bottle_id")
     private Bottle bottle;
 
+    public Crate(
+            String name,
+            double price,
+            List<OrderItem> orderItems,
+            String cratePic,
+            int cratesInStock,
+            int noOfBottles,
+            Bottle bottle
+    ) {
+        super(name, price, orderItems);
+
+        this.cratePic = cratePic;
+        this.cratesInStock = cratesInStock;
+        this.noOfBottles = noOfBottles;
+        this.bottle = bottle;
+    }
 }

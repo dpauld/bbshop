@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "address")
 @NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
 public class Address {
     @Id
@@ -35,4 +34,11 @@ public class Address {
     @ManyToOne(fetch = FetchType.LAZY)
     //Automatically created by spring, not needed: @JoinColumn(name = "username"). Naming strategy, Lowercase(Entity name + Primary key) = user_id(if id is PK)
     private User user;
+
+    public Address(String street, String number, String postalCode, User user) {
+        this.street = street;
+        this.number = number;
+        this.postalCode = postalCode;
+        this.user = user;
+    }
 }

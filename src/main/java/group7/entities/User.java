@@ -13,9 +13,9 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 @NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
@@ -46,4 +46,18 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
+
+    public User(
+            String username,
+            String password,
+            LocalDate birthday,
+            List<Address> addresses,
+            List<Order> orders
+    ) {
+        this.username = username;
+        this.password = password;
+        this.birthday = birthday;
+        this.addresses = addresses;
+        this.orders = orders;
+    }
 }

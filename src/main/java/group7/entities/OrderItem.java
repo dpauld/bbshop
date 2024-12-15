@@ -35,4 +35,11 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     private Order order;
+
+    public OrderItem(String position, double price, Beverage beverage, Order order) {
+        this.position = position;
+        this.price = price;
+        this.beverage = beverage;
+        this.order = order;
+    }
 }

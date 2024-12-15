@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.TestPropertySource;
+import util.SampleManager;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestPropertySource(locations = "classpath:application-test.properties")
 @SpringBootTest
-public class UserRepositoryTest {
+public class UserRepositoryUnitTest {
 
-    private static final LocalDate SAMPLE_BIRTHDAY = LocalDate.of(1970, 1, 1);
     private List<User> invalidUsers;
+    private SampleManager<User> sampleManager;
 
     @Autowired
     UserRepository userRepository;
@@ -31,11 +32,12 @@ public class UserRepositoryTest {
     public void init() {
         userRepository.deleteAll();
         invalidUsers = new ArrayList<>();
+        sampleManager = new SampleManager<>(invalidUsers);
     }
 
     @Test
     public void testSavingAndRetrievingValidUser() {
-        User user = new User(null, "John Doe", "123", LocalDate.of(1970, 1, 1), null, null);
+        User user = getSampleUser();
         User savedUser = userRepository.save(user);
         Optional<User> retrievedUser = userRepository.findById(savedUser.getId());
 
@@ -44,39 +46,62 @@ public class UserRepositoryTest {
 
     @Test
     public void testSavingUsersWithEmptyValues() {
-        invalidUsers.add(new User(null, "", "123", SAMPLE_BIRTHDAY, List.of(), List.of()));
-        invalidUsers.add(new User(null, "John Doe", "", SAMPLE_BIRTHDAY, List.of(), List.of()));
-        invalidUsers.add(new User(null, "", "", SAMPLE_BIRTHDAY, List.of(), List.of()));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setUsername(""));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setPassword(""));
+        sampleManager.addChangedSample(
+                this::getSampleUser,
+                user -> {
+                    user.setUsername("");
+                    user.setPassword("");
+                }
+        );
 
         assertThrows(DataIntegrityViolationException.class, () -> userRepository.saveAll(invalidUsers));
     }
 
     @Test
     public void testSavingUsersWithNullValues() {
-        invalidUsers.add(new User(null, null, "123", SAMPLE_BIRTHDAY, List.of(), List.of()));
-        invalidUsers.add(new User(null, "John Doe", null, SAMPLE_BIRTHDAY, List.of(), List.of()));
-        invalidUsers.add(new User(null, "John Doe", "123", null, List.of(), List.of()));
-        invalidUsers.add(new User(null, null, null, null, List.of(), List.of()));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setUsername(null));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setPassword(null));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setBirthday(null));
+        sampleManager.addChangedSample(
+                this::getSampleUser,
+                user -> {
+                    user.setUsername(null);
+                    user.setPassword(null);
+                    user.setBirthday(null);
+                }
+        );
 
         assertThrows(Exception.class, () -> userRepository.saveAll(invalidUsers));
     }
 
     @Test
     public void testSavingUsersWithInvalidBirthday() {
-        LocalDate veryOldDate = LocalDate.of(1899, 12, 31);
-        LocalDate futureDate = LocalDate.of(2049, 1, 1);
+        LocalDate veryOldBirthday = LocalDate.of(1899, 12, 31);
+        LocalDate futureBirthday = LocalDate.of(2049, 1, 1);
 
-        invalidUsers.add(new User(null, "John Doe", "123", veryOldDate, List.of(), List.of()));
-        invalidUsers.add(new User(null, "John Doe", "123", futureDate, List.of(), List.of()));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setBirthday(veryOldBirthday));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setBirthday(futureBirthday));
 
         assertThrows(ConstraintViolationException.class, () -> userRepository.saveAll(invalidUsers));
     }
 
     @Test
     public void testSavingUsersWithEqualUsernames() {
-        invalidUsers.add(new User(null, "John Doe", "123", SAMPLE_BIRTHDAY, List.of(), List.of()));
-        invalidUsers.add(new User(null, "John Doe", "321", SAMPLE_BIRTHDAY, List.of(), List.of()));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setPassword("123"));
+        sampleManager.addChangedSample(this::getSampleUser, user -> user.setPassword("321"));
 
         assertThrows(DataIntegrityViolationException.class, () -> userRepository.saveAll(invalidUsers));
+    }
+
+    private User getSampleUser() {
+        return new User(
+                "John Doe",
+                "123",
+                LocalDate.of(1970, 1, 1),
+                null,
+                null
+        );
     }
 }
