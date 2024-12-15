@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor // Write a constructor that has all arguments automatically
 @Data // Write all getters and setters automatically
 public class Address {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -32,4 +31,8 @@ public class Address {
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
+    //need to have Entity Graph?
+    @ManyToOne(fetch = FetchType.LAZY)
+    //Automatically created by spring, not needed: @JoinColumn(name = "username"). Naming strategy, Lowercase(Entity name + Primary key) = user_id(if id is PK)
+    private User user;
 }

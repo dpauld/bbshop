@@ -25,15 +25,10 @@ public class Order {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    //@JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany
-    @JoinTable(
-            name = "orders-order_items",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "order_item_id")}
-    )
+   // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //Unidirectional
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //Bidirectional
     private List<OrderItem> orderItems;
-
 }
