@@ -19,7 +19,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private String id;
+    private Long id;
 
     //Validation commented for now, cause not sure weather we implement dto for user or not.
 //    @Size(min=5, message = "username must be 5 charachters long.")

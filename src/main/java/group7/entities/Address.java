@@ -27,7 +27,7 @@ public class Address {
     private String number;
 
     @NotEmpty
-    @Size(max = 5, message = "Postal code must shorter than 5 characters") // Length constraint
+    @Size(min = 5, max = 5, message = "Postal code must be exactly 5 characters")
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
