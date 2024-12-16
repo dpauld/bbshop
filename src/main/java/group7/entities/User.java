@@ -41,8 +41,12 @@ public class User {
     private LocalDate birthday;
 
     //If we don't have the user, no need to have their corresponding address, so CascadeType.ALL
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //remove mappedBy to make it unidirectional
-    private List<Address> addresses;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //remove mappedBy to make it unidirectional
+    @NotEmpty(message = "Billing addresses cannot be empty")
+    private List<Address> billingAddresses; // 1..*
+
+    @OneToMany
+    private List<Address> deliveryAddresses; // 0..*
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
@@ -51,13 +55,15 @@ public class User {
             String username,
             String password,
             LocalDate birthday,
-            List<Address> addresses,
+            List<Address> billingAddresses,
+            List<Address> deliveryAddresses,
             List<Order> orders
     ) {
         this.username = username;
         this.password = password;
         this.birthday = birthday;
-        this.addresses = addresses;
+        this.billingAddresses = billingAddresses;
+        this.deliveryAddresses = deliveryAddresses;
         this.orders = orders;
     }
 }
