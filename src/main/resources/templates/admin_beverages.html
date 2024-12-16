@@ -70,5 +70,60 @@
         </form>
     </a>
 </table>
+<h2>Crates</h2>
+<table class="table bg-light text-dark">
+    <thead><tr>
+        <td>Picture</td>
+        <td>Name</td>
+        <td>Contained bottles</td>
+        <td>Bottles per crate</td>
+        <td>Crates in stock</td>
+        <td>Crate price</td>
+        <td>Actions</td>
+    </tr></thead>
+    <form>
+        <tr>
+            <td>
+                <input name="cratePic" th:field="*{cratePic}" type="text" />
+            </td>
+            <td><input name="name" th:field="*{name}" type="text" /></td>
+            <td><select name="bottle" th:field="*{bottle}">
+                    <option th:each="bottle: ${bottles}" th:value="${bottle.id}" th:text="${bottle.name}"></option>
+            </select></td>
+            <td><input name="noOfBottles" th:field="*{noOfBottles}" type="text" /></td>
+            <td><input name="cratesInStock" th:field="*{cratesInStock}" type="text" /></td>
+            <td><input name="price" th:field="*{price}" type="text" /></td>
+            <td>
+                <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+                <b>Create new:</b>
+                <input type="submit" method="POST" class="btn" value="Save" />
+            </td>
+        </tr>
+    </form>
+    <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.entities.Crate>"*/-->
+    <a th:each="crate: ${crates}" th:name="@{|item_${crate.getId()}|}">
+        <form>
+            <tr>
+                <td>
+                    <img th:src="${crate.cratePic}" />
+                    <input name="cratePic" th:field="*{cratePic}" th:value="${crate.cratePic}" type="text" />
+                </td>
+                <td><input name="name" th:field="*{name}" th:value="${crate.name}" type="text" /></td>
+                <td><select name="bottle" th:field="*{bottle}">
+                        <option th:each="bottle: ${bottles}" th:value="${bottle.id}" th:text="${bottle.name}" th:selected="${crate.getBottle().getId() == bottle.getId()}"></option>
+                </select></td>
+                <td><input name="noOfBottles" th:field="*{vnoOfBottlesolumePercent}" th:value="${crate.noOfBottles}" type="text" /></td>
+                <td><input name="cratesInStock" th:field="*{cratesInStock}" th:value="${crate.cratesInStock}" type="text" /></td>
+                <td><input name="price" th:field="*{price}" th:value="${crate.price}" type="text" /></td>
+                <td>
+                    <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+                    <input name="id" th:field="*{id}" th:value="${crate.id}" type="hidden" />
+                    <input type="submit" method="PATCH" class="btn" value="Update" />
+                    <input type="submit" method="DELETE" class="btn btn-danger" value="Delete" />
+                </td>
+            </tr>
+        </form>
+    </a>
+</table>
 </body>
 </html>
