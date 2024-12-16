@@ -16,6 +16,7 @@
 </head>
 <body>
 <h2>Separate bottles</h2>
+<!-- TODO use th:action and th:object when controllers are implemented, so that th:field knows the object type -->
 <table class="table bg-light text-dark">
     <thead><tr>
         <td>Picture</td>
@@ -40,7 +41,6 @@
             <td><input name="price" th:field="*{price}" type="text" /></td>
             <td>
                 <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-                <input name="id" th:field="*{id}" type="hidden" />
                 <b>Create new:</b>
                 <input type="submit" method="POST" class="btn" value="Save" />
             </td>
