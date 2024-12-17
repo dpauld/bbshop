@@ -1,9 +1,7 @@
 package group7.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.URL;
 import lombok.Data;
@@ -18,12 +16,13 @@ import java.util.List;
 @DiscriminatorValue("BOTTLE") // Discriminator value to differentiate in the table
 public class Bottle extends Beverage {
 
+    @NotNull
     @NotEmpty
-    @URL(message = "Must be a valid URL")
+    @URL
     @Column(name = "bottle_pic")
     private String bottlePic;
 
-    @Positive(message = "Volume must be greater than 0")
+    @Positive
     @Column(name = "volume")
     private double volume;
 
@@ -31,13 +30,15 @@ public class Bottle extends Beverage {
     private boolean isAlcoholic;
 
     @Column(name = "volume_percent")
+    @PositiveOrZero
     private double volumePercent;
 
+    @NotNull
     @NotEmpty
     @Column(name = "supplier", nullable = false)
     private String supplier;
 
-    @Min(value = 0, message = "Quantity must be greater than or equal to zero")
+    @PositiveOrZero
     @Column(name = "in_stock")
     private int inStock;
 

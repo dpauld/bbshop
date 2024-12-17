@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 
 @Data
@@ -14,10 +15,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CrateRequestDTO extends BeverageRequestDTO{
 
+    @URL
     private String cratePic;
-    @PositiveOrZero
+    @PositiveOrZero(message = "crates in stock must be 0 or greater")
     private int cratesInStock;
-    @Positive
+    @Positive(message = "number of bottles must be greater than 0")
     private int noOfBottles;
     private BottleRequestDTO bottle;
 

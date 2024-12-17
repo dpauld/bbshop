@@ -2,6 +2,7 @@ package group7.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,27 +12,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Address {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
     @NotEmpty
+    @NotNull
     @Column(name = "street", nullable = false)
     private String street;
 
     @NotEmpty
+    @NotNull
     @Column(name = "number", nullable = false)
     private String number;
 
     @NotEmpty
-    @Size(min = 5, max = 5, message = "Postal code must be exactly 5 characters")
+    @NotNull
+    @Size(min = 5, max = 5)
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
-    //need to have Entity Graph?
     @ManyToOne(fetch = FetchType.LAZY)
-    //Automatically created by spring, not needed: @JoinColumn(name = "username"). Naming strategy, Lowercase(Entity name + Primary key) = user_id(if id is PK)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     public Address(String street, String number, String postalCode, User user) {

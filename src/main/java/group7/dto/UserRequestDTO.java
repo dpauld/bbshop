@@ -1,5 +1,8 @@
 package group7.dto;
 
+import group7.validation.annotation.ValidBirthday;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,9 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 public class UserRequestDTO {
 
-//TODO validations also need to be implemented on dto side after being corrected on entity side ! ! !
+    @NotNull(message = "User name cannot be null")
+    @NotEmpty(message = "User name cannot be empty")
     private String username;
+    @NotNull(message = "Password cannot be null")
+    @NotEmpty(message = "Password cannot be empty")
     private String password;
+    @ValidBirthday(message = "Birthday must be after 01.01.1900 and before or on today's date")
     private LocalDate birthday;
     private List<AddressRequestDTO> billingAddresses;
     private List<AddressRequestDTO> deliveryAddresses;

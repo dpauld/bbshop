@@ -10,9 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
-@Data // Write all getters and setters automatically
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Order {
 
     @Id
@@ -28,7 +28,6 @@ public class Order {
     //@JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-   // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true) //Unidirectional
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //Bidirectional
     private List<OrderItem> orderItems;
 

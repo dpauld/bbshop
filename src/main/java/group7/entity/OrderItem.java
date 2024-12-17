@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "order_item")
-@NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
-@Data // Write all getters and setters automatically
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class OrderItem {
 
     @Id
@@ -20,10 +20,10 @@ public class OrderItem {
     private Long id;
 
     @Column(name = "position")
-    @Pattern(regexp = "^[0-9]+$", message = "Position must contain only digits")
+    @Pattern(regexp = "^[0-9]+$")
     private String position;
 
-    @Positive(message = "Price must be greater than 0")
+    @Positive
     @Column(name = "price")
     private double price;
 

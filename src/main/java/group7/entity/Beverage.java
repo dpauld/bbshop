@@ -2,6 +2,7 @@ package group7.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -21,12 +22,13 @@ public abstract class Beverage {
     @Column(name = "id", nullable = false)
     protected Long id;
 
+    @NotNull
     @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9]*$", message = "Beverage name must contain only letters and digits")
+    @Pattern(regexp = "^[a-zA-Z0-9]*$")
     @Column(name = "name", nullable = false)
     protected String name;
 
-    @Positive(message = "Price must be greater than 0")
+    @Positive
     @Column(name = "price")
     protected double price;
 

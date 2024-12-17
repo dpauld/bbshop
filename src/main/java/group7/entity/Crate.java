@@ -3,13 +3,13 @@ package group7.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
-import java.util.List;
 
 @Entity
 @NoArgsConstructor // Write a constructor that has no arguments automatically
@@ -18,16 +18,17 @@ import java.util.List;
 @DiscriminatorValue("CRATE") // Discriminator value to differentiate in the table
 public class Crate extends Beverage {
 
+    @NotNull
     @NotEmpty
-    @URL(message = "Must be a valid URL")
+    @URL
     @Column(name = "crate_pic")
     private String cratePic;
 
-    @Min(value = 0, message = "Quantity must be greater than or equal to zero")
+    @Positive
     @Column(name = "crates_in_stock")
     private int cratesInStock;
 
-    @Positive(message = "Number of bottles must be greater than 0")
+    @Positive
     @Column(name = "no_of_bottles")
     private int noOfBottles;
 
