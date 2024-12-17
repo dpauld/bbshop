@@ -22,7 +22,7 @@
         <td>In basket</td>
         <td>Total cost</td>
     </tr></thead>
-    <!--/*@thymesVar id="entries" type="java.lang.Iterable<java.util.Map.Entry<group7.entities.Beverage, java.lang.Integer>>"*/-->
+    <!--/*@thymesVar id="entries" type="java.lang.Iterable<java.util.Map.Entry<group7.entity.Beverage, java.lang.Integer>>"*/-->
     <tr th:each="entry: ${entries}">
         <td><a th:href="@{|beverages#item_${entry.key.getId()}|}" th:text="${entry.key.name}"></a></td>
         <td th:text="${entry.key.price}"></td>
