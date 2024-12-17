@@ -20,32 +20,29 @@ public class User {
     @Column(name = "user_id", nullable = false)
     private Long id;
 
-    //Validation commented for now, cause not sure weather we implement dto for user or not.
-//    @Size(min=5, message = "username must be 5 charachters long.")
-//    @Size(max=15, message = "username can not exceed 15 charachter.")
-//    @NotBlank(message = "username cannot be blank") //ensure user does not put only blanks " ", null, ""
+    @NotNull
+    @NotEmpty
     @Column(unique = true, name = "username", nullable = false)
     private String username;
 
-//    @Pattern(regexp = ".*[0-9].*", message = "password must contain one digit")
-//    @Size(min=5, message = "password must be 5 charachters long.")git checkout -b new-branch-name
-//    @Size(max=15, message = "password can not exceed 15 charachter.")
-//    @Pattern(regexp = ".*[0-9].*", message = "password must contain one digit")
+    @NotNull
+    @NotEmpty
+    @Pattern(regexp = ".*[0-9].*")
     @Column(name = "password", nullable = false)
     private String password;
 
+    @ValidBirthday
     @Past(message = "Birthday must be in the past")
-    @ValidBirthday // Custom validation to check the date is after 1.1.1900
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-    //If we don't have the user, no need to have their corresponding address, so CascadeType.ALL
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY) //remove mappedBy to make it unidirectional
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @NotEmpty(message = "Billing addresses cannot be empty")
-    private List<Address> billingAddresses; // 1..*
+    private List<Address> billingAddresses;
 
     @OneToMany
-    private List<Address> deliveryAddresses; // 0..*
+    private List<Address> deliveryAddresses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Order> orders;
