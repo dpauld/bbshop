@@ -13,117 +13,125 @@
     <script crossorigin="anonymous"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+/* TODO: extract to a static css file */
+/* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+.table .d-table-row,
+.table .d-table-cell {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table .thead {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: bold;
+}
+</style>
 </head>
 <body>
 <h2>Separate bottles</h2>
 <!-- TODO use th:action and th:object when controllers are implemented, so that th:field knows the object type -->
-<table class="table bg-light text-dark">
-    <thead><tr>
-        <td>Picture</td>
-        <td>Name</td>
-        <td>Volume</td>
-        <td>Alcohol percent</td>
-        <td>Supplier</td>
-        <td>Bottles in stock</td>
-        <td>Bottle price</td>
-        <td>Actions</td>
-    </tr></thead>
-    <form>
-        <tr>
-            <td>
-                <input name="bottlePic" th:field="*{bottlePic}" type="text" />
-            </td>
-            <td><input name="name" th:field="*{name}" type="text" /></td>
-            <td><input name="volume" th:field="*{volume}" type="text" /></td>
-            <td><input name="volumePercent" th:field="*{volumePercent}" type="text" /></td>
-            <td><input name="supplier" th:field="*{supplier}" type="text" /></td>
-            <td><input name="inStock" th:field="*{inStock}" type="text" /></td>
-            <td><input name="price" th:field="*{price}" type="text" /></td>
-            <td>
-                <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-                <b>Create new:</b>
-                <input type="submit" method="POST" class="btn" value="Save" />
-            </td>
-        </tr>
+<div class="table bg-light text-dark d-table">
+    <div class="d-table-row thead">
+        <div class="d-table-cell">Picture</div>
+        <div class="d-table-cell">Name</div>
+        <div class="d-table-cell">Volume</div>
+        <div class="d-table-cell">Alcohol percent</div>
+        <div class="d-table-cell">Supplier</div>
+        <div class="d-table-cell">Bottles in stock</div>
+        <div class="d-table-cell">Bottle price</div>
+        <div class="d-table-cell">Actions</div>
+    </div>
+    <form class="d-table-row">
+        <div class="d-table-cell">
+            <input name="bottlePic" th:field="*{bottlePic}" type="text" />
+        </div>
+        <div class="d-table-cell"><input name="name" th:field="*{name}" type="text" /></div>
+        <div class="d-table-cell"><input name="volume" th:field="*{volume}" type="text" /></div>
+        <div class="d-table-cell"><input name="volumePercent" th:field="*{volumePercent}" type="text" /></div>
+        <div class="d-table-cell"><input name="supplier" th:field="*{supplier}" type="text" /></div>
+        <div class="d-table-cell"><input name="inStock" th:field="*{inStock}" type="text" /></div>
+        <div class="d-table-cell"><input name="price" th:field="*{price}" type="text" /></div>
+        <div class="d-table-cell">
+            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+            <b>Create new:</b>
+            <input type="submit" method="POST" class="btn" value="Save" />
+        </div>
     </form>
     <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.entities.Bottle>"*/-->
-    <a th:each="bottle: ${bottles}" th:name="@{|item_${bottle.getId()}|}">
-        <form>
-            <tr>
-                <td>
-                    <img th:src="${bottle.bottlePic}" />
-                    <input name="bottlePic" th:field="*{bottlePic}" th:value="${bottle.bottlePic}" type="text" />
-                </td>
-                <td><input name="name" th:field="*{name}" th:value="${bottle.name}" type="text" /></td>
-                <td><input name="volume" th:field="*{volume}" th:value="${bottle.volume}" type="text" /></td>
-                <td><input name="volumePercent" th:field="*{volumePercent}" th:value="${bottle.volumePercent}" type="text" /></td>
-                <td><input name="supplier" th:field="*{supplier}" th:value="${bottle.supplier}" type="text" /></td>
-                <td><input name="inStock" th:field="*{inStock}" th:value="${bottle.inStock}" type="text" /></td>
-                <td><input name="price" th:field="*{price}" th:value="${bottle.price}" type="text" /></td>
-                <td>
-                    <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-                    <input name="id" th:field="*{id}" th:value="${bottle.id}" type="hidden" />
-                    <input type="submit" method="PATCH" class="btn" value="Update" />
-                    <input type="submit" method="DELETE" class="btn btn-danger" value="Delete" />
-                </td>
-            </tr>
-        </form>
-    </a>
-</table>
+    <form class="d-table-row" th:each="bottle: ${bottles}">
+        <div class="d-table-cell">
+            <a th:name="@{|item_${bottle.getId()}|}">
+            </a>
+            <img th:src="${bottle.bottlePic}" />
+            <input name="bottlePic" th:field="*{bottlePic}" th:value="${bottle.bottlePic}" type="text" />
+        </div>
+        <div class="d-table-cell"><input name="name" th:field="*{name}" th:value="${bottle.name}" type="text" /></div>
+        <div class="d-table-cell"><input name="volume" th:field="*{volume}" th:value="${bottle.volume}" type="text" /></div>
+        <div class="d-table-cell"><input name="volumePercent" th:field="*{volumePercent}" th:value="${bottle.volumePercent}" type="text" /></div>
+        <div class="d-table-cell"><input name="supplier" th:field="*{supplier}" th:value="${bottle.supplier}" type="text" /></div>
+        <div class="d-table-cell"><input name="inStock" th:field="*{inStock}" th:value="${bottle.inStock}" type="text" /></div>
+        <div class="d-table-cell"><input name="price" th:field="*{price}" th:value="${bottle.price}" type="text" /></div>
+        <div class="d-table-cell">
+            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+            <input name="id" th:field="*{id}" th:value="${bottle.id}" type="hidden" />
+            <input type="submit" method="PATCH" class="btn" value="Update" />
+            <input type="submit" method="DELETE" class="btn btn-danger" value="Delete" />
+        </div>
+    </form>
+</div>
 <h2>Crates</h2>
-<table class="table bg-light text-dark">
-    <thead><tr>
-        <td>Picture</td>
-        <td>Name</td>
-        <td>Contained bottles</td>
-        <td>Bottles per crate</td>
-        <td>Crates in stock</td>
-        <td>Crate price</td>
-        <td>Actions</td>
-    </tr></thead>
-    <form>
-        <tr>
-            <td>
-                <input name="cratePic" th:field="*{cratePic}" type="text" />
-            </td>
-            <td><input name="name" th:field="*{name}" type="text" /></td>
-            <td><select name="bottle" th:field="*{bottle}">
-                    <option th:each="bottle: ${bottles}" th:value="${bottle.id}" th:text="${bottle.name}"></option>
-            </select></td>
-            <td><input name="noOfBottles" th:field="*{noOfBottles}" type="text" /></td>
-            <td><input name="cratesInStock" th:field="*{cratesInStock}" type="text" /></td>
-            <td><input name="price" th:field="*{price}" type="text" /></td>
-            <td>
-                <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-                <b>Create new:</b>
-                <input type="submit" method="POST" class="btn" value="Save" />
-            </td>
-        </tr>
+<div class="table bg-light text-dark d-table">
+    <div class="d-table-row thead">
+        <div class="d-table-cell">Picture</div>
+        <div class="d-table-cell">Name</div>
+        <div class="d-table-cell">Contained bottles</div>
+        <div class="d-table-cell">Bottles per crate</div>
+        <div class="d-table-cell">Crates in stock</div>
+        <div class="d-table-cell">Crate price</div>
+        <div class="d-table-cell">Actions</div>
+    </div>
+    <form class="d-table-row">
+        <div class="d-table-cell">
+            <input name="cratePic" th:field="*{cratePic}" type="text" />
+        </div>
+        <div class="d-table-cell"><input name="name" th:field="*{name}" type="text" /></div>
+        <div class="d-table-cell"><select name="bottle" th:field="*{bottle}">
+            <option th:each="bottle: ${bottles}" th:value="${bottle.id}" th:text="${bottle.name}"></option>
+        </select></div>
+        <div class="d-table-cell"><input name="noOfBottles" th:field="*{noOfBottles}" type="text" /></div>
+        <div class="d-table-cell"><input name="cratesInStock" th:field="*{cratesInStock}" type="text" /></div>
+        <div class="d-table-cell"><input name="price" th:field="*{price}" type="text" /></div>
+        <div class="d-table-cell">
+            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+            <b>Create new:</b>
+            <input type="submit" method="POST" class="btn" value="Save" />
+        </div>
     </form>
     <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.entities.Crate>"*/-->
-    <a th:each="crate: ${crates}" th:name="@{|item_${crate.getId()}|}">
-        <form>
-            <tr>
-                <td>
-                    <img th:src="${crate.cratePic}" />
-                    <input name="cratePic" th:field="*{cratePic}" th:value="${crate.cratePic}" type="text" />
-                </td>
-                <td><input name="name" th:field="*{name}" th:value="${crate.name}" type="text" /></td>
-                <td><select name="bottle" th:field="*{bottle}">
-                        <option th:each="bottle: ${bottles}" th:value="${bottle.id}" th:text="${bottle.name}" th:selected="${crate.getBottle().getId() == bottle.getId()}"></option>
-                </select></td>
-                <td><input name="noOfBottles" th:field="*{vnoOfBottlesolumePercent}" th:value="${crate.noOfBottles}" type="text" /></td>
-                <td><input name="cratesInStock" th:field="*{cratesInStock}" th:value="${crate.cratesInStock}" type="text" /></td>
-                <td><input name="price" th:field="*{price}" th:value="${crate.price}" type="text" /></td>
-                <td>
-                    <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-                    <input name="id" th:field="*{id}" th:value="${crate.id}" type="hidden" />
-                    <input type="submit" method="PATCH" class="btn" value="Update" />
-                    <input type="submit" method="DELETE" class="btn btn-danger" value="Delete" />
-                </td>
-            </tr>
-        </form>
-    </a>
+    <form class="d-table-row" th:each="crate: ${crates}">
+        <div class="d-table-cell">
+            <a th:name="@{|item_${crate.getId()}|}">
+            </a>
+            <img th:src="${crate.cratePic}" />
+            <input name="cratePic" th:field="*{cratePic}" th:value="${crate.cratePic}" type="text" />
+        </div>
+        <div class="d-table-cell"><input name="name" th:field="*{name}" th:value="${crate.name}" type="text" /></div>
+        <div class="d-table-cell"><select name="bottle" th:field="*{bottle}">
+            <option th:each="bottle: ${bottles}" th:value="${bottle.id}" th:text="${bottle.name}" th:selected="${crate.getBottle().getId() == bottle.getId()}"></option>
+        </select></div>
+        <div class="d-table-cell"><input name="noOfBottles" th:field="*{vnoOfBottlesolumePercent}" th:value="${crate.noOfBottles}" type="text" /></div>
+        <div class="d-table-cell"><input name="cratesInStock" th:field="*{cratesInStock}" th:value="${crate.cratesInStock}" type="text" /></div>
+        <div class="d-table-cell"><input name="price" th:field="*{price}" th:value="${crate.price}" type="text" /></div>
+        <div class="d-table-cell">
+            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+            <input name="id" th:field="*{id}" th:value="${crate.id}" type="hidden" />
+            <input type="submit" method="PATCH" class="btn" value="Update" />
+            <input type="submit" method="DELETE" class="btn btn-danger" value="Delete" />
+        </div>
+    </form>
 </table>
 </body>
 </html>
