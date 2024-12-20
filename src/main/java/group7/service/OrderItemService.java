@@ -1,4 +1,8 @@
 package group7.service;
 
-public interface OrderItemService {
+import group7.serviceImpl.OrderItemServiceImpl;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderItemService implements OrderItemServiceImpl {
 }
