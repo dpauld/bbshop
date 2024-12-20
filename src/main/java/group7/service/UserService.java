@@ -1,4 +1,8 @@
 package group7.service;
 
-public interface UserService {
+import group7.serviceImpl.UserServiceImpl;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserService implements UserServiceImpl {
 }
