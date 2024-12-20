@@ -13,30 +13,46 @@
     <script crossorigin="anonymous"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+/* TODO: extract to a static css file */
+/* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+.table .d-table-row,
+.table .d-table-cell {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table .thead {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: bold;
+}
+</style>
 </head>
 <body>
-<table class="table bg-light text-dark">
-    <thead><tr>
-        <td>Name</td>
-        <td>Price</td>
-        <td>In basket</td>
-        <td>Total cost</td>
-    </tr></thead>
-    <!--/*@thymesVar id="entries" type="java.lang.Iterable<java.util.Map.Entry<group7.entities.Beverage, java.lang.Integer>>"*/-->
-    <tr th:each="entry: ${entries}">
-        <td><a th:href="@{|beverages#item_${entry.key.getId()}|}" th:text="${entry.key.name}"></a></td>
-        <td th:text="${entry.key.price}"></td>
-        <td><form method="POST">
-<!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+<div class="table bg-light text-dark d-table">
+    <div class="d-table-row thead">
+            <div class="d-table-cell">Name</div>
+            <div class="d-table-cell">Price</div>
+            <div class="d-table-cell">In basket</div>
+            <div class="d-table-cell">Total cost</div>
+    </div>
+    <!--/*@thymesVar id="entries" type="java.lang.Iterable<java.util.Map.Entry<group7.entity.Beverage, java.lang.Integer>>"*/-->
+    <div class="d-table-row" th:each="entry: ${entries}">
+        <div class="d-table-cell"><a th:href="@{|beverages#item_${entry.key.getId()}|}" th:text="${entry.key.name}"></a></div>
+        <div class="d-table-cell" th:text="${entry.key.price}"></div>
+        <form class="d-table-cell" method="POST">
+            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
             <input type="submit" class="btn" th:disabled="${entry.value <= 0}" value="-" th:formaction="@{|basket/${entry.key.getId()}/decrement|}" />
             <span th:text="${entry.value}"></span>
             <input type="submit" class="btn" value="+" th:formaction="@{|basket/${entry.key.getId()}/increment|}" />
-        </form></td>
-        <td th:text="${entry.key.price * entry.value}"></td>
-    </tr>
-</table>
+        </form>
+        <div class="d-table-cell" th:text="${entry.key.price * entry.value}"></div>
+    </div>
+</div>
 <form method="POST" action="basket/placeOrder" class="container">
-<!--    <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+    <!--    <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
     <input type="submit" class="btn btn-primary" value="Submit order" />
 </form>
 </body>

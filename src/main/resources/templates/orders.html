@@ -13,28 +13,44 @@
     <script crossorigin="anonymous"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+/* TODO: extract to a static css file */
+/* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+.table .d-table-row,
+.table .d-table-cell {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table .thead {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: bold;
+}
+</style>
 </head>
 <body>
-<!-- TODO: rewrite using rowspan -->
-<table class="table bg-light text-dark">
-    <thead><tr>
-        <td>Content</td>
-        <td>Order price</td>
-    </tr></thead>
+<!-- TODO: rewrite using rowspan (no longer possible when using "display: table" instead of table tags) -->
+<div class="table bg-light text-dark d-table">
+    <div class="d-table-row thead">
+        <div class="d-table-cell">Content</div>
+        <div class="d-table-cell">Order price</div>
+    </div>
     <!--/*@thymesVar id="orders" type="java.lang.Iterable<group7.entities.Order>"*/-->
-    <tr th:each="order: ${orders}">
-        <td style="padding: 0;"><table class="table bg-light text-dark">
-            <thead><tr>
-                <td>Name</td>
-                <td>Item price</td>
-            </tr></thead>
-            <tr th:each="item: ${order.orderItems}">
-                <td th:text="${item.beverage.name}"></td>
-                <td th:text="${item.price}"></td>
-            </tr>
-        </table></td>
-        <td th:text="${order.price}"></td>
-    </tr>
-</table>
+    <div class="d-table-row" th:each="order: ${orders}">
+        <div class="d-table-cell" style="padding: 0;"><div class="table bg-light text-dark d-table">
+            <div class="d-table-row thead">
+                <div class="d-table-cell">Name</div>
+                <div class="d-table-cell">Item price</div>
+            </div>
+            <div class="d-table-row" th:each="item: ${order.orderItems}">
+                <div class="d-table-cell" th:text="${item.beverage.name}"></div>
+                <div class="d-table-cell" th:text="${item.price}"></div>
+            </div>
+        </div></div>
+        <div class="d-table-cell" th:text="${order.price}"></div>
+    </div>
+</div>
 </body>
 </html>
