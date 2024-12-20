@@ -54,7 +54,8 @@
         <div class="d-table-cell" th:text="${bottle.price}"></div>
         <form class="d-table-cell" method="POST" target="_blank">
             <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${bottle.inStock <= 0}" value="+" th:formaction="@{|basket/${bottle.getId()}/increment|}" />
+            <input name="beverage" th:value="${bottle.getId()}" type="hidden" />
+            <input type="submit" class="btn" th:disabled="${bottle.inStock <= 0}" value="+" formaction="basket/add" />
         </form>
     </div>
 </div>
@@ -83,7 +84,8 @@
         <div class="d-table-cell" th:text="${crate.price}"></div>
         <form class="d-table-cell" method="POST" target="_blank">
             <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${crate.cratesInStock <= 0}" value="+" th:formaction="@{|basket/${crate.getId()}/increment|}" />
+            <input name="beverage" th:value="${crate.getId()}" type="hidden" />
+            <input type="submit" class="btn" th:disabled="${crate.cratesInStock <= 0}" value="+" formaction="basket/add" />
         </form>
     </div>
 </div>

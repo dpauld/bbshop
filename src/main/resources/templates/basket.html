@@ -40,18 +40,19 @@
     </div>
     <!--/*@thymesVar id="entries" type="java.lang.Iterable<java.util.Map.Entry<group7.entity.Beverage, java.lang.Integer>>"*/-->
     <div class="d-table-row" th:each="entry: ${entries}">
-        <div class="d-table-cell"><a th:href="@{|beverages#item_${entry.key.getId()}|}" th:text="${entry.key.name}"></a></div>
+        <div class="d-table-cell"><a th:href="@{|../#item_${entry.key.getId()}|}" th:text="${entry.key.name}"></a></div>
         <div class="d-table-cell" th:text="${entry.key.price}"></div>
         <form class="d-table-cell" method="POST">
             <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input type="submit" class="btn" th:disabled="${entry.value <= 0}" value="-" th:formaction="@{|basket/${entry.key.getId()}/decrement|}" />
+            <input name="beverage" th:value="${entry.key.getId()}" type="hidden" />
+            <input type="submit" class="btn" th:disabled="${entry.value <= 0}" value="-" formaction="remove" />
             <span th:text="${entry.value}"></span>
-            <input type="submit" class="btn" value="+" th:formaction="@{|basket/${entry.key.getId()}/increment|}" />
+            <input type="submit" class="btn" value="+" formaction="add" />
         </form>
         <div class="d-table-cell" th:text="${entry.key.price * entry.value}"></div>
     </div>
 </div>
-<form method="POST" action="basket/placeOrder" class="container">
+<form method="POST" action="../order/submit" class="container">
     <!--    <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
     <input type="submit" class="btn btn-primary" value="Submit order" />
 </form>
