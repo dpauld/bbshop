@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <!-- bootstrap dependency -->
+    <script crossorigin="anonymous"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* TODO: extract to a static css file */
+        /* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+        .table .d-table-row,
+        .table .d-table-cell {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table .thead {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="navbar :: navbar"></div>
+<form class="bg-light text-dark text-center py-5" method="POST">
+    <input name="_csrf" th:value="${_csrf.token}" type="hidden" />
+    <input class="my-2" name="username" placeholder="Username" type="text" /><br/>
+    <input class="my-2" name="password" placeholder="Password" type="password" /><br/>
+    <input class="my-2" name="password-repeat" placeholder="Repeat password" type="password" /><br/>
+
+    <div class="py-2">
+        <button class="btn btn-dark py-0">Register</button>
+    </div>
+</form>
+</body>
+</html>
