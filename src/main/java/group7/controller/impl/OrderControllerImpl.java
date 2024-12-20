@@ -46,9 +46,10 @@ public class OrderControllerImpl implements OrderController {
 
     @Override
     @PutMapping("/{id}")
-    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody UpdateOrderRequestDTO updateOrderRequestDTO) {
-        OrderResponseDTO updatedOrderResponse = orderService.updateOrder(updateOrderRequestDTO, id);
-        return new ResponseEntity<>(updatedOrderResponse, HttpStatus.OK);
+    public ResponseEntity<Void> updateOrder(@RequestBody UpdateOrderRequestDTO updateOrderRequestDTO) {
+        Long id = updateOrderRequestDTO.getId();
+         orderService.updateOrder(updateOrderRequestDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

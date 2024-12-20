@@ -48,10 +48,9 @@ public interface OrderController {
      * of the order to be updated. After updating, it returns the updated order as an OrderResponseDTO.
      *
      * @param updateOrderRequestDTO the DTO containing the updated order information.
-     * @param id the ID of the order to be updated.
      * @return a ResponseEntity containing the updated OrderResponseDTO.
      */
-    ResponseEntity<OrderResponseDTO> updateOrder(Long id, UpdateOrderRequestDTO updateOrderRequestDTO);
+    ResponseEntity<Void> updateOrder(UpdateOrderRequestDTO updateOrderRequestDTO);
 
 
     /**

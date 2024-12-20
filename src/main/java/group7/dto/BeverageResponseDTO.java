@@ -20,4 +20,7 @@ public class BeverageResponseDTO {
     private String name;
     @Positive
     private double price;
+
+    public BeverageResponseDTO(@NotNull @NotEmpty @Pattern(regexp = "^[a-zA-Z0-9]*$") String name, @Positive double price) {
+    }
 }

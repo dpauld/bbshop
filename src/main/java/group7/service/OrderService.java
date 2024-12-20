@@ -19,7 +19,7 @@ public interface OrderService {
 
    OrderResponseDTO getOrderById(Long id);
 
-   OrderResponseDTO updateOrder(UpdateOrderRequestDTO updateOrderRequestDTO, Long id);
+   void updateOrder(UpdateOrderRequestDTO updateOrderRequestDTO);
 
    OrderResponseDTO createOrder(CreateOrderRequestDTO createOrderRequestDTO);
 

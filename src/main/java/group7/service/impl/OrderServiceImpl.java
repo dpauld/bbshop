@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,15 +73,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponseDTO updateOrder(UpdateOrderRequestDTO updateOrderRequestDTO, Long id) {
+    public void updateOrder(UpdateOrderRequestDTO updateOrderRequestDTO) {
         try {
-            Order existingOrder = orderRepository.findById(id)
+            Long id = updateOrderRequestDTO.getId();
+            Order orderToEdit = orderRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
-            existingOrder.setPrice(updateOrderRequestDTO.getPrice());
-            Order updatedOrder = orderRepository.save(existingOrder);
-            return orderToOrderResponseDTO(updatedOrder);
+            orderToEdit.setPrice(updateOrderRequestDTO.getPrice());
+            orderRepository.save(orderToEdit);
         } catch (ResourceNotFoundException e) {
-            throw new OrderUpdateException("Order not found with id: " + id, e); // Preserve the exception
+            throw new OrderUpdateException("Order not found with id: " + updateOrderRequestDTO.getId(), e); // Preserve the exception
         }
     }
 

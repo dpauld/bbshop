@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpdateOrderRequestDTO {
 
+    private Long id;
     @Positive(message = "Price must be greater than 0")
     private double price;
 
