@@ -34,9 +34,9 @@
 <div th:replace="navbar :: navbar"></div>
 <div class="table bg-light text-dark d-table">
     <div class="d-table-row thead">
-            <div class="d-table-cell">Beverage</div>
-            <div class="d-table-cell">Price</div>
-            <div class="d-table-cell">Action</div>
+        <div class="d-table-cell">Beverage</div>
+        <div class="d-table-cell">Price</div>
+        <div class="d-table-cell">Action</div>
     </div>
     <!--/*@thymesVar id="items" type="java.lang.Iterable<group7.entity.OrderItem>"*/-->
     <div class="d-table-row" th:each="item: ${items}">
@@ -44,7 +44,7 @@
         <div class="d-table-cell" th:text="${item.price}"></div>
         <form class="d-table-cell" method="POST">
             <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input name="beverage" th:value="${item.getBeverage().getId()}" type="hidden" />
+            <input name="beverages[]" th:value="${item.getBeverage().getId()}" type="hidden" />
             <input type="submit" class="btn" th:disabled="${entry.value <= 0}" value="-" formaction="remove" />
             <input type="submit" class="btn" value="+" formaction="add" />
         </form>

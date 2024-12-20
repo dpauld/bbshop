@@ -32,63 +32,63 @@
 </head>
 <body>
 <div th:replace="navbar :: navbar"></div>
-<h2>Separate bottles</h2>
-<div class="table bg-light text-dark d-table">
-    <div class="d-table-row thead">
-        <div class="d-table-cell">Picture</div>
-        <div class="d-table-cell">Name</div>
-        <div class="d-table-cell">Volume</div>
-        <div class="d-table-cell">Alcohol percent</div>
-        <div class="d-table-cell">Supplier</div>
-        <div class="d-table-cell">Bottles in stock</div>
-        <div class="d-table-cell">Bottle price</div>
-        <div class="d-table-cell">Add to basket</div>
+<form method="POST" target="_blank" action="basket/add">
+    <!-- <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
+    <h2>Separate bottles</h2>
+    <div class="table bg-light text-dark d-table">
+        <div class="d-table-row thead">
+            <div class="d-table-cell">Picture</div>
+            <div class="d-table-cell">Name</div>
+            <div class="d-table-cell">Volume</div>
+            <div class="d-table-cell">Alcohol percent</div>
+            <div class="d-table-cell">Supplier</div>
+            <div class="d-table-cell">Bottles in stock</div>
+            <div class="d-table-cell">Bottle price</div>
+            <div class="d-table-cell">Add to basket</div>
+        </div>
+        <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.entities.Bottle>"*/-->
+        <div class="d-table-row" th:each="bottle: ${bottles}">
+            <div class="d-table-cell"><a th:name="@{|item_${bottle.getId()}|}"></a><img th:src="${bottle.bottlePic}" /></div>
+            <div class="d-table-cell" th:text="${bottle.name}"></div>
+            <div class="d-table-cell" th:text="${bottle.volume}"></div>
+            <div class="d-table-cell" th:text="${bottle.volumePercent}"></div>
+            <div class="d-table-cell" th:text="${bottle.supplier}"></div>
+            <div class="d-table-cell" th:text="${bottle.inStock}"></div>
+            <div class="d-table-cell" th:text="${bottle.price}"></div>
+            <div class="d-table-cell">
+                <input type="checkbox" name="beverages[]" th:value="${bottle.getId()}" th:disabled="${bottle.inStock <= 0}" />
+            </div>
+        </div>
     </div>
-    <!--/*@thymesVar id="bottles" type="group7.entities.Bottle[]"*/-->
-    <div class="d-table-row" th:each="bottle: ${bottles}">
-        <div class="d-table-cell"><a th:name="@{|item_${bottle.getId()}|}"></a><img th:src="${bottle.bottlePic}" /></div>
-        <div class="d-table-cell" th:text="${bottle.name}"></div>
-        <div class="d-table-cell" th:text="${bottle.volume}"></div>
-        <div class="d-table-cell" th:text="${bottle.volumePercent}"></div>
-        <div class="d-table-cell" th:text="${bottle.supplier}"></div>
-        <div class="d-table-cell" th:text="${bottle.inStock}"></div>
-        <div class="d-table-cell" th:text="${bottle.price}"></div>
-        <form class="d-table-cell" method="POST" target="_blank">
-            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input name="beverage" th:value="${bottle.getId()}" type="hidden" />
-            <input type="submit" class="btn" th:disabled="${bottle.inStock <= 0}" value="+" formaction="basket/add" />
-        </form>
+    <h2>Crates</h2>
+    <div class="table bg-light text-dark d-table">
+        <div class="d-table-row thead">
+            <div class="d-table-cell">Picture</div>
+            <div class="d-table-cell">Contained bottles</div>
+            <div class="d-table-cell">Bottles per crate</div>
+            <div class="d-table-cell">Bottle volume</div>
+            <div class="d-table-cell">Alcohol percent</div>
+            <div class="d-table-cell">Bottle supplier</div>
+            <div class="d-table-cell">Crates in stock</div>
+            <div class="d-table-cell">Crate price</div>
+            <div class="d-table-cell">Add to basket</div>
+        </div>
+        <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.entities.Crate>"*/-->
+        <div class="d-table-row" th:each="crate: ${crates}">
+            <div class="d-table-cell"><a th:name="@{|item_${crate.getId()}|}"></a><img th:src="${crate.cratePic}" /></div>
+            <div class="d-table-cell" th:text="${crate.bottle.name}"></div>
+            <div class="d-table-cell" th:text="${crate.noOfBottles}"></div>
+            <div class="d-table-cell" th:text="${crate.bottle.volume}"></div>
+            <div class="d-table-cell" th:text="${crate.bottle.volumePercent}"></div>
+            <div class="d-table-cell" th:text="${crate.bottle.supplier}"></div>
+            <div class="d-table-cell" th:text="${crate.cratesInStock}"></div>
+            <div class="d-table-cell" th:text="${crate.price}"></div>
+            <div class="d-table-cell">
+                <input type="checkbox" name="beverages[]" th:value="${crate.getId()}" th:disabled="${crate.cratesInStock <= 0}" />
+            </div>
+        </div>
     </div>
-</div>
-<h2>Crates</h2>
-<div class="table bg-light text-dark d-table">
-    <div class="d-table-row thead">
-        <div class="d-table-cell">Picture</div>
-        <div class="d-table-cell">Contained bottles</div>
-        <div class="d-table-cell">Bottles per crate</div>
-        <div class="d-table-cell">Bottle volume</div>
-        <div class="d-table-cell">Alcohol percent</div>
-        <div class="d-table-cell">Bottle supplier</div>
-        <div class="d-table-cell">Crates in stock</div>
-        <div class="d-table-cell">Crate price</div>
-        <div class="d-table-cell">Add to basket</div>
-    </div>
-    <!--/*@thymesVar id="crates" type="group7.entities.Crate[]"*/-->
-    <div class="d-table-row" th:each="crate: ${crates}">
-        <div class="d-table-cell"><a th:name="@{|item_${crate.getId()}|}"></a><img th:src="${crate.cratePic}" /></div>
-        <div class="d-table-cell" th:text="${crate.bottle.name}"></div>
-        <div class="d-table-cell" th:text="${crate.noOfBottles}"></div>
-        <div class="d-table-cell" th:text="${crate.bottle.volume}"></div>
-        <div class="d-table-cell" th:text="${crate.bottle.volumePercent}"></div>
-        <div class="d-table-cell" th:text="${crate.bottle.supplier}"></div>
-        <div class="d-table-cell" th:text="${crate.cratesInStock}"></div>
-        <div class="d-table-cell" th:text="${crate.price}"></div>
-        <form class="d-table-cell" method="POST" target="_blank">
-            <!--            <input name="_csrf" th:value="${_csrf.token}" type="hidden" />-->
-            <input name="beverage" th:value="${crate.getId()}" type="hidden" />
-            <input type="submit" class="btn" th:disabled="${crate.cratesInStock <= 0}" value="+" formaction="basket/add" />
-        </form>
-    </div>
-</div>
+    <input type="submit" class="btn btn-primary" value="Add selected to basket" />
+</form>
 </body>
 </html>
