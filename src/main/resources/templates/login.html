@@ -32,7 +32,7 @@
 </head>
 <body>
 <div th:replace="navbar :: navbar"></div>
-<form class="bg-light text-dark text-center py-5" method="POST">
+<form class="bg-light text-dark text-center py-5 px-2 mx-auto" method="POST">
     <input name="_csrf" th:value="${_csrf.token}" type="hidden" />
     <input class="my-2" name="username" placeholder="Username" type="text" /><br/>
     <input class="my-2" name="password" placeholder="Password" type="password" /><br/>
