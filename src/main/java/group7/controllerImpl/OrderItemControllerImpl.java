@@ -1,4 +1,10 @@
 package group7.controllerImpl;
 
-public interface OrderItemControllerImpl {
+import group7.controller.OrderItemController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("")
+public class OrderItemControllerImpl implements OrderItemController {
 }

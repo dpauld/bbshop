@@ -1,83 +1,27 @@
 package group7.service;
 
-import group7.dto.*;
+import group7.dto.BeverageRequestDTO;
+import group7.dto.BeverageResponseDTO;
 import group7.entity.Beverage;
-import group7.entity.Bottle;
-import group7.repository.BeverageRepository;
-import group7.serviceImpl.BeverageServiceImpl;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class BeverageService implements BeverageServiceImpl {
+public interface BeverageService {
 
-    private final ModelMapper modelMapper;
-    private final BeverageRepository beverageRepository;
+    BeverageResponseDTO beverageToBeverageResponseDTO(Beverage beverage);
 
-    @Autowired
-    public BeverageService(ModelMapper modelMapper, BeverageRepository beverageRepository) {
-        this.modelMapper = modelMapper;
-        this.beverageRepository = beverageRepository;
-    }
+    Beverage beverageRequestDTOToBeverage(BeverageRequestDTO beverageRequestDTO);
 
-    @Override
-    public BeverageResponseDTO beverageToBeverageResponseDTO(Beverage beverage) {
-        return modelMapper.map(beverage, BeverageResponseDTO.class);
-    }
+    List<BeverageResponseDTO> beveragesToBeverageResponseDTOList(List<Beverage> beverages);
 
-    @Override
-    public Beverage beverageRequestDTOToBeverage(BeverageRequestDTO beverageRequestDTO) {
-        return modelMapper.map(beverageRequestDTO, Beverage.class);
-    }
+    BeverageResponseDTO addBeverage(BeverageRequestDTO beverageRequestDTO);
 
-    @Override
-    public List<BeverageResponseDTO> beveragesToBeverageResponseDTOList(List<Beverage> beverages) {
-        return beverages.stream()
-                .map(this::beverageToBeverageResponseDTO)
-                .collect(Collectors.toList());
-    }
+    List<BeverageResponseDTO> getSoldBeverages();
 
-    @Override
-    public BeverageResponseDTO addBeverage(BeverageRequestDTO beverageRequestDTO) {
-        Beverage savedBeverage = beverageRepository.save(beverageRequestDTOToBeverage(beverageRequestDTO));
-        return beverageToBeverageResponseDTO(savedBeverage);
-    }
+    List<BeverageRequestDTO> getDemoBeverages();
 
-    @Override
-    public List<BeverageResponseDTO> getSoldBeverages() {
-        return List.of();
-    }
+    List<BeverageResponseDTO> getAllBeverages();
 
-    @Override
-    public List<BeverageRequestDTO> getDemoBeverages() {
-        BottleRequestDTO bottleRequestDTO = new BottleRequestDTO("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIxheN74qXKhIgyRTVf_w67JIX4bTmzSvEFQ&s",1.5,false, 2.5,"Coca Cola" , 5);
-            return List.of(
-                    new BottleRequestDTO("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIxheN74qXKhIgyRTVf_w67JIX4bTmzSvEFQ&s",1.5,false, 2.5,"Coca Cola" , 5),
-                    new CrateRequestDTO("https://image.invaluable.com/housePhotos/abell/07/764507/H0068-L364202388.JPG", 3, 10, bottleRequestDTO)
-            );
-
-    }
-
-    @Override
-    public List<BeverageResponseDTO> getAllBeverages() {
-        return beveragesToBeverageResponseDTOList(beverageRepository.findAll()) ;
-    }
-
-    @Override
-    public List<BeverageResponseDTO> getAlcoholicBeverages() {
-        List<Beverage> beverages = beverageRepository.findAllBottles();
-
-        return beverages.stream()
-                .filter(beverage -> beverage instanceof Bottle)
-                .map(beverage -> (Bottle) beverage)
-                .filter(Bottle::isAlcoholic)
-                .map(bottle -> new BeverageResponseDTO(bottle.getName(), bottle.getPrice()))
-                .toList();
-    }
-
+    List<BeverageResponseDTO> getAlcoholicBeverages();
 
 }

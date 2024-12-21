@@ -1,61 +1,67 @@
 package group7.controller;
 
-import group7.controllerImpl.OrderControllerImpl;
 import group7.dto.CreateOrderRequestDTO;
 import group7.dto.OrderResponseDTO;
 import group7.dto.UpdateOrderRequestDTO;
-import group7.serviceImpl.OrderServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
-@RestController
-@RequestMapping("/order")
-public class OrderController implements OrderControllerImpl {
+public interface OrderController {
 
-    private final OrderServiceImpl orderService;
+    /**
+     * Retrieves a list of all orders.
+     * <p>
+     * This method fetches all orders and returns a list of their corresponding
+     * OrderResponseDTO objects, which contain relevant order data.
+     *
+     * @return a ResponseEntity containing a list of OrderResponseDTO objects representing all orders.
+     */
+    ResponseEntity<List<OrderResponseDTO>> getAllOrders();
 
-    @Autowired
-    public OrderController(OrderServiceImpl orderService) {
-        this.orderService = orderService;
-    }
+    /**
+     * Retrieves the details of a specific order by its ID.
+     * <p>
+     * This method fetches the order details for the given ID and returns the
+     * corresponding OrderResponseDTO object, which contains the data of the specified order.
+     *
+     * @param id the ID of the order to be retrieved.
+     * @return a ResponseEntity containing the OrderResponseDTO object representing the order.
+     */
+    ResponseEntity<OrderResponseDTO> getOrderById(Long id);
 
-    @Override
-    @GetMapping
-    public ResponseEntity<List<OrderResponseDTO>> getAllOrders() {
-        List<OrderResponseDTO> orders = orderService.getAllOrders();
-        return new ResponseEntity<>(orders, HttpStatus.OK);
-    }
+    /**
+     * Creates a new order using the provided order data.
+     * <p>
+     * This method creates a new order based on the CreateOrderRequestDTO data.
+     * After creating the order, it returns an HTTP response indicating the creation status.
+     *
+     * @param createOrderRequestDTO the DTO containing the information for the new order.
+     * @return a ResponseEntity indicating the result of the order creation (e.g., HTTP status CREATED).
+     */
+    ResponseEntity<OrderResponseDTO> createOrder(CreateOrderRequestDTO createOrderRequestDTO);
 
-    @Override
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderResponseDTO> getOrderById(@PathVariable Long id) {
-        OrderResponseDTO order = orderService.getOrderById(id);
-        return new ResponseEntity<>(order, HttpStatus.OK);
-    }
 
-    @Override
-    @PostMapping("/create")
-    public ResponseEntity<OrderResponseDTO> createOrder(@RequestBody CreateOrderRequestDTO createOrderRequestDTO) {
-        OrderResponseDTO savedOrderResponse = orderService.createOrder(createOrderRequestDTO);
-        return new ResponseEntity<>(savedOrderResponse, HttpStatus.CREATED);
-    }
+    /**
+     * Updates the details of an existing order.
+     * <p>
+     * This method takes the updated information from the UpdateOrderRequestDTO and the ID
+     * of the order to be updated. After updating, it returns the updated order as an OrderResponseDTO.
+     *
+     * @param updateOrderRequestDTO the DTO containing the updated order information.
+     * @return a ResponseEntity containing the updated OrderResponseDTO.
+     */
+    ResponseEntity<Void> updateOrder(UpdateOrderRequestDTO updateOrderRequestDTO);
 
-    @Override
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateOrder(@RequestBody UpdateOrderRequestDTO updateOrderRequestDTO) {
-        Long id = updateOrderRequestDTO.getId();
-         orderService.updateOrder(updateOrderRequestDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
-    @Override
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOrderById(@PathVariable Long id) {
-        orderService.deleteOrderById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    /**
+     * Deletes an order by its ID.
+     * <p>
+     * This method deletes the order corresponding to the given ID. If the deletion
+     * is successful, it returns a response indicating no content (204 No Content).
+     *
+     * @param id the ID of the order to be deleted.
+     * @return a ResponseEntity with HTTP status NO_CONTENT if the deletion is successful.
+     */
+    ResponseEntity<Void> deleteOrderById(Long id);
+
 }
