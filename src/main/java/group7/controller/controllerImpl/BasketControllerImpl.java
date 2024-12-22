@@ -1,4 +1,4 @@
-package group7.controller.impl;
+package group7.controller.controllerImpl;
 
 import group7.controller.BasketController;
 import group7.service.BasketService;

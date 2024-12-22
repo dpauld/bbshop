@@ -1,4 +1,4 @@
-package group7.controller.impl;
+package group7.controller.controllerImpl;
 
 import group7.controller.BeverageController;
 import group7.dto.BeverageResponseDTO;

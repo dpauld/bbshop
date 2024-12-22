@@ -1,4 +1,4 @@
-package group7.serviceImpl;
+package group7.service.serviceImpl;
 
 import group7.dto.*;
 import group7.entity.Beverage;
@@ -9,9 +9,9 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import group7.entity.Crate;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,11 +48,28 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     // CRUD Operations
+    @Transactional
     @Override
     public BeverageResponseDTO addBeverage(AddBeverageRequestDTO addBeverageRequestDTO) {
         Beverage beverage = beverageRequestDTOToBeverage(addBeverageRequestDTO);
         Beverage savedBeverage = beverageRepository.save(beverage);
         return beverageToBeverageResponseDTO(savedBeverage);
+    }
+
+    @Transactional
+    @Override
+    public BeverageResponseDTO addCrate(AddCrateRequestDTO addCrateRequestDTO) {
+        Crate crate = modelMapper.map(addCrateRequestDTO, Crate.class);
+        Crate savedCrate = beverageRepository.save(crate);
+        return modelMapper.map(savedCrate, BeverageResponseDTO.class);
+    }
+
+    @Transactional
+    @Override
+    public BeverageResponseDTO addBottle(AddBottleRequestDTO addBottleRequestDTO) {
+        Bottle bottle = modelMapper.map(addBottleRequestDTO, Bottle.class);
+        Bottle savedBottle = beverageRepository.save(bottle);
+        return modelMapper.map(savedBottle, BeverageResponseDTO.class);
     }
 
     @Override
@@ -113,6 +130,7 @@ public class BeverageServiceImpl implements BeverageService {
         Bottle cocaCola = createDemoBottle();
         Bottle savedBottle = beverageRepository.save(cocaCola);
 
+
         // Create and save crates
         List<Crate> crates = createDemoCrates(savedBottle);
         beverageRepository.saveAll(crates);
@@ -124,7 +142,7 @@ public class BeverageServiceImpl implements BeverageService {
         bottle.setBottlePic(COCA_COLA_IMAGE);
         bottle.setVolume(1.5);
         bottle.setPrice(2.5);
-        bottle.setName("Coca Cola");
+        bottle.setName("CocaCola123");
         bottle.setInStock(100);
         bottle.setSupplier("Coca Cola Company");
         return bottle;
@@ -138,7 +156,9 @@ public class BeverageServiceImpl implements BeverageService {
 
     private Crate createDemoCrate(Bottle bottle) {
         Crate crate = new Crate();
+        crate.setName("CocaColaCrate123");
         crate.setCratePic(CRATE_IMAGE);
+        crate.setCratesInStock(10);
         crate.setNoOfBottles(10);
         crate.setPrice(5.0);
         crate.setBottle(bottle);

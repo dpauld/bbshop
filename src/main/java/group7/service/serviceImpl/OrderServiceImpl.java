@@ -1,4 +1,4 @@
-package group7.serviceImpl;
+package group7.service.serviceImpl;
 
 import group7.dto.CreateOrderRequestDTO;
 import group7.dto.OrderResponseDTO;

@@ -1,4 +1,4 @@
-package group7.controllerImpl;
+package group7.controller.controllerImpl;
 
 import group7.controller.OrderController;
 import group7.dto.CreateOrderRequestDTO;

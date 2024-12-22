@@ -1,6 +1,8 @@
 package group7.service;
 
 import group7.dto.AddBeverageRequestDTO;
+import group7.dto.AddBottleRequestDTO;
+import group7.dto.AddCrateRequestDTO;
 import group7.dto.BeverageResponseDTO;
 import group7.entity.Beverage;
 
@@ -27,6 +29,9 @@ public interface BeverageService {
     List<BeverageResponseDTO> getAllCrates();
 
     List<BeverageResponseDTO> getAllBottles();
+
+    BeverageResponseDTO addCrate(AddCrateRequestDTO addCrateRequestDTO);
+    BeverageResponseDTO addBottle(AddBottleRequestDTO addBottleRequestDTO);
 
     BeverageResponseDTO findBeveragesById(Long id);
 }
