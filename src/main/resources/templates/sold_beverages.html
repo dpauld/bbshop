@@ -46,7 +46,7 @@
             <div class="d-table-cell">Bottle price</div>
             <div class="d-table-cell">Add to basket</div>
         </div>
-        <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.entities.Bottle>"*/-->
+        <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.dto.BottleResponseDTO>"*/-->
         <div class="d-table-row" th:each="bottle: ${bottles}">
             <div class="d-table-cell"><a th:name="@{|item_${bottle.getId()}|}"></a><img th:src="${bottle.bottlePic}" /></div>
             <div class="d-table-cell" th:text="${bottle.name}"></div>
@@ -73,7 +73,7 @@
             <div class="d-table-cell">Crate price</div>
             <div class="d-table-cell">Add to basket</div>
         </div>
-        <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.entities.Crate>"*/-->
+        <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.dto.CrateResponseDTO>"*/-->
         <div class="d-table-row" th:each="crate: ${crates}">
             <div class="d-table-cell"><a th:name="@{|item_${crate.getId()}|}"></a><img th:src="${crate.cratePic}" /></div>
             <div class="d-table-cell" th:text="${crate.bottle.name}"></div>

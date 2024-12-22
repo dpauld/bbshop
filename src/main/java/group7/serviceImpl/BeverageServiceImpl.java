@@ -3,6 +3,7 @@ package group7.serviceImpl;
 import group7.dto.*;
 import group7.entity.Beverage;
 import group7.entity.Bottle;
+import group7.entity.Crate;
 import group7.repository.BeverageRepository;
 import group7.service.BeverageService;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,16 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
+    public BottleResponseDTO bottleToBottleResponseDTO(Bottle bottle) {
+        return modelMapper.map(bottle, BottleResponseDTO.class);
+    }
+
+    @Override
+    public CrateResponseDTO crateToCrateResponseDTO(Crate crate) {
+        return modelMapper.map(crate, CrateResponseDTO.class);
+    }
+
+    @Override
     public Beverage beverageRequestDTOToBeverage(BeverageRequestDTO beverageRequestDTO) {
         return modelMapper.map(beverageRequestDTO, Beverage.class);
     }
@@ -38,6 +49,20 @@ public class BeverageServiceImpl implements BeverageService {
     public List<BeverageResponseDTO> beveragesToBeverageResponseDTOList(List<Beverage> beverages) {
         return beverages.stream()
                 .map(this::beverageToBeverageResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BottleResponseDTO> bottlesToBottleResponseDTOList(List<Bottle> bottles) {
+        return bottles.stream()
+                .map(this::bottleToBottleResponseDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CrateResponseDTO> cratesToCrateResponseDTOList(List<Crate> crates) {
+        return crates.stream()
+                .map(this::crateToCrateResponseDTO)
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +94,7 @@ public class BeverageServiceImpl implements BeverageService {
 
     @Override
     public List<BeverageResponseDTO> getAlcoholicBeverages() {
-        List<Beverage> beverages = beverageRepository.findAllBottles();
+        List<? extends Beverage> beverages = beverageRepository.findAllBottles();
 
         return beverages.stream()
                 .filter(beverage -> beverage instanceof Bottle)
@@ -77,6 +102,16 @@ public class BeverageServiceImpl implements BeverageService {
                 .filter(Bottle::isAlcoholic)
                 .map(bottle -> new BeverageResponseDTO(bottle.getName(), bottle.getPrice()))
                 .toList();
+    }
+
+    @Override
+    public List<BottleResponseDTO> getAllBottles() {
+        return bottlesToBottleResponseDTOList(beverageRepository.findAllBottles());
+    }
+
+    @Override
+    public List<CrateResponseDTO> getAllCrates() {
+        return cratesToCrateResponseDTOList(beverageRepository.findAllCrates());
     }
 
 

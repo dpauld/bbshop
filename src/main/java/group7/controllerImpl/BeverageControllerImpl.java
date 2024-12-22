@@ -3,12 +3,12 @@ package group7.controllerImpl;
 import group7.controller.BeverageController;
 import group7.service.BeverageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequestMapping("/")
 public class BeverageControllerImpl implements BeverageController {
 
@@ -21,7 +21,8 @@ public class BeverageControllerImpl implements BeverageController {
 
     @GetMapping("/beverages")
     public String getAllBeverages(Model model) {
-        model.addAttribute("beverages", beverageService.getDemoBeverages());
-        return "beverages";
+        model.addAttribute("bottles", beverageService.getAllBottles());
+        model.addAttribute("crates", beverageService.getAllCrates());
+        return "sold_beverages";
     }
 }
