@@ -82,7 +82,7 @@ public class BeverageServiceImpl implements BeverageService {
         BottleRequestDTO bottleRequestDTO = new BottleRequestDTO("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIxheN74qXKhIgyRTVf_w67JIX4bTmzSvEFQ&s",1.5,false, 2.5,"Coca Cola" , 5);
             return List.of(
                     new BottleRequestDTO("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIxheN74qXKhIgyRTVf_w67JIX4bTmzSvEFQ&s",1.5,false, 2.5,"Coca Cola" , 5),
-                    new CrateRequestDTO("https://image.invaluable.com/housePhotos/abell/07/764507/H0068-L364202388.JPG", 3, 10, bottleRequestDTO)
+                    new CrateRequestDTO("https://image.invaluable.com/housePhotos/abell/07/764507/H0068-L364202388.JPG", 3, 10, 0L)  // Fixme change to BeverageResponseDTO
             );
 
     }

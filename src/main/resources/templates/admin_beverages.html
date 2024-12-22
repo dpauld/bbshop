@@ -45,7 +45,7 @@
         <div class="d-table-cell">Bottle price</div>
         <div class="d-table-cell">Actions</div>
     </div>
-    <form class="d-table-row">
+    <form class="d-table-row" th:action="@{/admin/addBottle}" th:object="${bottle}">
         <div class="d-table-cell">
             <input name="bottlePic" th:field="*{bottlePic}" type="text" />
         </div>
@@ -61,7 +61,7 @@
             <input type="submit" method="POST" class="btn" value="Save" />
         </div>
     </form>
-    <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.entities.Bottle>"*/-->
+    <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.dto.BottleResponseDTO>"*/-->
     <form class="d-table-row" th:each="bottle: ${bottles}">
         <div class="d-table-cell">
             <a th:name="@{|item_${bottle.getId()}|}">
@@ -94,7 +94,7 @@
         <div class="d-table-cell">Crate price</div>
         <div class="d-table-cell">Actions</div>
     </div>
-    <form class="d-table-row">
+    <form class="d-table-row" th:action="@{/admin/addCrate}" th:object="${crate}">
         <div class="d-table-cell">
             <input name="cratePic" th:field="*{cratePic}" type="text" />
         </div>
@@ -111,7 +111,7 @@
             <input type="submit" method="POST" class="btn" value="Save" />
         </div>
     </form>
-    <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.entities.Crate>"*/-->
+    <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.dto.CrateResponseDTO>"*/-->
     <form class="d-table-row" th:each="crate: ${crates}">
         <div class="d-table-cell">
             <a th:name="@{|item_${crate.getId()}|}">
