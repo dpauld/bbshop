@@ -1,4 +1,4 @@
-package group7.entities;
+package group7.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
@@ -10,9 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
-@Data // Write all getters and setters automatically
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Order {
 
     @Id
@@ -25,15 +25,15 @@ public class Order {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    //@JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany
-    @JoinTable(
-            name = "orders-order_items",
-            joinColumns = {@JoinColumn(name = "order_id")},
-            inverseJoinColumns = {@JoinColumn(name = "order_item_id")}
-    )
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //Bidirectional
     private List<OrderItem> orderItems;
 
+    public Order(double price, User user, List<OrderItem> orderItems) {
+        this.price = price;
+        this.user = user;
+        this.orderItems = orderItems;
+    }
 }

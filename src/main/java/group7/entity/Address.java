@@ -1,17 +1,16 @@
-package group7.entities;
+package group7.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "address")
-@NoArgsConstructor // Write a constructor that has no arguments automatically
-@AllArgsConstructor // Write a constructor that has all arguments automatically
-@Data // Write all getters and setters automatically
+@NoArgsConstructor
+@Data
 public class Address {
 
     @Id
@@ -20,16 +19,29 @@ public class Address {
     private Long id;
 
     @NotEmpty
+    @NotNull
     @Column(name = "street", nullable = false)
     private String street;
 
     @NotEmpty
+    @NotNull
     @Column(name = "number", nullable = false)
     private String number;
 
     @NotEmpty
-    @Size(max = 5, message = "Postal code must shorter than 5 characters") // Length constraint
+    @NotNull
+    @Size(min = 5, max = 5)
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    public Address(String street, String number, String postalCode, User user) {
+        this.street = street;
+        this.number = number;
+        this.postalCode = postalCode;
+        this.user = user;
+    }
 }

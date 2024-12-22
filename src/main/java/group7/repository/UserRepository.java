@@ -1,6 +1,6 @@
-package group7.repositories;
+package group7.repository;
 
-import group7.entities.User;
+import group7.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

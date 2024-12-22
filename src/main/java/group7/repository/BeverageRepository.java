@@ -1,6 +1,6 @@
-package group7.repositories;
+package group7.repository;
 
-import group7.entities.Beverage;
+import group7.entity.Beverage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
