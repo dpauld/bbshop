@@ -26,7 +26,7 @@ public class BeverageControllerImpl implements BeverageController {
     }
 
     // This method will be executed immediately after the object is created
-    @PostConstruct
+
     public void init() {
         List<BeverageResponseDTO> beverages = getDemoBeverages();
     }
