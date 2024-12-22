@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Beverages</title>
+</head>
+<body>
+<h2>Beverages</h2>
+<div th:each="beverage : ${beverages}">
+  <p th:text="${beverage.name}"></p>
+  <p th:text="${beverage.price}"></p>
+  <form action="/beverages/add/{beverage.id}" method="post">
+    <button type="submit">Add to Basket</button>
+  </form>
+</div>
+</body>
+</html>

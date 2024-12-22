@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Basket</title>
+</head>
+<body>
+<h1>Your Basket</h1>
+
+<div th:if="${orderItems.isEmpty()}">
+    <p>Your basket is empty.</p>
+</div>
+
+<div th:if="${not orderItems.isEmpty()}">
+    <table>
+        <thead>
+        <tr>
+            <th>Position</th>
+            <th>Beverage</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="orderItem : ${orderItems}">
+            <td th:text="${orderItem.position}"></td>
+            <td th:text="${orderItem.beverage.name}"></td>
+            <td th:text="${orderItem.price}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/basket/clear}" method="post">
+        <button type="submit">Clear Basket</button>
+    </form>
+
+    <form th:action="@{/basket/order}" method="post">
+        <input type="hidden" name="userId" th:value="${user.id}"/>
+        <button type="submit">Create Order</button>
+    </form>
+</div>
+
+<a href="/beverages">Continue Shopping</a>
+</body>
+</html>
