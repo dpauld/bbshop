@@ -1,9 +1,8 @@
-package group7.service.impl;
+package group7.serviceImpl;
 
 import group7.dto.*;
 import group7.entity.Beverage;
 import group7.entity.Bottle;
-import group7.entity.Crate;
 import group7.repository.BeverageRepository;
 import group7.service.BeverageService;
 import jakarta.transaction.Transactional;

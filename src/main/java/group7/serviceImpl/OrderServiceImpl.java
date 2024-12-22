@@ -1,4 +1,4 @@
-package group7.service.impl;
+package group7.serviceImpl;
 
 import group7.dto.CreateOrderRequestDTO;
 import group7.dto.OrderResponseDTO;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

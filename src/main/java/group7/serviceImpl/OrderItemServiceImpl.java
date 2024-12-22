@@ -1,4 +1,4 @@
-package group7.service.impl;
+package group7.serviceImpl;
 
 import group7.component.Basket;
 import group7.dto.AddOrderItemRequestDTO;
