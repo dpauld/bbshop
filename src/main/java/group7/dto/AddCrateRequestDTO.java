@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.URL;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class CrateRequestDTO extends BeverageRequestDTO{
+public class AddCrateRequestDTO extends AddBeverageRequestDTO {
 
     @URL
     private String cratePic;
@@ -21,6 +21,6 @@ public class CrateRequestDTO extends BeverageRequestDTO{
     private int cratesInStock;
     @Positive(message = "number of bottles must be greater than 0")
     private int noOfBottles;
-    private BottleRequestDTO bottle;
+    private AddBottleRequestDTO bottle;
 
 }

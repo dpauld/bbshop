@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@NamedEntityGraph(
+        name = "OrderItem.beverage",
+        attributeNodes = @NamedAttributeNode("beverage")
+)
 public class OrderItem {
 
     @Id
@@ -28,7 +32,7 @@ public class OrderItem {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "beverage_id")
+    @JoinColumn(name = "beverage_id",nullable = true)
     private Beverage beverage;
 
     @ManyToOne

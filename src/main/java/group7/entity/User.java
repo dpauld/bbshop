@@ -7,12 +7,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {@UniqueConstraint(columnNames = "username")})
 @NoArgsConstructor
 @Data
+@NamedEntityGraph(
+        name = "User.orders",
+        attributeNodes = {
+                @NamedAttributeNode("orders"),
+                @NamedAttributeNode("billingAddresses"),
+                @NamedAttributeNode("deliveryAddresses")
+        }
+)
 public class User {
 
     @Id
@@ -36,12 +45,20 @@ public class User {
     @Column(name = "birthday", nullable = false)
     private LocalDate birthday;
 
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @NotEmpty(message = "Billing addresses cannot be empty")
+    @ManyToMany
+    @JoinTable(
+            name = "user_billing_addresses",
+            joinColumns = @JoinColumn(name = "user_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "address_id", nullable = true)
+    )
     private List<Address> billingAddresses;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+            name = "user_delivery_addresses",
+            joinColumns = @JoinColumn(name = "user_id", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "address_id", nullable = true)
+    )
     private List<Address> deliveryAddresses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

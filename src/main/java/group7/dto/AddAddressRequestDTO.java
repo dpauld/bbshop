@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddressRequestDTO {
+public class AddAddressRequestDTO {
 
     @NotNull(message = "Street cannot be null")
     @NotEmpty(message = "Street cannot be empty")
@@ -22,6 +22,6 @@ public class AddressRequestDTO {
     @NotEmpty
     @Size(min = 5, max = 5,message = "size must be exactly 5 digits")
     private String postalCode;
-    private UserRequestDTO user;
+    private CreateUserRequestDTO user;
 
 }

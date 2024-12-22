@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItemRequestDTO {
+public class AddOrderItemRequestDTO {
 
     @Pattern(regexp = "\\d+", message = "Field must contain only digits")
     private String position;
     @Positive(message = "price must be greater than 0")
     private double price;
-    private BeverageRequestDTO beverage;
+    private BeverageResponseDTO beverage;
     private CreateOrderRequestDTO order;
 
 

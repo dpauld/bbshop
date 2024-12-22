@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "address")
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 public class Address {
 
@@ -34,14 +36,9 @@ public class Address {
     @Column(name = "postal_code", nullable = false)
     private String postalCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    public Address(String street, String number, String postalCode, User user) {
+    public Address(String street, String number, String postalCode) {
         this.street = street;
         this.number = number;
         this.postalCode = postalCode;
-        this.user = user;
     }
 }

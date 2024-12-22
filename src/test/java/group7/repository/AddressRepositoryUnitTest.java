@@ -69,14 +69,14 @@ public class AddressRepositoryUnitTest {
         sampleManager.addChangedSample(this::getSampleAddress, address -> address.setStreet(null));
         sampleManager.addChangedSample(this::getSampleAddress, address -> address.setNumber(null));
         sampleManager.addChangedSample(this::getSampleAddress, address -> address.setPostalCode(null));
-        sampleManager.addChangedSample(this::getSampleAddress, address -> address.setUser(null));
+       // sampleManager.addChangedSample(this::getSampleAddress, address -> address.setUser(null));
         sampleManager.addChangedSample(
                 this::getSampleAddress,
                 address -> {
                     address.setStreet(null);
                     address.setNumber(null);
                     address.setPostalCode(null);
-                    address.setUser(null);
+                   // address.setUser(null);
                 }
         );
 
@@ -110,6 +110,6 @@ public class AddressRepositoryUnitTest {
         );
         User savedUser = userRepository.save(user);
 
-        return new Address("Wall Street", "1", "12345", savedUser);
+        return new Address("Wall Street", "1", "12345");
     }
 }

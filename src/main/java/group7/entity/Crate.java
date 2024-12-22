@@ -25,15 +25,15 @@ public class Crate extends Beverage {
     private String cratePic;
 
     @Positive
-    @Column(name = "crates_in_stock")
+    @Column(name = "crates_in_stock", nullable = false)
     private int cratesInStock;
 
     @Positive
-    @Column(name = "no_of_bottles")
+    @Column(name = "no_of_bottles", nullable = false)
     private int noOfBottles;
 
     @ManyToOne
-    @JoinColumn(name = "bottle_id")
+    @JoinColumn(name = "bottle_id",nullable = true)
     private Bottle bottle;
 
     public Crate(

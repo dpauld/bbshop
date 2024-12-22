@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "beverage")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Use this to allow inheritance
 @DiscriminatorColumn(name = "beverage_type", discriminatorType = DiscriminatorType.STRING)
+@AllArgsConstructor
 @NoArgsConstructor
 @Data
 public abstract class Beverage {
@@ -29,11 +31,12 @@ public abstract class Beverage {
     protected String name;
 
     @Positive
-    @Column(name = "price")
+    @Column(name = "price",nullable = false)
     protected double price;
 
     protected Beverage(String name, double price) {
         this.name = name;
         this.price = price;
     }
+
 }

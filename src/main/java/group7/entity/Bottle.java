@@ -23,13 +23,13 @@ public class Bottle extends Beverage {
     private String bottlePic;
 
     @Positive
-    @Column(name = "volume")
+    @Column(name = "volume", nullable = false)
     private double volume;
 
     @Column(name = "is_alcoholic")
     private boolean isAlcoholic;
 
-    @Column(name = "volume_percent")
+    @Column(name = "volume_percent", nullable = false)
     @PositiveOrZero
     private double volumePercent;
 
@@ -39,7 +39,7 @@ public class Bottle extends Beverage {
     private String supplier;
 
     @PositiveOrZero
-    @Column(name = "in_stock")
+    @Column(name = "in_stock",nullable = false)
     private int inStock;
 
     // Automatically set isAlcoholic based on volumePercent

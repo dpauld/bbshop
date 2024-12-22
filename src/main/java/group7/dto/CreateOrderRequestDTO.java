@@ -15,9 +15,9 @@ public class CreateOrderRequestDTO {
     @Positive(message = "Price must be greater than 0")
     private double price;
 
-    private UserRequestDTO user;
+    private UserResponseDTO user;
 
-    private List<OrderItemRequestDTO> orderItems;
+    private List<AddOrderItemRequestDTO> orderItems;
 
 
 

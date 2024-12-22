@@ -15,6 +15,8 @@ public interface OrderService {
 
    Order createOrderRequestDTOToOrder(CreateOrderRequestDTO createOrderRequestDTO);
 
+   List<Order> createOrderRequestDTOListToOrders(List<CreateOrderRequestDTO> createOrderRequestDTOs);
+
    List<OrderResponseDTO> getAllOrders();
 
    OrderResponseDTO getOrderById(Long id);

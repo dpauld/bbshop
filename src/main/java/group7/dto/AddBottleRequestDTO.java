@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.URL;
 @NoArgsConstructor
 @AllArgsConstructor
 @ValidVolumeAlcoholic
-public class BottleRequestDTO extends BeverageRequestDTO{
+public class AddBottleRequestDTO extends AddBeverageRequestDTO {
 
    @URL
    private String bottlePic;

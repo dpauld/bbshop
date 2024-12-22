@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequestDTO {
+public class CreateUserRequestDTO {
 
     @NotNull(message = "User name cannot be null")
     @NotEmpty(message = "User name cannot be empty")
@@ -23,8 +23,8 @@ public class UserRequestDTO {
     private String password;
     @ValidBirthday(message = "Birthday must be after 01.01.1900 and before or on today's date")
     private LocalDate birthday;
-    private List<AddressRequestDTO> billingAddresses;
-    private List<AddressRequestDTO> deliveryAddresses;
+    private List<AddAddressRequestDTO> billingAddresses;
+    private List<AddAddressRequestDTO> deliveryAddresses;
     private List<CreateOrderRequestDTO> orders;
 
 }

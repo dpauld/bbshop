@@ -48,6 +48,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<Order> createOrderRequestDTOListToOrders(List<CreateOrderRequestDTO> createOrderRequestDTOs) {
+        return createOrderRequestDTOs.stream()
+                .map(this::createOrderRequestDTOToOrder)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<OrderResponseDTO> getAllOrders() {
         return ordersToOrderResponseDTOList(orderRepository.findAll());
     }
@@ -68,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
             return orderToOrderResponseDTO(savedOrder);
         } catch (Exception e) {
             // Order creation failed, throw a specific exception with a detailed message
-            throw new OrderCreationException("Order creation failed", e); // Use `e` instead of `e.getCause()`
+            throw new OrderCreationException("Order creation failed", e);
         }
     }
 
@@ -81,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
             orderToEdit.setPrice(updateOrderRequestDTO.getPrice());
             orderRepository.save(orderToEdit);
         } catch (ResourceNotFoundException e) {
-            throw new OrderUpdateException("Order not found with id: " + updateOrderRequestDTO.getId(), e); // Preserve the exception
+            throw new OrderUpdateException("Order not found with id: " + updateOrderRequestDTO.getId(), e);
         }
     }
 

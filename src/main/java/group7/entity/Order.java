@@ -13,6 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@NamedEntityGraph(
+        name = "Order.userAndItems",
+        attributeNodes = {
+                @NamedAttributeNode("user"),
+                @NamedAttributeNode("orderItems")
+        })
 public class Order {
 
     @Id
@@ -21,14 +27,14 @@ public class Order {
     private Long id;
 
     @Positive(message = "Price must be greater than 0")
-    @Column(name = "price")
+    @Column(name = "price", nullable = false)
     private double price;
 
-    @ManyToOne
-    //@JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true) //Bidirectional
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     public Order(double price, User user, List<OrderItem> orderItems) {
