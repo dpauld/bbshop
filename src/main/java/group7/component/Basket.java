@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,7 +21,7 @@ import java.util.List;
 public class Basket {
 
     @NotEmpty
-    private List<BeverageResponseDTO> beverages;
+    private List<BeverageResponseDTO> beverages = new ArrayList<>();
 
     public void addBeverage(BeverageResponseDTO beverage)  {
         this.beverages.add(beverage);
