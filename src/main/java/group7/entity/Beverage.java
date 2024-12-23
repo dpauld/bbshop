@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "beverage")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Use this to allow inheritance
+@Inheritance(strategy = InheritanceType.JOINED) // Use this to allow inheritance
 @DiscriminatorColumn(name = "beverage_type", discriminatorType = DiscriminatorType.STRING)
 @AllArgsConstructor
 @NoArgsConstructor
