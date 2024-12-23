@@ -8,12 +8,14 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.URL;
 
 
 @Entity
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @Data // Write all getters and setters automatically
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("CRATE") // Discriminator value to differentiate in the table
 public class Crate extends Beverage {

@@ -23,11 +23,11 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    @GetMapping
+    @GetMapping("/list")
     public String getAllOrders(Model model) {
         List<OrderResponseDTO> orders = orderService.getAllOrders();
         model.addAttribute("orders", orders);
-        return "order/list";  // Render the order list view
+        return "orders";  // Render the order list view
     }
 
 

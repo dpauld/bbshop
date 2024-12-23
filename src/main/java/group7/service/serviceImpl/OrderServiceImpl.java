@@ -1,12 +1,13 @@
 package group7.service.serviceImpl;
 
-import group7.dto.CreateOrderRequestDTO;
-import group7.dto.OrderResponseDTO;
-import group7.dto.UpdateOrderRequestDTO;
+import group7.dto.*;
+import group7.entity.Beverage;
 import group7.entity.Order;
+import group7.entity.OrderItem;
 import group7.exception.OrderCreationException;
 import group7.exception.OrderUpdateException;
 import group7.exception.ResourceNotFoundException;
+import group7.repository.OrderItemRepository;
 import group7.repository.OrderRepository;
 import group7.service.OrderService;
 import jakarta.transaction.Transactional;
@@ -22,11 +23,13 @@ public class OrderServiceImpl implements OrderService {
 
     private final ModelMapper modelMapper;
     private final OrderRepository orderRepository;
+    private final OrderItemRepository orderItemRepository;
 
     @Autowired
-    public OrderServiceImpl(ModelMapper modelMapper, OrderRepository orderRepository) {
+    public OrderServiceImpl(ModelMapper modelMapper, OrderRepository orderRepository, OrderItemRepository orderItemRepository) {
         this.modelMapper = modelMapper;
         this.orderRepository = orderRepository;
+        this.orderItemRepository = orderItemRepository;
     }
 
     @Override
@@ -70,6 +73,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponseDTO createOrder(CreateOrderRequestDTO createOrderRequestDTO) {
         try {
             Order order = createOrderRequestDTOToOrder(createOrderRequestDTO);
+            order.setOrderItems(orderItemRepository.saveAll(order.getOrderItems()));  // FIXME org.springframework.orm.ObjectOptimisticLockingFailureException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect): [group7.entity.OrderItem#1]
             Order savedOrder = orderRepository.save(order);
             return orderToOrderResponseDTO(savedOrder);
         } catch (Exception e) {

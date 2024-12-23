@@ -14,5 +14,5 @@ public interface AddressService {
     List<Address> addAddressRequestDTOListToAddresses(List<AddAddressRequestDTO> addAddressRequestDTOs);
     List<AddressResponseDTO> addressesToAddressResponseDTOList(List<Address> addresses);
 
-
+    List<Address> saveAll(Iterable<Address> addresses);
 }

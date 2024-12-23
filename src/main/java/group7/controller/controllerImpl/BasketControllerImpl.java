@@ -1,6 +1,7 @@
 package group7.controller.controllerImpl;
 
 import group7.controller.BasketController;
+import group7.dto.UserResponseDTO;
 import group7.service.BasketService;
 import group7.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +57,13 @@ public class BasketControllerImpl implements BasketController {
     // Create an order from the basket
     @PostMapping("/order")
     @Override
-    public String createOrder(@RequestParam("userId") Long userId, HttpSession session) {
-        basketService.createOrderFromBasket(userId, session);
-        return "redirect:/beverages";  // Redirect to the beverages list
+    public String createOrder(Model model, HttpSession session) {
+        Object userAttribute = session.getAttribute("user");
+        if (userAttribute != null && userAttribute instanceof UserResponseDTO userResponseDTO) {
+            basketService.createOrderFromBasket(userResponseDTO.getId(), session);
+            return "redirect:/beverages";  // Redirect to the beverages list
+        } else {
+            return "redirect:/user/login";
+        }
     }
 }

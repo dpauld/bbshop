@@ -1,21 +1,50 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Register</title>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <!-- bootstrap dependency -->
+    <script crossorigin="anonymous"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        /* TODO: extract to a static css file */
+        /* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+        .table .d-table-row,
+        .table .d-table-cell {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table .thead {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<h2>Register</h2>
-<form action="/user/register" method="post" th:object="${createUserRequestDTO}">
-  <label for="username">Username:</label>
-  <input type="text" id="username" name="username" required>
-  <br>
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required>
-  <br>
-  <button type="submit">Register</button>
-</form>
+<div th:replace="~{navbar :: navbar}"></div>
+<form class="bg-light text-dark text-center py-5 px-2 mx-auto" method="POST" th:object="${createUserRequestDTO}">
+    <p class="my-2" th:if="${error}" style="color:red;">[[${error}]]</p>
+    <p class="my-2" th:if="${success}" style="color:green;">[[${success}]]</p>
 
-<p th:if="${error}" style="color:red;">[[${error}]]</p>
-<p th:if="${success}" style="color:green;">[[${success}]]</p>
+    <label class="m-0">Username: <input class="my-2" name="username" placeholder="Username" type="text" th:field="*{username}" required /></label><br/>
+    <label class="m-0">Password: <input class="my-2" name="password" placeholder="Password" type="password" th:field="*{password}" required /></label><br/>
+    <label class="m-0">Date of birth: <input class="my-2" name="birthday" type="date" th:field="*{birthday}" /></label><br/>
+    <label class="m-0">Street: <input class="my-2" name="street" placeholder="Street" type="text" th:field="${addAddressRequestDTO.street}" /></label><br/>
+    <label class="m-0">House number: <input class="my-2" name="number" placeholder="House" type="text" th:field="${addAddressRequestDTO.number}" /></label><br/>
+    <label class="m-0">Postal code: <input class="my-2" name="postalCode" placeholder="Zip" type="text" th:field="${addAddressRequestDTO.postalCode}" /></label><br/>
+
+    <div class="py-2">
+        <input type="submit" value="Register" class="btn btn-dark py-0"></input>
+    </div>
+</form>
 </body>
 </html>

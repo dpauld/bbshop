@@ -4,7 +4,11 @@ import group7.dto.AddBeverageRequestDTO;
 import group7.dto.AddBottleRequestDTO;
 import group7.dto.AddCrateRequestDTO;
 import group7.dto.BeverageResponseDTO;
+import group7.dto.BottleResponseDTO;
+import group7.dto.CrateResponseDTO;
 import group7.entity.Beverage;
+import group7.entity.Bottle;
+import group7.entity.Crate;
 
 import java.util.List;
 
@@ -26,12 +30,12 @@ public interface BeverageService {
 
     List<BeverageResponseDTO> getAlcoholicBeverages();
 
-    List<BeverageResponseDTO> getAllCrates();
-
-    List<BeverageResponseDTO> getAllBottles();
-
     BeverageResponseDTO addCrate(AddCrateRequestDTO addCrateRequestDTO);
     BeverageResponseDTO addBottle(AddBottleRequestDTO addBottleRequestDTO);
 
     BeverageResponseDTO findBeveragesById(Long id);
+
+    List<BottleResponseDTO> getAllBottles();
+
+    List<CrateResponseDTO> getAllCrates();
 }

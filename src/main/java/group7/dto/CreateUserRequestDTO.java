@@ -6,11 +6,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@ToString(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateUserRequestDTO {
@@ -23,8 +26,8 @@ public class CreateUserRequestDTO {
     private String password;
     @ValidBirthday(message = "Birthday must be after 01.01.1900 and before or on today's date")
     private LocalDate birthday;
-    private List<AddAddressRequestDTO> billingAddresses;
-    private List<AddAddressRequestDTO> deliveryAddresses;
-    private List<CreateOrderRequestDTO> orders;
+    private List<AddAddressRequestDTO> billingAddresses = new ArrayList<>();
+    private List<AddAddressRequestDTO> deliveryAddresses = new ArrayList<>();
+    private List<CreateOrderRequestDTO> orders = new ArrayList<>();
 
 }

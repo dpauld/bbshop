@@ -1,5 +1,126 @@
-<form action="/admin/add" method="post">
-  <input type="text" name="name" placeholder="Name" required>
-  <input type="number" step="0.01" name="price" placeholder="Price" required>
-  <button type="submit">Add Beverage</button>
-</form>
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit beverages</title>
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+  <script crossorigin="anonymous"
+          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+          src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <!-- bootstrap dependency -->
+  <script crossorigin="anonymous"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    /* TODO: extract to a static css file */
+    /* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+    .table .d-table-row,
+    .table .d-table-cell {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table .thead {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<h2>Separate bottles</h2>
+<div class="table bg-light text-dark d-table">
+  <div class="d-table-row thead">
+    <div class="d-table-cell">Picture</div>
+    <div class="d-table-cell">Name</div>
+    <div class="d-table-cell">Volume</div>
+    <div class="d-table-cell">Alcohol percent</div>
+    <div class="d-table-cell">Supplier</div>
+    <div class="d-table-cell">Bottles in stock</div>
+    <div class="d-table-cell">Bottle price</div>
+    <div class="d-table-cell">Actions</div>
+  </div>
+  <form class="d-table-row" method="POST" th:action="@{/admin/addBottle}" th:object="${bottle}">
+    <div class="d-table-cell">
+      <input name="bottlePic" th:field="*{bottlePic}" type="text" />
+    </div>
+    <div class="d-table-cell"><input name="name" th:field="*{name}" type="text" /></div>
+    <div class="d-table-cell"><input name="volume" th:field="*{volume}" type="text" /></div>
+    <div class="d-table-cell"><input name="volumePercent" th:field="*{volumePercent}" type="text" /></div>
+    <div class="d-table-cell"><input name="supplier" th:field="*{supplier}" type="text" /></div>
+    <div class="d-table-cell"><input name="inStock" th:field="*{inStock}" type="text" /></div>
+    <div class="d-table-cell"><input name="price" th:field="*{price}" type="text" /></div>
+    <div class="d-table-cell">
+      <b>Create new:</b>
+      <input type="submit" class="btn" value="Save" />
+    </div>
+  </form>
+  <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.dto.BottleResponseDTO>"*/-->
+  <form class="d-table-row" method="POST" th:each="bottleItem: ${bottles}" th:object="${bottle}">
+    <div class="d-table-cell">
+      <a th:name="@{|item_${bottleItem.getId()}|}">
+      </a>
+      <img class="img-thumbnail" th:src="${bottleItem.bottlePic}" />
+      <input name="bottlePic" th:field="*{bottlePic}" th:value="${bottleItem.bottlePic}" type="text" />
+    </div>
+    <div class="d-table-cell"><input name="name" th:field="*{name}" th:value="${bottleItem.name}" type="text" /></div>
+    <div class="d-table-cell"><input name="volume" th:field="*{volume}" th:value="${bottleItem.volume}" type="text" /></div>
+    <div class="d-table-cell"><input name="volumePercent" th:field="*{volumePercent}" th:value="${bottleItem.volumePercent}" type="text" /></div>
+    <div class="d-table-cell"><input name="supplier" th:field="*{supplier}" th:value="${bottleItem.supplier}" type="text" /></div>
+    <div class="d-table-cell"><input name="inStock" th:field="*{inStock}" th:value="${bottleItem.inStock}" type="text" /></div>
+    <div class="d-table-cell"><input name="price" th:field="*{price}" th:value="${bottleItem.price}" type="text" /></div>
+    <div class="d-table-cell">
+    </div>
+  </form>
+</div>
+<h2>Crates</h2>
+<div class="table bg-light text-dark d-table">
+  <div class="d-table-row thead">
+    <div class="d-table-cell">Picture</div>
+    <div class="d-table-cell">Name</div>
+    <div class="d-table-cell">Contained bottles</div>
+    <div class="d-table-cell">Bottles per crate</div>
+    <div class="d-table-cell">Crates in stock</div>
+    <div class="d-table-cell">Crate price</div>
+    <div class="d-table-cell">Actions</div>
+  </div>
+  <form class="d-table-row" method="POST" th:action="@{/admin/addCrate}" th:object="${crate}">
+    <div class="d-table-cell">
+      <input name="cratePic" th:field="*{cratePic}" type="text" />
+    </div>
+    <div class="d-table-cell"><input name="name" th:field="*{name}" type="text" /></div>
+    <div class="d-table-cell"><select name="bottle" th:field="*{bottle}">
+      <option th:each="bottleItem: ${bottles}" th:value="${bottleItem.id}" th:text="${bottleItem.name}"></option>
+    </select></div>
+    <div class="d-table-cell"><input name="noOfBottles" th:field="*{noOfBottles}" type="text" /></div>
+    <div class="d-table-cell"><input name="cratesInStock" th:field="*{cratesInStock}" type="text" /></div>
+    <div class="d-table-cell"><input name="price" th:field="*{price}" type="text" /></div>
+    <div class="d-table-cell">
+      <b>Create new:</b>
+      <input type="submit" class="btn" value="Save" />
+    </div>
+  </form>
+  <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.dto.CrateResponseDTO>"*/-->
+  <form class="d-table-row" method="POST" th:each="crateItem: ${crates}" th:object="${crate}">
+    <div class="d-table-cell">
+      <a th:name="@{|item_${crateItem.getId()}|}">
+      </a>
+      <img class="img-thumbnail" th:src="${crateItem.cratePic}" />
+      <input name="cratePic" th:field="*{cratePic}" th:value="${crateItem.cratePic}" type="text" />
+    </div>
+    <div class="d-table-cell"><input name="name" th:field="*{name}" th:value="${crateItem.name}" type="text" /></div>
+    <div class="d-table-cell"><select name="bottle" th:field="*{bottle}">
+      <option th:each="bottleItem: ${bottles}" th:value="${bottleItem.id}" th:text="${bottleItem.name}" th:selected="${crateItem.getBottle().getId() == bottleItem.getId()}"></option>
+    </select></div>
+    <div class="d-table-cell"><input name="noOfBottles" th:field="*{noOfBottles}" th:value="${crateItem.noOfBottles}" type="text" /></div>
+    <div class="d-table-cell"><input name="cratesInStock" th:field="*{cratesInStock}" th:value="${crateItem.cratesInStock}" type="text" /></div>
+    <div class="d-table-cell"><input name="price" th:field="*{price}" th:value="${crateItem.price}" type="text" /></div>
+    <div class="d-table-cell">
+    </div>
+  </form>
+</div>
+</body>
+</html>

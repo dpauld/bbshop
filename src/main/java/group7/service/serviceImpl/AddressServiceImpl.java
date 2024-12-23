@@ -3,6 +3,7 @@ package group7.service.serviceImpl;
 import group7.dto.AddAddressRequestDTO;
 import group7.dto.AddressResponseDTO;
 import group7.entity.Address;
+import group7.repository.AddressRepository;
 import group7.service.AddressService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,12 @@ import java.util.List;
 @Service
 public class AddressServiceImpl implements AddressService {
 
+    private final AddressRepository addressRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public AddressServiceImpl(ModelMapper modelMapper) {
+    public AddressServiceImpl(AddressRepository addressRepository, ModelMapper modelMapper) {
+        this.addressRepository = addressRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -43,5 +46,10 @@ public class AddressServiceImpl implements AddressService {
         return addresses.stream()
                 .map(this::addressToAddressResponseDTO)
                 .toList();
+    }
+
+    @Override
+    public List<Address> saveAll(Iterable<Address> addresses) {
+        return addressRepository.saveAll(addresses);
     }
 }

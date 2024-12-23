@@ -91,21 +91,21 @@ public class BeverageServiceImpl implements BeverageService {
                 .filter(beverage -> beverage instanceof Bottle)
                 .map(beverage -> (Bottle) beverage)
                 .filter(Bottle::isAlcoholic)
-                .map(bottle -> new BeverageResponseDTO(bottle.getName(), bottle.getPrice()))
+                .map(bottle -> (BeverageResponseDTO) createBottleResponseDTO(bottle))
                 .toList();
     }
 
     @Override
-    public List<BeverageResponseDTO> getAllCrates() {
+    public List<CrateResponseDTO> getAllCrates() {
         return beverageRepository.findAllCrates().stream()
-                .map(this::createBeverageResponseDTO)
+                .map(this::createCrateResponseDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<BeverageResponseDTO> getAllBottles() {
+    public List<BottleResponseDTO> getAllBottles() {
         return beverageRepository.findAllBottles().stream()
-                .map(this::createBeverageResponseDTO)
+                .map(this::createBottleResponseDTO)
                 .collect(Collectors.toList());
     }
 
@@ -165,7 +165,17 @@ public class BeverageServiceImpl implements BeverageService {
         return crate;
     }
 
-    private BeverageResponseDTO createBeverageResponseDTO(Beverage beverage) {
-        return new BeverageResponseDTO(beverage.getName(), beverage.getPrice());
+    private BottleResponseDTO createBottleResponseDTO(Bottle bottle) {
+        BottleResponseDTO bottleResponseDTO = new BottleResponseDTO(bottle.getId(), bottle.getBottlePic(), bottle.getVolume(), bottle.isAlcoholic(), bottle.getVolumePercent(), bottle.getSupplier(), bottle.getInStock());
+        bottleResponseDTO.setName(bottle.getName());
+        bottleResponseDTO.setPrice(bottle.getPrice());
+        return bottleResponseDTO;
+    }
+
+    private CrateResponseDTO createCrateResponseDTO(Crate crate) {
+        CrateResponseDTO crateResponseDTO = new CrateResponseDTO(crate.getId(), crate.getCratePic(), crate.getCratesInStock(), crate.getNoOfBottles(), modelMapper.map(crate.getBottle(), BottleResponseDTO.class));
+        crateResponseDTO.setName(crate.getName());
+        crateResponseDTO.setPrice(crate.getPrice());
+        return crateResponseDTO;
     }
 }

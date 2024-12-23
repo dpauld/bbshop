@@ -1,11 +1,14 @@
 package group7.controller.controllerImpl;
 
 import group7.controller.BeverageController;
+import group7.dto.AddBottleRequestDTO;
+import group7.dto.AddCrateRequestDTO;
 import group7.dto.BeverageResponseDTO;
 import group7.service.BeverageService;
 import group7.service.BasketService;
-import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import org.modelmapper.internal.Errors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,11 +34,11 @@ public class BeverageControllerImpl implements BeverageController {
         List<BeverageResponseDTO> beverages = getDemoBeverages();
     }
 
-
-
     @GetMapping("/beverages")
     public String getAllBeverages(Model model) {
-        model.addAttribute("beverages", beverageService.getDemoBeverages());
+        beverageService.getDemoBeverages();
+        model.addAttribute("bottles", beverageService.getAllBottles());
+        model.addAttribute("crates", beverageService.getAllCrates());
         return "beverages";
     }
 
@@ -50,5 +53,25 @@ public class BeverageControllerImpl implements BeverageController {
         return beverageService.getDemoBeverages();
     }
 
+    @GetMapping("/admin")
+    public String getAllBeverageEditUI(Model model) {
+        model.addAttribute("bottles", beverageService.getAllBottles());
+        model.addAttribute("crates", beverageService.getAllCrates());
+        // Form prototypes:
+        model.addAttribute("bottle", new AddBottleRequestDTO());
+        model.addAttribute("crate", new AddCrateRequestDTO());
+        return "admin";
+    }
 
+    @PostMapping("/admin/addBottle")
+    public String createNewBottle(@Valid @ModelAttribute AddBottleRequestDTO bottle, Errors errors, Model model) {
+        // TODO
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/addCrate")
+    public String createNewCrate(@Valid @ModelAttribute AddCrateRequestDTO crate, Errors errors, Model model) {
+        // TODO
+        return "redirect:/admin";
+    }
 }

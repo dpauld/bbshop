@@ -45,10 +45,9 @@ public interface BasketController {
      * This method creates an order from the items currently in the user's basket. It uses
      * the user's ID and the session to transfer the basket items into an order.
      */
-    @RequestMapping("/createOrder")
     public String createOrder(HttpSession session, Long userId);
 
     // Create an order from the basket
     @PostMapping("/order")
-    String createOrder(@RequestParam("userId") Long userId, HttpSession session);
+    String createOrder(Model model, HttpSession session);
 }

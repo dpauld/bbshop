@@ -21,6 +21,6 @@ public class AddCrateRequestDTO extends AddBeverageRequestDTO {
     private int cratesInStock;
     @Positive(message = "number of bottles must be greater than 0")
     private int noOfBottles;
-    private AddBottleRequestDTO bottle;
+    private Long bottle;
 
 }

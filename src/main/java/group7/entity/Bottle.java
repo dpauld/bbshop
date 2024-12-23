@@ -3,6 +3,7 @@ package group7.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.validator.constraints.URL;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @NoArgsConstructor // Write a constructor that has no arguments automatically
 @Data // Write all getters and setters automatically
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("BOTTLE") // Discriminator value to differentiate in the table
 public class Bottle extends Beverage {

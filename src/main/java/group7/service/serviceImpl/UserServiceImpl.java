@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService {
                 deliveryAddresses,
                 orders);
 
+        user.setBillingAddresses(billingAddresses = addressService.saveAll(billingAddresses));
+        user.setDeliveryAddresses(deliveryAddresses = addressService.saveAll(deliveryAddresses));
         User savedUser = userRepository.save(user);
 
         List<AddressResponseDTO> billingAddressesResponse = addressService.addressesToAddressResponseDTOList(billingAddresses);
