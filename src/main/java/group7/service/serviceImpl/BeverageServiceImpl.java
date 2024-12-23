@@ -60,7 +60,7 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     public BeverageResponseDTO addCrate(AddCrateRequestDTO addCrateRequestDTO) {
         Crate crate = modelMapper.map(addCrateRequestDTO, Crate.class);
-        Crate savedCrate = beverageRepository.save(crate);
+        Crate savedCrate = beverageRepository.save(crate);  // FIXME org.springframework.orm.ObjectOptimisticLockingFailureException: Row was updated or deleted by another transaction (or unsaved-value mapping was incorrect): [group7.entity.Crate#4]
         return modelMapper.map(savedCrate, BeverageResponseDTO.class);
     }
 

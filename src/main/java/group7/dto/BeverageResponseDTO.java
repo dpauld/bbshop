@@ -42,7 +42,7 @@ public abstract class BeverageResponseDTO {
             if (destinationType != BeverageResponseDTO.class)
                 return MatchResult.NONE;
             if (!Beverage.class.isAssignableFrom(sourceType))
-                return MatchResult.PARTIAL;
+                return MatchResult.NONE;
             return MatchResult.FULL;
         }
 
@@ -69,7 +69,7 @@ public abstract class BeverageResponseDTO {
             if (destinationType != Beverage.class)
                 return MatchResult.NONE;
             if (!BeverageResponseDTO.class.isAssignableFrom(sourceType))
-                return MatchResult.PARTIAL;
+                return MatchResult.NONE;
             return MatchResult.FULL;
         }
 

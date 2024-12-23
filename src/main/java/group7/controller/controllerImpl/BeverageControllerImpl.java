@@ -8,7 +8,7 @@ import group7.service.BeverageService;
 import group7.service.BasketService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
-import org.modelmapper.internal.Errors;
+import org.springframework.validation.Errors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,21 +57,29 @@ public class BeverageControllerImpl implements BeverageController {
     public String getAllBeverageEditUI(Model model) {
         model.addAttribute("bottles", beverageService.getAllBottles());
         model.addAttribute("crates", beverageService.getAllCrates());
-        // Form prototypes:
-        model.addAttribute("bottle", new AddBottleRequestDTO());
-        model.addAttribute("crate", new AddCrateRequestDTO());
+        if (!model.containsAttribute("addBottleRequestDTO"))
+            model.addAttribute("addBottleRequestDTO", new AddBottleRequestDTO());
+        if (!model.containsAttribute("addCrateRequestDTO"))
+            model.addAttribute("addCrateRequestDTO", new AddCrateRequestDTO());
         return "admin";
     }
 
     @PostMapping("/admin/addBottle")
-    public String createNewBottle(@Valid @ModelAttribute AddBottleRequestDTO bottle, Errors errors, Model model) {
-        // TODO
+    public String createNewBottle(@Valid AddBottleRequestDTO addBottleRequestDTO, Errors errors, Model model) {
+        System.out.println(errors);
+        if (errors.hasErrors()) {
+            return getAllBeverageEditUI(model);
+        }
+        beverageService.addBottle(addBottleRequestDTO);
         return "redirect:/admin";
     }
 
     @PostMapping("/admin/addCrate")
-    public String createNewCrate(@Valid @ModelAttribute AddCrateRequestDTO crate, Errors errors, Model model) {
-        // TODO
+    public String createNewCrate(@Valid @ModelAttribute AddCrateRequestDTO addCrateRequestDTO, Errors errors, Model model) {
+        if (errors.hasErrors()) {
+            return getAllBeverageEditUI(model);
+        }
+        beverageService.addCrate(addCrateRequestDTO);
         return "redirect:/admin";
     }
 }

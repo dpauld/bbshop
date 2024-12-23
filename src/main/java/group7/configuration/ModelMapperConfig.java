@@ -1,5 +1,6 @@
 package group7.configuration;
 
+import group7.dto.AddBeverageRequestDTO;
 import group7.dto.BeverageResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -29,6 +30,8 @@ public class ModelMapperConfig extends ModelMapper {
         // Mapping with abstract inheritance
         modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.FromEntityConverter(modelMapper));
         modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.ToEntityConverter(modelMapper));
+        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.FromEntityConverter(modelMapper));
+        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.ToEntityConverter(modelMapper));
 
         return modelMapper;
     }

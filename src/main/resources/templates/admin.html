@@ -43,23 +43,23 @@
     <div class="d-table-cell">Bottle price</div>
     <div class="d-table-cell">Actions</div>
   </div>
-  <form class="d-table-row" method="POST" th:action="@{/admin/addBottle}" th:object="${bottle}">
+  <form class="d-table-row" method="POST" th:action="@{/admin/addBottle}" th:object="${addBottleRequestDTO}">
     <div class="d-table-cell">
       <input name="bottlePic" th:field="*{bottlePic}" type="text" />
     </div>
-    <div class="d-table-cell"><input name="name" th:field="*{name}" type="text" /></div>
-    <div class="d-table-cell"><input name="volume" th:field="*{volume}" type="text" /></div>
-    <div class="d-table-cell"><input name="volumePercent" th:field="*{volumePercent}" type="text" /></div>
-    <div class="d-table-cell"><input name="supplier" th:field="*{supplier}" type="text" /></div>
-    <div class="d-table-cell"><input name="inStock" th:field="*{inStock}" type="text" /></div>
-    <div class="d-table-cell"><input name="price" th:field="*{price}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${true || #fields.hasErrors('name')}" th:errors="*{name}"></p><input name="name" th:field="*{name}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${true || #fields.hasErrors('volume')}" th:errors="*{volume}"></p><input name="volume" th:field="*{volume}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${true || #fields.hasErrors('volumePercent')}" th:errors="*{volumePercent}"></p><input name="volumePercent" th:field="*{volumePercent}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${true || #fields.hasErrors('supplier')}" th:errors="*{supplier}"></p><input name="supplier" th:field="*{supplier}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${true || #fields.hasErrors('inStock')}" th:errors="*{inStock}"></p><input name="inStock" th:field="*{inStock}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${true || #fields.hasErrors('price')}" th:errors="*{price}"></p><input name="price" th:field="*{price}" type="text" /></div>
     <div class="d-table-cell">
       <b>Create new:</b>
       <input type="submit" class="btn" value="Save" />
     </div>
   </form>
   <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.dto.BottleResponseDTO>"*/-->
-  <form class="d-table-row" method="POST" th:each="bottleItem: ${bottles}" th:object="${bottle}">
+  <form class="d-table-row" method="POST" th:each="bottleItem: ${bottles}" th:object="${addBottleRequestDTO}">
     <div class="d-table-cell">
       <a th:name="@{|item_${bottleItem.getId()}|}">
       </a>
@@ -87,24 +87,24 @@
     <div class="d-table-cell">Crate price</div>
     <div class="d-table-cell">Actions</div>
   </div>
-  <form class="d-table-row" method="POST" th:action="@{/admin/addCrate}" th:object="${crate}">
+  <form class="d-table-row" method="POST" th:action="@{/admin/addCrate}" th:object="${addCrateRequestDTO}">
     <div class="d-table-cell">
       <input name="cratePic" th:field="*{cratePic}" type="text" />
     </div>
-    <div class="d-table-cell"><input name="name" th:field="*{name}" type="text" /></div>
-    <div class="d-table-cell"><select name="bottle" th:field="*{bottle}">
-      <option th:each="bottleItem: ${bottles}" th:value="${bottleItem.id}" th:text="${bottleItem.name}"></option>
+    <div class="d-table-cell"><p class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p><input name="name" th:field="*{name}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${#fields.hasErrors('bottleId')}" th:errors="*{bottleId}"></p><select name="bottle" th:field="*{bottleId}">
+      <option th:each="bottleItem: ${bottles}" th:text="${bottleItem.name}" th:value="${bottleItem.id}"></option>
     </select></div>
-    <div class="d-table-cell"><input name="noOfBottles" th:field="*{noOfBottles}" type="text" /></div>
-    <div class="d-table-cell"><input name="cratesInStock" th:field="*{cratesInStock}" type="text" /></div>
-    <div class="d-table-cell"><input name="price" th:field="*{price}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${#fields.hasErrors('noOfBottles')}" th:errors="*{noOfBottles}"></p><input name="noOfBottles" th:field="*{noOfBottles}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${#fields.hasErrors('cratesInStock')}" th:errors="*{cratesInStock}"></p><input name="cratesInStock" th:field="*{cratesInStock}" type="text" /></div>
+    <div class="d-table-cell"><p class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></p><input name="price" th:field="*{price}" type="text" /></div>
     <div class="d-table-cell">
       <b>Create new:</b>
       <input type="submit" class="btn" value="Save" />
     </div>
   </form>
   <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.dto.CrateResponseDTO>"*/-->
-  <form class="d-table-row" method="POST" th:each="crateItem: ${crates}" th:object="${crate}">
+  <form class="d-table-row" method="POST" th:each="crateItem: ${crates}" th:object="${addCrateRequestDTO}">
     <div class="d-table-cell">
       <a th:name="@{|item_${crateItem.getId()}|}">
       </a>
@@ -112,7 +112,7 @@
       <input name="cratePic" th:field="*{cratePic}" th:value="${crateItem.cratePic}" type="text" />
     </div>
     <div class="d-table-cell"><input name="name" th:field="*{name}" th:value="${crateItem.name}" type="text" /></div>
-    <div class="d-table-cell"><select name="bottle" th:field="*{bottle}">
+    <div class="d-table-cell"><select name="bottle" th:field="*{bottleId}">
       <option th:each="bottleItem: ${bottles}" th:value="${bottleItem.id}" th:text="${bottleItem.name}" th:selected="${crateItem.getBottle().getId() == bottleItem.getId()}"></option>
     </select></div>
     <div class="d-table-cell"><input name="noOfBottles" th:field="*{noOfBottles}" th:value="${crateItem.noOfBottles}" type="text" /></div>
