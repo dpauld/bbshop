@@ -28,15 +28,8 @@ public class BeverageControllerImpl implements BeverageController {
         this.basketService = basketService;
     }
 
-    // This method will be executed immediately after the object is created
-
-    public void init() {
-        List<BeverageResponseDTO> beverages = getDemoBeverages();
-    }
-
     @GetMapping("/beverages")
     public String getAllBeverages(Model model) {
-        beverageService.getDemoBeverages();
         model.addAttribute("bottles", beverageService.getAllBottles());
         model.addAttribute("crates", beverageService.getAllCrates());
         return "beverages";
@@ -46,11 +39,6 @@ public class BeverageControllerImpl implements BeverageController {
     public String addBeverageToBasket(@PathVariable Long id, HttpSession session) {
         basketService.addBeverageToBasketById(id, session); // pass HttpSession directly
         return "redirect:/beverages"; // redirect back to beverages page after adding the beverage to the basket
-    }
-
-    @Override
-    public List<BeverageResponseDTO> getDemoBeverages() {
-        return beverageService.getDemoBeverages();
     }
 
     @GetMapping("/admin")

@@ -17,13 +17,6 @@ public interface BeverageController {
     public String getAllBeverages(Model model);
 
     /**
-     * Fetches the list of demo beverages.
-     *
-     * @return A list of BeverageResponseDTO representing demo beverages.
-     */
-    public List<BeverageResponseDTO> getDemoBeverages();
-
-    /**
      * Adds a beverage to the basket.
      *
      * @param id The ID of the beverage to add to the basket.

@@ -24,8 +24,6 @@ public interface BeverageService {
 
     List<BeverageResponseDTO> getSoldBeverages();
 
-    List<BeverageResponseDTO> getDemoBeverages();
-
     List<BeverageResponseDTO> getAllBeverages();
 
     List<BeverageResponseDTO> getAlcoholicBeverages();

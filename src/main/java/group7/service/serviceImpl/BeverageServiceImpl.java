@@ -20,8 +20,6 @@ public class BeverageServiceImpl implements BeverageService {
 
     private final ModelMapper modelMapper;
     private final BeverageRepository beverageRepository;
-    private static final String COCA_COLA_IMAGE = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIxheN74qXKhIgyRTVf_w67JIX4bTmzSvEFQ&s";
-    private static final String CRATE_IMAGE = "https://image.invaluable.com/housePhotos/abell/07/764507/H0068-L364202388.JPG";
 
     @Autowired
     public BeverageServiceImpl(ModelMapper modelMapper, BeverageRepository beverageRepository) {
@@ -108,61 +106,10 @@ public class BeverageServiceImpl implements BeverageService {
                 .map(this::createBottleResponseDTO)
                 .collect(Collectors.toList());
     }
-
-    // Demo Data Management
-    @Override
-    public List<BeverageResponseDTO> getDemoBeverages() {
-        if (beverageRepository.count() == 0) {
-            createAndSaveDemoBeverages();
-        }
-        return getAllBeverages();
-    }
-
     @Override
     public List<BeverageResponseDTO> getSoldBeverages() {
         // Implementation for sold beverages if needed
         return List.of();
-    }
-
-    @Transactional
-    public void createAndSaveDemoBeverages() {
-        // Create and save bottle
-        Bottle cocaCola = createDemoBottle();
-        Bottle savedBottle = beverageRepository.save(cocaCola);
-
-
-        // Create and save crates
-        List<Crate> crates = createDemoCrates(savedBottle);
-        beverageRepository.saveAll(crates);
-    }
-
-    // Helper Methods
-    private Bottle createDemoBottle() {
-        Bottle bottle = new Bottle();
-        bottle.setBottlePic(COCA_COLA_IMAGE);
-        bottle.setVolume(1.5);
-        bottle.setPrice(2.5);
-        bottle.setName("CocaCola123");
-        bottle.setInStock(100);
-        bottle.setSupplier("Coca Cola Company");
-        return bottle;
-    }
-
-    private List<Crate> createDemoCrates(Bottle bottle) {
-        Crate crate1 = createDemoCrate(bottle);
-        Crate crate2 = createDemoCrate(bottle);
-        return List.of(crate1, crate2);
-    }
-
-    private Crate createDemoCrate(Bottle bottle) {
-        Crate crate = new Crate();
-        crate.setName("CocaColaCrate123");
-        crate.setCratePic(CRATE_IMAGE);
-        crate.setCratesInStock(10);
-        crate.setNoOfBottles(10);
-        crate.setPrice(5.0);
-        crate.setBottle(bottle);
-        return crate;
     }
 
     private BottleResponseDTO createBottleResponseDTO(Bottle bottle) {
