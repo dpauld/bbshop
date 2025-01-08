@@ -1,6 +1,6 @@
 package group7.repository;
 
-import group7.entity.User;
+import group7.entity.User_;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 public class UserRepositoryUnitTest {
 
-    private List<User> invalidUsers;
-    private SampleManager<User> sampleManager;
+    private List<User_> invalidUsers;
+    private SampleManager<User_> sampleManager;
 
     @Autowired
     UserRepository userRepository;
@@ -37,9 +37,9 @@ public class UserRepositoryUnitTest {
 
     @Test
     public void testSavingAndRetrievingValidUser() {
-        User user = getSampleUser();
-        User savedUser = userRepository.save(user);
-        Optional<User> retrievedUser = userRepository.findById(savedUser.getId());
+        User_ user = getSampleUser();
+        User_ savedUser = userRepository.save(user);
+        Optional<User_> retrievedUser = userRepository.findById(savedUser.getId());
 
         assertThat(retrievedUser).isPresent();
     }
@@ -95,8 +95,8 @@ public class UserRepositoryUnitTest {
         assertThrows(DataIntegrityViolationException.class, () -> userRepository.saveAll(invalidUsers));
     }
 
-    private User getSampleUser() {
-        return new User(
+    private User_ getSampleUser() {
+        return new User_(
                 "John Doe",
                 "123",
                 LocalDate.of(1970, 1, 1),

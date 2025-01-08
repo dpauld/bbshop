@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Addresses</title>
+</head>
+<body>
+<h1>Update Addresses</h1>
+<form th:action="@{/users/{userId}/addresses(userId=${user.id})}" th:object="${addressUpdateRequest}" method="post">
+    <h2>Delivery Addresses</h2>
+    <div th:each="address, iterStat : ${addressUpdateRequest.deliveryAddresses}">
+        <input type="text" th:field="*{deliveryAddresses[__${iterStat.index}__].street}" placeholder="Street" th:value="${address.street}"/>
+        <input type="text" th:field="*{deliveryAddresses[__${iterStat.index}__].number}" placeholder="Number" th:value="${address.number}"/>
+        <input type="text" th:field="*{deliveryAddresses[__${iterStat.index}__].postalCode}" placeholder="Postal Code" th:value="${address.postalCode}"/>
+    </div>
+    <h2>Billing Addresses</h2>
+    <div th:each="address, iterStat : ${addressUpdateRequest.billingAddresses}">
+        <input type="text" th:field="*{billingAddresses[__${iterStat.index}__].street}" placeholder="Street" th:value="${address.street}"/>
+        <input type="text" th:field="*{billingAddresses[__${iterStat.index}__].number}" placeholder="Number" th:value="${address.number}"/>
+        <input type="text" th:field="*{billingAddresses[__${iterStat.index}__].postalCode}" placeholder="Postal Code" th:value="${address.postalCode}"/>
+    </div>
+    <button type="submit">Update Addresses</button>
+</form>
+</body>
+</html>

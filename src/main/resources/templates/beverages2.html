@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Beverages</title>
+    <link crossorigin="anonymous"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+          rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        .product-card {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        .product-card .btn {
+            margin-top: 10px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .pagination-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<h1 class="text-center my-4">Beverages</h1>
+
+<div class="container">
+    <!-- Sorting and Filtering -->
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="sort" class="form-label">Sort By</label>
+                <select name="sort" id="sort" class="form-select">
+                    <option value="name" th:selected="${sort == 'name'}">Name</option>
+                    <option value="price" th:selected="${sort == 'price'}">Price</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="direction" class="form-label">Order</label>
+                <select name="direction" id="direction" class="form-select">
+                    <option value="asc" th:selected="${direction == 'asc'}">Ascending</option>
+                    <option value="desc" th:selected="${direction == 'desc'}">Descending</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="size" class="form-label">Items per Page</label>
+                <select name="size" id="size" class="form-select">
+                    <option value="10" th:selected="${size == 10}">10</option>
+                    <option value="20" th:selected="${size == 20}">20</option>
+                    <option value="30" th:selected="${size == 30}">30</option>
+                </select>
+            </div>
+            <div class="col-md-3 align-self-end">
+                <button type="submit" class="btn btn-primary">Apply</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Product Grid -->
+    <div class="product-grid">
+        <div class="product-card" th:each="item : ${beverages}">
+            <!--
+            <th:block>
+                <img
+                        th:if="${item.cratePic != null}"
+                        th:src="@{${item.cratePic}}"
+                        alt="Crate Image">
+
+                <img
+                        th:if="${item.cratePic == null and item.bottlePic != null}"
+                        th:src="@{${item.bottlePic}}"
+                        alt="Bottle Image">
+                <img th:if="${item.cratePic == null and item.bottlePic == null}"
+                     src="https://th.bing.com/th/id/OIP.UYefmuqvYGCqQqZN9xaW8QHaGp?rs=1&pid=ImgDetMain"
+                     alt="No Image Available">
+            </th:block>
+            -->
+            <h5 th:text="${item.name}"></h5>
+            <p th:text="'€' + ${item.price}"></p>
+            <button type="button" class="btn btn-primary"
+                    <!--th:disabled="${(item.inStock != null && item.inStock <= 0) || (item.cratesInStock != null && item.cratesInStock <= 0)}"-->
+                    th:formaction="@{|/beverages/add/${item.id}|}">
+                Add to Basket
+            </button>
+        </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination-controls">
+        <button class="btn btn-secondary" th:disabled="${pageNumber <= 1}"
+                th:formaction="@{|/beverages?page=${pageNumber - 1}&size=${size}&sort=${sort}&direction=${direction}|}">
+            Previous
+        </button>
+        <span>Page <span th:text="${pageNumber}"></span> of <span th:text="${totalPages}"></span></span>
+        <button class="btn btn-secondary" th:disabled="${pageNumber >= totalPages}"
+                th:formaction="@{|/beverages?page=${pageNumber + 1}&size=${size}&sort=${sort}&direction=${direction}|}">
+            Next
+        </button>
+    </div>
+</div>
+
+</body>
+</html>

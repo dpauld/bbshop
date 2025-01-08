@@ -2,7 +2,7 @@ package group7.validation.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import group7.validation.validator.BirthdayValidator;
+import group7.validation.annotation.validator.BirthdayValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

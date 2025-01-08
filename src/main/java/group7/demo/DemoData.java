@@ -1,6 +1,5 @@
 package group7.demo;
 
-import group7.dto.BeverageResponseDTO;
 import group7.entity.Bottle;
 import group7.entity.Crate;
 import group7.repository.BeverageRepository;
@@ -11,18 +10,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.*;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -43,35 +31,25 @@ public class DemoData {
      */
     @EventListener
     public void createDemoData(ApplicationReadyEvent event) {
-        createAndSaveDemoBeverages();
-    }
-    // Demo Data Management
-//    public List<BeverageResponseDTO> getDemoBeverages() {
-//        if (beverageRepository.count() == 0) {
-//            createAndSaveDemoBeverages();
-//        }
-//        return getAllBeverages();
-//    }
+        if (beverageRepository.count() == 0){
+            // Create and save bottle
+            Bottle cocaCola = this.createDemoBottle();
+            Bottle savedBottle = beverageRepository.save(cocaCola);
 
-    @Transactional
-    public void createAndSaveDemoBeverages() {
-        // Create and save bottle
-        Bottle cocaCola = createDemoBottle();
-        Bottle savedBottle = beverageRepository.save(cocaCola);
-
-
-        // Create and save crates
-        List<Crate> crates = createDemoCrates(savedBottle);
-        beverageRepository.saveAll(crates);
+            // Create and save crates
+            List<Crate> crates = this.createDemoCrates(savedBottle);
+            beverageRepository.saveAll(crates);
+        }
     }
 
     // Helper Methods
     private Bottle createDemoBottle() {
         Bottle bottle = new Bottle();
-        bottle.setBottlePic(COCA_COLA_IMAGE);
+        bottle.setPicture(COCA_COLA_IMAGE);
+        bottle.setVolumePercent(4);
         bottle.setVolume(1.5);
         bottle.setPrice(2.5);
-        bottle.setName("CocaCola123");
+        bottle.setName("CocaCola");
         bottle.setInStock(100);
         bottle.setSupplier("Coca Cola Company");
         return bottle;
@@ -86,12 +64,11 @@ public class DemoData {
     private Crate createSingleDemoCrate(Bottle bottle) {
         Crate crate = new Crate();
         crate.setName("CocaColaCrate123");
-        crate.setCratePic(CRATE_IMAGE);
-        crate.setCratesInStock(10);
+        crate.setPicture(CRATE_IMAGE);
+        crate.setInStock(10);
         crate.setNoOfBottles(10);
         crate.setPrice(5.0);
         crate.setBottle(bottle);
         return crate;
     }
-
 }

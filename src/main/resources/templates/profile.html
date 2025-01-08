@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile - Addresses</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<div class="container mt-5">
+    <h1 class="text-center">User Profile</h1>
+    <!-- User Information Section -->
+    <div class="mb-5">
+        <h3>Profile Details</h3>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Name:</strong> <span th:text="${user.fullName}"></span></p>
+                <p><strong>Birthday:</strong> <span th:text="${user.birthday}"></span></p>
+                <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Display the error message if it exists -->
+    <div th:if="${error}" class="alert alert-danger">
+        <p th:text="${error}"></p>
+    </div>
+
+    <!-- Billing Addresses Section -->
+    <div class="mb-5">
+        <h3>Billing Addresses</h3>
+        <div th:if="${billingAddresses.isEmpty()}">
+            <p class="text-muted">No billing address available.</p>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-4" th:if="${!billingAddresses.isEmpty()}">
+            <div class="col" th:each="address : ${billingAddresses}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${address.street + ', ' + address.number}"></h5>
+                        <p class="card-text">
+                            <strong>Postal Code:</strong> <span th:text="${address.postalCode}"></span>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-primary btn-sm" th:onclick="'/addresses/edit/billing/' + ${address.id}">
+                                Edit
+                            </button>
+                            <form th:action="@{/profile/addresses/{addressId}(addressId=${address.id})}" th:method="delete">
+                                <input type="hidden" name="_method" value="delete"> <!-- To handle DELETE method -->
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add New Billing Address Button -->
+        <!-- Button for Adding Billing Address -->
+        <button type="button" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addressModal"
+                onclick="setAddressType('billing')">
+            Add Billing Address
+        </button>
+    </div>
+
+    <!-- Delivery Addresses Section -->
+    <div>
+        <h3>Delivery Addresses</h3>
+        <div th:if="${deliveryAddresses.isEmpty()}">
+            <p class="text-muted">No delivery address available.</p>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-4" th:if="${!deliveryAddresses.isEmpty()}">
+            <div class="col" th:each="address : ${deliveryAddresses}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${address.street + ', ' + address.number}"></h5>
+                        <p class="card-text">
+                            <strong>Postal Code:</strong> <span th:text="${address.postalCode}"></span>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-primary btn-sm" th:onclick="'/addresses/edit/delivery/' + ${address.id}">
+                                Edit
+                            </button>
+                            <form th:action="@{/profile/addresses/{addressId}(addressId=${address.id})}" th:method="delete">
+                                <input type="hidden" name="_method" value="delete"> <!-- To handle DELETE method -->
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Button for Adding Delivery Address -->
+        <button type="button" class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#addressModal"
+                onclick="setAddressType('delivery')">
+            Add Delivery Address
+        </button>
+    </div>
+</div>
+
+<!-- Address Modal (single modal for both billing and delivery) -->
+<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/profile/addresses}" method="post" th:object="${newAddress}">
+                <!-- Hidden input to hold the address type (billing or delivery) -->
+                <input type="hidden" id="addressType" name="type" th:value="${type}" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel" th:text="${type == 'billing' ? 'Add Billing Address' : 'Add Delivery Address'}"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="street" class="form-label">Street</label>
+                        <input type="text" id="street" name="street" class="form-control" th:field="*{street}" required />
+                        <span class="text-danger" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="number" class="form-label">Number</label>
+                        <input type="text" id="number" name="number" class="form-control" th:field="*{number}" required />
+                        <span class="text-danger" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postalCode" class="form-label">Postal Code</label>
+                        <input type="text" id="postalCode" name="postalCode" class="form-control" th:field="*{postalCode}" required />
+                        <span class="text-danger" th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></span>
+                    </div>
+
+                    <!-- Conditionally render fields based on address type -->
+                    <div th:if="${type == 'billing'}">
+                        <div class="mb-3">
+                            <label for="billingSpecificField" class="form-label">Billing Specific Field</label>
+                            <input type="text" id="billingSpecificField" name="billingSpecificField" class="form-control" th:field="*{billingSpecificField}" />
+                            <span class="text-danger" th:if="${#fields.hasErrors('billingSpecificField')}" th:errors="*{billingSpecificField}"></span>
+                        </div>
+                    </div>
+
+                    <div th:if="${type == 'delivery'}">
+                        <div class="mb-3">
+                            <label for="deliverySpecificField" class="form-label">Delivery Specific Field</label>
+                            <input type="text" id="deliverySpecificField" name="deliverySpecificField" class="form-control" th:field="*{deliverySpecificField}" />
+                            <span class="text-danger" th:if="${#fields.hasErrors('deliverySpecificField')}" th:errors="*{deliverySpecificField}"></span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Address</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function setAddressType(type) {
+        // Set the address type (either 'billing' or 'delivery')
+        document.getElementById('addressType').value = type;
+    }
+</script>
+</body>
+</html>

@@ -2,13 +2,10 @@ package group7.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.hibernate.validator.constraints.URL;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor // Write a constructor that has no arguments automatically
@@ -18,13 +15,7 @@ import java.util.List;
 @DiscriminatorValue("BOTTLE") // Discriminator value to differentiate in the table
 public class Bottle extends Beverage {
 
-    @NotNull
-    @NotEmpty
-    @URL
-    @Column(name = "bottle_pic")
-    private String bottlePic;
-
-    @Positive
+    @Positive(message = "volume must be greater than 0")
     @Column(name = "volume", nullable = false)
     private double volume;
 
@@ -32,17 +23,14 @@ public class Bottle extends Beverage {
     private boolean isAlcoholic;
 
     @Column(name = "volume_percent", nullable = false)
-    @PositiveOrZero
+    @PositiveOrZero(message = "volume percent must be positive or zero")
     private double volumePercent;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "name cannot be null")
+    @NotEmpty(message = "name cannot be empty")
+    @NotBlank(message = "supplier is required.")
     @Column(name = "supplier", nullable = false)
     private String supplier;
-
-    @PositiveOrZero
-    @Column(name = "in_stock",nullable = false)
-    private int inStock;
 
     // Automatically set isAlcoholic based on volumePercent
     @PrePersist
@@ -54,20 +42,17 @@ public class Bottle extends Beverage {
     public Bottle(
             String name,
             double price,
-            String bottlePic,
+            int inStock,
+            String picture,
             double volume,
             boolean isAlcoholic,
             double volumePercent,
-            String supplier,
-            int inStock
+            String supplier
     ) {
-        super(name, price);
-
-        this.bottlePic = bottlePic;
+        super(name, price, inStock, picture);
         this.volume = volume;
         this.isAlcoholic = isAlcoholic;
         this.volumePercent = volumePercent;
         this.supplier = supplier;
-        this.inStock = inStock;
     }
 }

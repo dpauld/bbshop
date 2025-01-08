@@ -1,7 +1,8 @@
 package group7.configuration;
 
-import group7.dto.AddBeverageRequestDTO;
-import group7.dto.BeverageResponseDTO;
+//import group7.dto.AddBeverageRequestDTO;
+//import group7.dto.BeverageResponseDTO;
+import group7.configuration.customClasses.CustomModelMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -11,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class ModelMapperConfig extends ModelMapper {
 
     @Bean
-    public ModelMapper modelMapper() {
-        ModelMapper modelMapper = new ModelMapper();
+    public CustomModelMapper customModelMapper() {
+        CustomModelMapper modelMapper = new CustomModelMapper();
 
         // By default, ModelMapper maps public fields, this line enables mapping of private fields.
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
@@ -28,10 +29,10 @@ public class ModelMapperConfig extends ModelMapper {
         //modelMapper.setNullValueMappingStrategy(MatchingStrategies.);
 
         // Mapping with abstract inheritance
-        modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.FromEntityConverter(modelMapper));
-        modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.ToEntityConverter(modelMapper));
-        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.FromEntityConverter(modelMapper));
-        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.ToEntityConverter(modelMapper));
+//        modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.FromEntityConverter(modelMapper));
+//        modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.ToEntityConverter(modelMapper));
+//        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.FromEntityConverter(modelMapper));
+//        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.ToEntityConverter(modelMapper));
 
         return modelMapper;
     }

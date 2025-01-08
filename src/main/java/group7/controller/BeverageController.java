@@ -1,6 +1,6 @@
 package group7.controller;
 
-import group7.dto.BeverageResponseDTO;
+import group7.dto.BeverageCreateDto;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.ui.Model;
 
@@ -24,4 +24,5 @@ public interface BeverageController {
      * @return The name of the page to redirect to after adding the beverage to the basket.
      */
     public String addBeverageToBasket(Long id, HttpSession session);
+
 }

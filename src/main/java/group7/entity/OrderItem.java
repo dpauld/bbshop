@@ -12,10 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@NamedEntityGraph(
-        name = "OrderItem.beverage",
-        attributeNodes = @NamedAttributeNode("beverage")
-)
+//@NamedEntityGraph(
+//        name = "OrderItem.beverage",
+//        attributeNodes = @NamedAttributeNode("beverage")
+//)
+//no need, as by default eager, no need to overwrite
+//@NamedEntityGraph(
+//        name = "OrderItem.withBeverageAndOrder",
+//        attributeNodes = {
+//                @NamedAttributeNode("beverage"),
+//                @NamedAttributeNode("order")
+//        }
+//)
 public class OrderItem {
 
     @Id
@@ -31,7 +39,12 @@ public class OrderItem {
     @Column(name = "price")
     private double price;
 
-    @ManyToOne
+    @Positive
+    @Column(name = "quantity")
+    private Integer quantity;
+
+    //default fetch type eager, so all data will be fetched initially. Thus, not requiring future queries.
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "beverage_id",nullable = true)
     private Beverage beverage;
 

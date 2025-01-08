@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
-    @EntityGraph(value = "OrderItem.beverage", type = EntityGraph.EntityGraphType.LOAD)
+    //@EntityGraph(value = "OrderItem.withBeverageAndOrder", type = EntityGraph.EntityGraphType.LOAD)
     Optional<OrderItem> findById(Long id);
 }
