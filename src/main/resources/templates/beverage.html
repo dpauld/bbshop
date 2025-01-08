@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beverage Details</title>
+
+    <!-- Bootstrap 4.5.2 CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<div class="container mt-5">
+    <!-- Beverage Details Section -->
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Beverage Image -->
+            <img th:src="@{${beverage.picture}}" alt="Beverage Image" class="img-fluid rounded">
+        </div>
+        <div class="col-md-6">
+            <!-- Beverage Info -->
+            <h2 th:text="${beverage.name}">Beverage Name</h2>
+            <p><strong>Price:</strong> €<span th:text="${beverage.price}">Price</span></p>
+            <p><strong>In Stock:</strong> <span th:text="${beverage.inStock}">Stock</span> left</p>
+            <p><strong>Type:</strong> <span th:text="${beverage.type}">Type</span></p>
+            <p><strong>Alcoholic:</strong> <span th:text="${beverage.isAlcoholic ? 'Yes' : 'No'}">Alcoholic</span></p>
+            <p><strong>Supplier:</strong> <span th:text="${beverage.supplier}">Supplier</span></p>
+
+            <div th:if="${beverage.type == 'bottle'}">
+                <p><strong>Volume:</strong> <span th:text="${beverage.volume}">Volume</span> ml</p>
+                <p><strong>Volume Percentage:</strong> <span th:text="${beverage.volumePercent}">Volume Percentage</span>%</p>
+            </div>
+
+            <div th:if="${beverage.type == 'crate'}">
+                <p><strong>Number of Bottles:</strong> <span th:text="${beverage.noOfBottles}">Number of Bottles</span></p>
+            </div>
+
+            <!-- Add to Cart Buttons -->
+            <div class="mt-3">
+                <form th:action="@{/basket/add}" th:method="post">
+                    <input type="hidden"  name="beverageId" th:value="${beverage.id}">
+                    <button type="submit" class="btn btn-outline-primary btn-lg" th:disabled="${beverage.inStock == 0}">
+                        <span th:if="${beverage.inStock > 0}" class="fa fa-cart-plus"></span>
+                        <span th:text="${beverage.inStock > 0 ? 'Add to Basket' : 'Out of Stock'}"></span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4">
+        <a href="#" class="btn btn-secondary btn-lg" onclick="window.history.back()">Back to Beverages</a>
+    </div>
+</div>
+<div th:replace="~{footer :: footer}"></div>
+</body>
+</html>

@@ -1,13 +1,9 @@
 package group7.controller.controllerImpl;
 
-import group7.component.Basket;
 import group7.controller.OrderController;
-import group7.dto.OrderResponseDto;
 import group7.entity.Order;
-import group7.service2.OrderService;
-import group7.service2.BasketService;
+import group7.service.OrderService;
 import group7.users.User;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -43,17 +39,24 @@ public class OrderControllerImpl implements OrderController {
         return "orders";  // Render the order list view
     }
 
-    @GetMapping(value="/{id}")
-    public String getOrderById(Model model, @PathVariable Long id) {
-        Order order = orderService.getOrderById(id);
-        model.addAttribute("order", order);
-        return "order";  // Render the order list view
-    }
-
+//    @GetMapping(value="/json")
+//    public ResponseEntity<List<Order>> getAllOrdersJson(Model model) {
+//        List<Order> orders = orderService.getAllOrders();
+//        //model.addAttribute("orders", orders);
+//        return new ResponseEntity<>(orders,HttpStatus.OK);  // Render the order list view
+//    }
+//
     @DeleteMapping(value="/{id}")
     public String deleteOrderById(Model model, @PathVariable Long id) {
         Boolean status = orderService.deleteOrderById(id);
         model.addAttribute("message", status);
+        return "redirect:/orders";  // Render the order list view
+    }
+
+    @GetMapping(value="/{id}")
+    public String getOrderById(Model model, @PathVariable Long id) {
+        Order order = orderService.getOrderById(id);
+        model.addAttribute("order", order);
         return "order";  // Render the order list view
     }
 }

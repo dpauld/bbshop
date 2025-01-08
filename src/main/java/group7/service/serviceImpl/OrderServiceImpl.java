@@ -1,4 +1,4 @@
-package group7.service2.serviceImpl;
+package group7.service.serviceImpl;
 
 import group7.component.Basket;
 import group7.configuration.customClasses.CustomModelMapper;
@@ -7,13 +7,12 @@ import group7.entity.Beverage;
 import group7.entity.Order;
 import group7.entity.OrderItem;
 import group7.exception.MissingAddressException;
-import group7.exception.OrderUpdateException;
 import group7.exception.ResourceNotFoundException;
 import group7.repository.OrderItemRepository;
 import group7.repository.OrderRepository;
-import group7.service2.OrderService;
-import group7.service2.BasketService;
-import group7.service2.BeverageService;
+import group7.service.OrderService;
+import group7.service.BasketService;
+import group7.service.BeverageService;
 import group7.users.User;
 import group7.users.UserService;
 import jakarta.transaction.Transactional;
@@ -69,6 +68,7 @@ public class OrderServiceImpl implements OrderService {
         Basket basket = basketService.getBasket();
         List<OrderItem> orderItems = new ArrayList<>();
         double totalPrice = 0;
+        //log.info(basket.toString());
         for (BasketItemDto basketItem : basket.getItems()) {
             BeverageResponseDto beverageRespDto = basketItem.getBeverage();
             //Beverage beverage = modelMapper.map(beverageRespDto, Beverage.class);//model mapper producing error
@@ -96,7 +96,6 @@ public class OrderServiceImpl implements OrderService {
 
         //once order is saved update the stock
         beverageService.updateStock();
-
         //if everything went right, time to clear the basket
         basket.clearBasket();
         return order;
@@ -120,5 +119,11 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
         orderRepository.delete(order);
         return !orderRepository.existsById(id);
+    }
+
+    @Transactional
+    @Override
+    public List<Order> findOrdersByUserIdWithItems(Long userId) {
+        return orderRepository.findOrdersByUserIdWithItems(userId);
     }
 }

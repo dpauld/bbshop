@@ -1,4 +1,4 @@
-package group7.service2.serviceImpl;
+package group7.service.serviceImpl;
 
 import group7.component.Basket;
 import group7.configuration.customClasses.CustomModelMapper;
@@ -9,8 +9,8 @@ import group7.entity.Crate;
 import group7.exception.InsufficientStockException;
 import group7.exception.ResourceNotFoundException;
 import group7.repository.BeverageRepository;
-import group7.service2.BasketService;
-import group7.service2.BeverageService;
+import group7.service.BasketService;
+import group7.service.BeverageService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

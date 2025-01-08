@@ -1,96 +1,152 @@
-//package group7.service.serviceImpl;
-//
+//package group7.service2.serviceImpl.service;
 //import group7.component.Basket;
-//import group7.dto.*;
-//import group7.service.*;
-//import jakarta.servlet.http.HttpSession;
+//import group7.configuration.customClasses.CustomModelMapper;
+//import group7.dto.BeverageResponseDto;
+//import group7.entity.Beverage;
+//import group7.repository.BeverageRepository;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //
-//import java.util.List;
+//import java.util.Map;
+//import java.util.Optional;
 //
 //@Service
-//public class BasketServiceImpl implements BasketService {
-//
-//    private final BeverageService beverageService;
-//    private final OrderService orderService;
-//    private final UserService userService;
-//    private final OrderItemService orderItemService;
+//public class BsktServiceImpl {
 //
 //    @Autowired
-//    public BasketServiceImpl(BeverageService beverageService, OrderService orderService, UserService userService, OrderItemService orderItemService) {
-//        this.beverageService = beverageService;
-//        this.orderService = orderService;
-//        this.userService = userService;
-//        this.orderItemService = orderItemService;
-//    }
+//    private Basket basket;
+//    @Autowired
+//    private BeverageRepository beverageRepository;
+//    @Autowired
+//    private CustomModelMapper modelMapper;
 //
-//    @Override
-//    public void createOrderFromBasket(Long userId, HttpSession session) {
-//        UserResponseDTO userResponseDTO = userService.findUserById(userId);
-//        if (userResponseDTO == null) {
-//            throw new IllegalArgumentException("User not found");
-//        }
-//
-//        List<AddOrderItemRequestDTO> orderItems = orderItemService.getBeveragesFromBasketAsOrderItems(getBasket(session));
-//
-//        CreateOrderRequestDTO createOrderRequestDTO = getCreateOrderRequestDTO(orderItems, userResponseDTO);
-//
-//        orderService.createOrder(createOrderRequestDTO);
-//
-//        for (AddOrderItemRequestDTO orderItem : orderItems) {
-//            orderItem.setOrder(createOrderRequestDTO);
-//        }
-//
-//        clearBasket(session);
-//    }
-//
-//    private static CreateOrderRequestDTO getCreateOrderRequestDTO(List<AddOrderItemRequestDTO> orderItems, UserResponseDTO userResponseDTO) {
-//        if (orderItems.isEmpty()) {
-//            throw new IllegalStateException("Basket is empty. Cannot create an order.");
-//        }
-//
-//        double totalPrice = 0.0;
-//
-//        for (AddOrderItemRequestDTO orderItem : orderItems) {
-//            totalPrice += orderItem.getPrice();
-//        }
-//
-//        CreateOrderRequestDTO createOrderRequestDTO = new CreateOrderRequestDTO();
-//        createOrderRequestDTO.setOrderItems(orderItems);
-//        createOrderRequestDTO.setPrice(totalPrice);
-//        createOrderRequestDTO.setUser(userResponseDTO);
-//        return createOrderRequestDTO;
-//    }
-//
-//    @Override
-//    public Basket getBasket(HttpSession session) {
-//        Basket basket = (Basket) session.getAttribute("basket");
-//        if (basket == null) {
-//            basket = new Basket();
-//            session.setAttribute("basket", basket);
-//        }
-//        return basket;
-//    }
-//
-//    @Override
-//    public void addBeverageToBasketById(Long beverageId, HttpSession session) {
-//        Basket basket = getBasket(session);
-//        basket.addBeverage(beverageService.findBeveragesById(beverageId));
-//    }
-//
-//    @Override
-//    public void addBeveragesToBasket(List<BeverageResponseDTO> beverages, HttpSession session) {
-//        Basket basket = getBasket(session);
-//        for (BeverageResponseDTO beverage : beverages) {
-//            basket.addBeverage(beverage);
+//    public void addBeverageToBasket(Long beverageId) {
+//        Optional<Beverage> beverageOptional = beverageRepository.findById(beverageId);
+//        if (beverageOptional.isPresent()) {
+//            Beverage beverage = beverageOptional.get();
+//            BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
+//            basket.addBeverage(beverageDto);
+//        } else {
+//            throw new RuntimeException("Beverage not found");
 //        }
 //    }
 //
-//    @Override
-//    public void clearBasket(HttpSession session) {
-//        Basket basket = getBasket(session);
-//        basket.clearBeverages();
+//    public void removeBeverageFromBasket(Long beverageId) {
+//        basket.getBeverages().keySet().removeIf(beverage -> beverage.getId().equals(beverageId));
 //    }
 //
+//    public boolean updateBeverageQuantity(Long beverageId, int quantity) {
+//        Optional<Beverage> beverageOptional = beverageRepository.findById(beverageId);
+//        if (beverageOptional.isPresent()) {
+//            Beverage beverage = beverageOptional.get();
+//            if (quantity <= beverage.getInStock()) {
+//                BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
+//                basket.updateQuantity(beverageDto, quantity);
+//                return true;
+//            } else {
+//                return false;
+//            }
+//        } else {
+//            throw new RuntimeException("Beverage not found");
+//        }
+//    }
+//
+//    public void clearBasket() {
+//        basket.clearBasket();
+//    }
+//
+//    public Map<BeverageResponseDto, Integer> getBeveragesInBasket() {
+//        return basket.getBeverages();
+//    }
+//
+//    public double getTotalPrice() {
+//        return basket.getTotalPrice();
+//    }
 //}
+
+package group7.service.serviceImpl;
+
+import group7.component.Basket;
+import group7.configuration.customClasses.CustomModelMapper;
+import group7.dto.BasketItemDto;
+import group7.dto.BeverageResponseDto;
+import group7.entity.Beverage;
+import group7.exception.ResourceNotFoundException;
+import group7.repository.BeverageRepository;
+import group7.service.BasketService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class BasketServiceImpl implements BasketService {
+
+    @Autowired
+    private Basket basket;
+    @Autowired
+    private BeverageRepository beverageRepository;
+    @Autowired
+    private CustomModelMapper modelMapper;
+
+    public void addItemToBasket(Long beverageId) {
+        Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()-> new ResourceNotFoundException("Beverage", "id", beverageId));
+        BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
+        basket.addBeverage(beverageDto);
+    }
+
+    public void removeItemFromBasket(Long beverageId) {
+        Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()-> new ResourceNotFoundException("Beverage", "id", beverageId));
+        BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
+        basket.removeBeverage(beverageDto);
+    }
+
+    public boolean updateItemQuantity(Long beverageId, int quantity) {
+        Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()-> new ResourceNotFoundException("Beverage", "id", beverageId));
+        if (quantity > beverage.getInStock()) {
+            return false;
+        }
+        BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
+        basket.updateQuantity(beverageDto, quantity);
+        return true;
+    }
+
+    public Long checkout() {
+        List<BasketItemDto> beverages = getItemsInBasket();
+        for (BasketItemDto item : beverages) {
+            BeverageResponseDto beverage = item.getBeverage();
+            int quantity = item.getQuantity();
+            if (quantity > beverage.getInStock()) {
+                return beverage.getId();//if quantity exceeds current limit than
+            }
+        }
+        //orderService.createOrder();
+        clearBasket();
+        //returning null means no beverage id found exceeding inStock.
+        return null;
+    }
+
+    @Override
+    public Basket getBasket() {
+        return basket;
+    }
+
+    public void clearBasket() {
+        basket.clearBasket();
+    }
+
+    public List<BasketItemDto> getItemsInBasket() {
+        return basket.getItems();
+    }
+
+    public double getTotalPrice() {
+        return basket.getTotalPrice();
+    }
+
+    public boolean isBasketEmpty() {
+        if (basket == null || basket.getItems().isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+}

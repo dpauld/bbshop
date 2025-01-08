@@ -84,9 +84,9 @@
 
 package group7.controller.controllerImpl;
 
+import group7.controller.BasketController;
 import group7.dto.BasketItemDto;
-import group7.dto.BeverageResponseDto;
-import group7.service2.serviceImpl.BasketServiceImpl;
+import group7.service.serviceImpl.BasketServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,11 +97,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/basket")
-public class BasketControllerImpl {
+public class BasketControllerImpl implements BasketController {
 
     @Autowired
     private BasketServiceImpl basketService;
 
+    @Override
     @GetMapping
     public String viewBasket(Model model, @RequestParam(value = "error", required = false) String error, @RequestParam(value = "errorBeverageId", required = false) Long errorBeverageId) {
         List<BasketItemDto> beverages = basketService.getItemsInBasket();
@@ -111,21 +112,24 @@ public class BasketControllerImpl {
             model.addAttribute("error", error);
             model.addAttribute("errorBeverageId", errorBeverageId);
         }
-        return "basket_v2";
+        return "basket";
     }
 
+    @Override
     @PostMapping("/add")
     public String addBeverageToBasket(@RequestParam Long beverageId) {
         basketService.addItemToBasket(beverageId);
         return "redirect:/basket";
     }
 
+    @Override
     @PostMapping("/remove")
     public String removeBeverageFromBasket(@RequestParam Long beverageId) {
         basketService.removeItemFromBasket(beverageId);
         return "redirect:/basket";
     }
 
+    @Override
     @PostMapping("/updateQuantity")
     public String updateBeverageQuantity(@RequestParam Long beverageId, @RequestParam int quantity, RedirectAttributes redirectAttributes) {
         boolean success = basketService.updateItemQuantity(beverageId, quantity);
@@ -136,6 +140,7 @@ public class BasketControllerImpl {
         return "redirect:/basket";
     }
 
+    @Override
     @PostMapping("/clear")
     public String clearBasket() {
         basketService.clearBasket();

@@ -1,4 +1,4 @@
-package group7.service2;
+package group7.service;
 
 import group7.dto.*;
 import group7.entity.Beverage;

@@ -1,12 +1,9 @@
 package group7.controller.controllerImpl;
 
 import group7.dto.AddressRequestDto;
-import group7.entity.Address;
 import group7.entity.Order;
-import group7.service2.AddressService;
-import group7.service2.OrderService;
-import group7.service2.serviceImpl.AddressServiceImpl;
-import group7.service2.serviceImpl.OrderServiceImpl;
+import group7.service.OrderService;
+import group7.service.serviceImpl.AddressServiceImpl;
 import group7.users.User;
 import group7.users.UserService;
 import jakarta.transaction.Transactional;
@@ -92,35 +89,28 @@ public class UserProfileController {
         return "redirect:/profile";
     }
 
-//    @PostMapping("/addresses/delete/{type}/{id}")
-//    public String deleteAddress(@PathVariable String type, @PathVariable Long id,
-//                                @AuthenticationPrincipal User user) {
-//        addressService.deleteAddressById(id, user, type);
-//        return "redirect:/profile";
-//    }
-
     //orders under user
-    @GetMapping(value="profile/orders")
+    @GetMapping(value="/profile/orders")
     public String getOrdersByUser(Model model, RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
         //LazyIntitalization error
-        List<Order> orders = userService.getUsersOrderById(user.getId());
-        //User userD = userService.findByIdWithOrders(user.getId());
-        //List<Order> orders = userD.getOrders();
-//        List<Order> orders = orderService.findByIdWithOrders
+        //List<Order> orders = userService.getUsersOrderById(user.getId());
+        List<Order> orders = orderService.findOrdersByUserIdWithItems(user.getId());
         model.addAttribute("orders", orders);
         return "orders";  // Render the order list view
     }
 
-    @GetMapping(value="profile/ordersjson")
-    public ResponseEntity<List<Order>> getOrdersByUserr(Model model, RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
-        log.info("getOrdersByUserr");
-        List<Order> orders = userService.getUsersOrderById(user.getId());
-        //User userData = userService.getUserById(user.getId());
-        //List<Order> orders = userData.getOrders();
-        //User userD = userService.findByIdWithOrders(user.getId());
-        //List<Order> orders = userD.getOrders();
-        log.info(orders.toString());
-        //model.addAttribute("orders", userData.getOrders());
-        return new ResponseEntity<>(orders,HttpStatus.OK); // Render the order list view
-    }
+    //test
+    //issue:2025-01-08T16:33:39.211+01:00  WARN 139786 --- [group7] [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: group7.users.User.billingAddresses: could not initialize proxy - no Session]
+//    @GetMapping(value="/ordersjson",produces = {MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<List<Order>> getOrdersByUserr(Model model, RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
+//        log.info("getOrdersByUserr");
+//        List<Order> orders = orderService.findOrdersByUserIdWithItems(user.getId());
+//        //User userData = userService.getUserById(user.getId());
+//        //List<Order> orders = userData.getOrders();
+//        //User userD = userService.findByIdWithOrders(user.getId());
+//        //List<Order> orders = userD.getOrders();
+//        log.info(orders.toString());
+//        //model.addAttribute("orders", userData.getOrders());
+//        return new ResponseEntity<>(orders,HttpStatus.OK); // Render the order list view
+//    }
 }

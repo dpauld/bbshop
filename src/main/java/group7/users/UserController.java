@@ -1,22 +1,14 @@
 package group7.users;
 
-import group7.dto.AddressRequestDto;
-import group7.entity.Address;
 import group7.repository.AddressRepository;
-import group7.service2.AddressService;
-import jakarta.validation.Valid;
+import group7.service.AddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @Controller

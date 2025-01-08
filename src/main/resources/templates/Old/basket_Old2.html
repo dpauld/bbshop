@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Basket</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <!-- bootstrap dependency -->
+    <script crossorigin="anonymous"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<style>
+/* TODO: extract to a static css file */
+/* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+.table .d-table-row,
+.table .d-table-cell {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.table .thead {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<!--/*@thymesVar id="orderItems" type="java.lang.Iterable<group7.entity.OrderItem>"*/-->
+<h1>Your Basket</h1>
+
+<div th:if="${orderItems.isEmpty()}">
+    <p>Your basket is empty.</p>
+</div>
+<div th:if="${not orderItems.isEmpty()}">
+    <div class="table bg-light text-dark d-table">
+        <div class="d-table-row thead">
+            <div class="d-table-cell">Position</div>
+            <div class="d-table-cell">Beverage</div>
+            <div class="d-table-cell">Price</div>
+        </div>
+        <div class="d-table-row" th:each="item: ${orderItems}">
+            <div class="d-table-cell" th:text="${item.position}"></div>
+            <div class="d-table-cell"><a th:href="@{|../..|}" th:text="${item.beverage.name}"></a></div>
+            <div class="d-table-cell" th:text="${item.price}"></div>
+        </div>
+    </div>
+    <form method="POST" class="container">
+        <input th:formaction="@{/basket/order}" type="submit" class="btn btn-primary" value="Create Order" />
+        <input th:formaction="@{/basket/clear}" type="submit" class="btn btn-danger" value="Clear Basket" />
+
+    </form>
+</div>
+</body>
+</html>

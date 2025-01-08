@@ -5,9 +5,7 @@ import group7.dto.AddressRequestDto;
 import group7.entity.Address;
 import group7.entity.Order;
 import group7.exception.ResourceNotFoundException;
-import group7.repository.AddressRepository;
-import group7.service2.AddressService;
-import jakarta.persistence.EntityNotFoundException;
+import group7.service.AddressService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -80,6 +78,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public List<Order> getUsersOrderById(Long userId) {
         User user = userRepo.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
+        log.info(user.toString());
         List<Order> orders = user.getOrders();
         return orders;
     }

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Beverages</title>
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" rel="stylesheet">
+  <script crossorigin="anonymous"
+          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+          src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>  <!-- bootstrap dependency -->
+  <script crossorigin="anonymous"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <style>
+    /* TODO: extract to a static css file */
+    /* Copy tr and td styles from bootstrap.css to also apply to .d-table-row and .d-table-cell */
+    .table .d-table-row,
+    .table .d-table-cell {
+      padding: 0.75rem;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .table .thead {
+      vertical-align: bottom;
+      border-bottom: 2px solid #dee2e6;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<h1>Beverages</h1>
+<form method="POST">
+  <h2>Separate bottles</h2>
+  <div class="table bg-light text-dark d-table">
+    <div class="d-table-row thead">
+      <div class="d-table-cell">Picture</div>
+      <div class="d-table-cell">Name</div>
+      <div class="d-table-cell">Volume</div>
+      <div class="d-table-cell">Alcohol percent</div>
+      <div class="d-table-cell">Supplier</div>
+      <div class="d-table-cell">Bottles in stock</div>
+      <div class="d-table-cell">Bottle price</div>
+      <div class="d-table-cell">Add to basket</div>
+    </div>
+    <!--/*@thymesVar id="bottles" type="java.lang.Iterable<group7.dto.BottleResponseDTO>"*/-->
+    <div class="d-table-row" th:each="bottle: ${bottles}">
+      <div class="d-table-cell"><a th:name="@{|item_${bottle.getId()}|}"></a><img th:src="${bottle.bottlePic}" class="img-thumbnail" /></div>
+      <div class="d-table-cell" th:text="${bottle.name}"></div>
+      <div class="d-table-cell" th:text="${bottle.volume}"></div>
+      <div class="d-table-cell" th:text="${bottle.volumePercent}"></div>
+      <div class="d-table-cell" th:text="${bottle.supplier}"></div>
+      <div class="d-table-cell" th:text="${bottle.inStock}"></div>
+      <div class="d-table-cell" th:text="${bottle.price}"></div>
+      <div class="d-table-cell">
+        <input type="submit" class="btn btn-primary" value="+" th:disabled="${bottle.inStock <= 0}" th:formaction="@{|/beverages/add/${bottle.id}|}" >
+      </div>
+    </div>
+  </div>
+  <h2>Crates</h2>
+  <div class="table bg-light text-dark d-table">
+    <div class="d-table-row thead">
+      <div class="d-table-cell">Picture</div>
+      <div class="d-table-cell">Contained bottles</div>
+      <div class="d-table-cell">Bottles per crate</div>
+      <div class="d-table-cell">Bottle volume</div>
+      <div class="d-table-cell">Alcohol percent</div>
+      <div class="d-table-cell">Bottle supplier</div>
+      <div class="d-table-cell">Crates in stock</div>
+      <div class="d-table-cell">Crate price</div>
+      <div class="d-table-cell">Add to basket</div>
+    </div>
+    <!--/*@thymesVar id="crates" type="java.lang.Iterable<group7.dto.CrateResponseDTO>"*/-->
+    <div class="d-table-row" th:each="crate: ${crates}">
+      <div class="d-table-cell"><a th:name="@{|item_${crate.getId()}|}"></a><img th:src="${crate.cratePic}" class="img-thumbnail" /></div>
+      <div class="d-table-cell" th:text="${crate.bottle.name}"></div>
+      <div class="d-table-cell" th:text="${crate.noOfBottles}"></div>
+      <div class="d-table-cell" th:text="${crate.bottle.volume}"></div>
+      <div class="d-table-cell" th:text="${crate.bottle.volumePercent}"></div>
+      <div class="d-table-cell" th:text="${crate.bottle.supplier}"></div>
+      <div class="d-table-cell" th:text="${crate.cratesInStock}"></div>
+      <div class="d-table-cell" th:text="${crate.price}"></div>
+      <div class="d-table-cell">
+        <input type="submit" class="btn btn-primary" value="+" th:disabled="${crate.cratesInStock <= 0}" th:formaction="@{|/beverages/add/${crate.id}|}" >
+      </div>
+    </div>
+  </div>
+</form>
+</body>
+</html>

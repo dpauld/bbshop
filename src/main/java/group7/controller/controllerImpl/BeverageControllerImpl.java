@@ -8,7 +8,7 @@ import group7.entity.Bottle;
 import group7.entity.Crate;
 import group7.properties.PaginationProperties;
 //import group7.service.BasketService;
-import group7.service2.BeverageService;
+import group7.service.BeverageService;
 import group7.validation.group.BottleGroup;
 import group7.validation.group.CrateGroup;
 import jakarta.servlet.http.HttpSession;
@@ -61,7 +61,7 @@ public class BeverageControllerImpl implements BeverageController {
         List<BeverageResponseDto> beverages = beverageService.getAllBeveragesWithDetails();
 
         model.addAttribute("beverages", beverages);
-        return "test";
+        return "beverages";
     }
 
     @Override
@@ -132,23 +132,6 @@ public class BeverageControllerImpl implements BeverageController {
         return "beverages2";
     }
 
-//    @PostMapping("/beverages/add/{id}")
-//    public String addBeverageToBasket(@PathVariable Long id, HttpSession session) {
-//        basketService.addBeverageToBasketById(id, session); // pass HttpSession directly
-//        return "redirect:/beverages"; // redirect back to beverages page after adding the beverage to the basket
-//    }
-
-//    @GetMapping("/admin")
-//    public String getAllBeverageEditUI(Model model) {
-//        model.addAttribute("bottles", beverageService.getAllBottles());
-//        model.addAttribute("crates", beverageService.getAllCrates());
-//        if (!model.containsAttribute("addBottleRequestDTO"))
-//            model.addAttribute("addBottleRequestDTO", new AddBottleRequestDTO());
-//        if (!model.containsAttribute("addCrateRequestDTO"))
-//            model.addAttribute("addCrateRequestDTO", new AddCrateRequestDTO());
-//        return "admin";
-//    }
-
     @PostMapping("/beverages/bottles")
     public String createBottle(@Validated(BottleGroup.class) BeverageCreateDto beverageCreateDto, Errors errors, Model model) {
         log.info("POSTed a new Bottle: " + beverageCreateDto);
@@ -156,7 +139,7 @@ public class BeverageControllerImpl implements BeverageController {
             log.info("Bottle creation contained errors: " + beverageCreateDto.toString());
             model.addAttribute("beverageCreateDto", beverageCreateDto);
             model.addAttribute("beverages", beverageService.getAllBeveragesWithDetails());
-            return "test";
+            return "beverages";
         }
         beverageService.createBottle(beverageCreateDto);
         return "redirect:/beverages";
@@ -169,7 +152,7 @@ public class BeverageControllerImpl implements BeverageController {
             log.info("Crate creation contained errors: " + beverageCreateDto.toString());
             model.addAttribute("beverageCreateDto", beverageCreateDto);
             model.addAttribute("beverages", beverageService.getAllBeveragesWithDetails());
-            return "test";
+            return "beverages";
         }
         beverageService.createCrate(beverageCreateDto);
         return "beverages";
@@ -180,6 +163,14 @@ public class BeverageControllerImpl implements BeverageController {
         log.info("Received a id for deletion: " + id);
         beverageService.deleteBeverage(id);
         return "redirect:/beverages";
+    }
+
+    @GetMapping("/beverages/{id}")
+    public String getBeverageById(@PathVariable Long id, HttpSession session, Model model) {
+        //log.info("Received a id for deletion: " + id);
+        BeverageResponseDto beverage = beverageService.findBeverageById(id);
+        model.addAttribute("beverage", beverage);
+        return "beverage";
     }
 
     //Test code to view data

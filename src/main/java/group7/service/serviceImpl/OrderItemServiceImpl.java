@@ -1,9 +1,9 @@
-//package group7.service.serviceImpl;
+//package group7.service2.serviceImpl;
 //
 //import group7.component.Basket;
 //import group7.dto.AddOrderItemRequestDTO;
 //import group7.dto.BeverageResponseDTO;
-//import group7.service.OrderItemService;
+//import group7.service2.OrderItemService;
 //import org.springframework.stereotype.Service;
 //
 //import java.util.ArrayList;
