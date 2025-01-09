@@ -17,7 +17,8 @@ public interface BeverageService {
 
     public List<BeverageResponseDto> getAllBeveragesWithDetails();
 
-    PaginatedResponseDto<Beverage> getAllBeveragesPaginated(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
+    PaginatedResponseDto<Beverage> getAllBeveragesPaginatedOld(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
+    PaginatedResponseDto<BeverageResponseDto> getAllBeveragesPaginated(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     List<Beverage> getAlcoholicBeverages();
 
@@ -31,6 +32,7 @@ public interface BeverageService {
 
     Void deleteBeverage(Long id);
     BeverageResponseDto updateBeverage(BeverageCreateDto beverageCreateDto, Long beverageId);
+    Beverage update(Beverage beverage);
 
     //updates stock of a bunch of stock, they are in the process of ordering
     boolean updateStock();

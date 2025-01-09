@@ -46,6 +46,14 @@ public class OrderControllerImpl implements OrderController {
 //        return new ResponseEntity<>(orders,HttpStatus.OK);  // Render the order list view
 //    }
 //
+     //cancelling order, not deleting order data
+    @PostMapping("/{id}/cancel")
+    public String cancelOrder(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        orderService.cancelOrder(id);
+        redirectAttributes.addFlashAttribute("success", "Order cancelled successfully!");
+        return "redirect:/orders";
+    }
+
     @DeleteMapping(value="/{id}")
     public String deleteOrderById(Model model, @PathVariable Long id) {
         Boolean status = orderService.deleteOrderById(id);

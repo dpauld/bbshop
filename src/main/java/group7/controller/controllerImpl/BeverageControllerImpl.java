@@ -3,7 +3,6 @@ package group7.controller.controllerImpl;
 import group7.configuration.customClasses.CustomModelMapper;
 import group7.controller.BeverageController;
 import group7.dto.*;
-import group7.entity.Beverage;
 import group7.entity.Bottle;
 import group7.entity.Crate;
 import group7.properties.PaginationProperties;
@@ -30,16 +29,9 @@ import java.util.List;
 public class BeverageControllerImpl implements BeverageController {
 
     private final BeverageService beverageService;
-    //private final BasketService basketService;
     private final PaginationProperties paginationProperties;
     private final CustomModelMapper modelMapper;
 
-    //    @Autowired
-//    public BeverageControllerImpl(BeverageService beverageService, BasketService basketService, PaginationProperties paginationProperties) {
-//        this.beverageService = beverageService;
-//        this.basketService = basketService;
-//        this.paginationProperties = paginationProperties;
-//    }
     @Autowired
     public BeverageControllerImpl(BeverageService beverageService, PaginationProperties paginationProperties, CustomModelMapper modelMapper) {
         this.beverageService = beverageService;
@@ -47,44 +39,45 @@ public class BeverageControllerImpl implements BeverageController {
         this.modelMapper = modelMapper;
     }
 
-    @GetMapping("/beverages")
-    public String getAllBeverages(Model model) {
-        //List<Beverage> beverages = beverageService.getAllBeverages();
-        //model.addAttribute("beverages", beverageService.getAllBeverages());
-        model.addAttribute("beverageCreateDto", new BeverageCreateDto());
-        //model.addAttribute("bottleCreateDto", new BottleCreateDto());
-        //model.addAttribute("crateCreateDto", new CrateCreateDto());
-//        model.addAttribute("bottles", beverageService.getAllBottles());
-//        model.addAttribute("crates", beverageService.getAllCrates());
-//        return "test";
-
-        List<BeverageResponseDto> beverages = beverageService.getAllBeveragesWithDetails();
-
-        model.addAttribute("beverages", beverages);
-        return "beverages";
-    }
-
-    @Override
-    public String addBeverageToBasket(Long id, HttpSession session) {
-        return "";
-    }
-
-
 //    @GetMapping("/beverages/bottles")
 //    public String getAllBotlles(Model model) {
 //        model.addAttribute("bottles", beverageService.getAllBottles());
 //        return "beverages";
 //    }
 
-    @GetMapping(value = "/beverages/bottles/json", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<List<Bottle>>  getAllBotllesJson(Model model) {
-        //model.addAttribute("bottles", beverageService.getAllBottles());
-        List<Bottle> bottles = beverageService.getAllBottles();
-        if (bottles.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    /**
+     * Displays beverages with pagination
+     *
+     * Url might look like /beverages?page=0&size=10&sort=name&direction=asc
+     *
+     */
+    @GetMapping("/beverages")
+    public String getAllBeveragesPaginated(Model model,
+                                           @RequestParam(value="page", required = false, defaultValue = "#{paginationProperties.pageNumber}") Integer pageNumber,
+                                           @RequestParam(value="size", required = false, defaultValue = "#{paginationProperties.beveragePageSize}") Integer pageSize,
+                                           @RequestParam(value="sort", required = false, defaultValue = "#{paginationProperties.sortBy}") String sortBy,
+                                           @RequestParam(value="direction", required = false, defaultValue = "#{paginationProperties.sortDir}") String sortDir){
+        if (pageNumber < 1) {
+            pageNumber = 1;
         }
-        return new ResponseEntity<>(bottles, HttpStatus.OK);
+        PaginatedResponseDto<BeverageResponseDto> paginatedResponseDto = this.beverageService.getAllBeveragesPaginated(pageNumber-1, pageSize, sortBy, sortDir);
+        model.addAttribute("beverages", paginatedResponseDto.getContent());
+        model.addAttribute("currentPage", paginatedResponseDto.getPageNumber()+1);
+        model.addAttribute("pageSize", paginatedResponseDto.getPageSize());
+        model.addAttribute("sortBy",sortBy);
+        model.addAttribute("totalPages", paginatedResponseDto.getTotalPages());
+        model.addAttribute("isLastPage", paginatedResponseDto.isLastPage());
+       // model.addAttribute("movie", new Movie());
+        return "bevereges";
+
+    }
+
+    @GetMapping("/beverages/{id}")
+    public String getBeverageById(@PathVariable Long id, HttpSession session, Model model) {
+        //log.info("Received a id for deletion: " + id);
+        BeverageResponseDto beverage = beverageService.findBeverageById(id);
+        model.addAttribute("beverage", beverage);
+        return "beverage";
     }
 
     @GetMapping(value = "/beverages/crates/json", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -101,35 +94,31 @@ public class BeverageControllerImpl implements BeverageController {
 //    @GetMapping("/beverages/crates")
 //    public String getAllCrates(Model model) {
 //        model.addAttribute("crates", beverageService.getAllCrates());
-//        return "beverages";
+//        return "beveragesCrates";
 //    }
 
-    /**
-     * Displays beverages with pagination
-     *
-     * Url might look like /beverages?page=0&size=10&sort=name&direction=asc
-     *
-     */
-    @GetMapping("/beverages2")
-    public String getAllBeveragesPaginated(Model model,
-        @RequestParam(value="page", required = false) Integer pageNumber,
-        @RequestParam(value="size", required = false) Integer pageSize,
-        @RequestParam(value="sort", required = false) String sortBy,
-        @RequestParam(value="direction", required = false) String sortDir){
-        // Use default values from the PaginationProperties bean if parameters are null
-        pageNumber = (pageNumber != null) ? pageNumber : paginationProperties.getPageNumber();
-        pageSize = (pageSize != null) ? pageSize : paginationProperties.getBeveragePageSize();
-        sortBy = (sortBy != null) ? sortBy : paginationProperties.getSortBy();
-        sortDir = (sortDir != null) ? sortDir : paginationProperties.getSortDir();
+    /***** From here on most of the codes are related to admin accessible create, update, delete *****/
 
-        PaginatedResponseDto<Beverage> paginatedResponseDto = this.beverageService.getAllBeveragesPaginated(pageNumber, pageSize, sortBy, sortDir);
-        model.addAttribute("beverages", paginatedResponseDto.getContent());
-        model.addAttribute("currentPage", paginatedResponseDto.getPageNumber());
-        model.addAttribute("pageSize", paginatedResponseDto.getPageSize());
-        model.addAttribute("totalPages", paginatedResponseDto.getTotalPages());
-        model.addAttribute("isLastPage", paginatedResponseDto.isLastPage());
-       // model.addAttribute("movie", new Movie());
-        return "beverages2";
+     //Test code to view data, intial plan was to use single method to update any beverage
+//    @ResponseBody
+//    @GetMapping(value = "beverages/update/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<BeverageResponseDto> showUpdateForm(@PathVariable("id") Long beverageId, Model model) {
+//        BeverageResponseDto beverageResponseDto = beverageService.findBeverageById(beverageId);
+//        BeverageCreateDto beverageCreateDto = modelMapper.map(beverageResponseDto, BeverageCreateDto.class);
+//        model.addAttribute("beverage", beverageCreateDto);
+//        return new ResponseEntity<>(beverageResponseDto, HttpStatus.OK);
+//    }
+
+    //this is used to fetch data to populate the crate form to select a bottle
+    @GetMapping(value = "/beverages/bottles/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<List<Bottle>>  getAllBotllesJson(Model model) {
+        //model.addAttribute("bottles", beverageService.getAllBottles());
+        List<Bottle> bottles = beverageService.getAllBottles();
+        if (bottles.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(bottles, HttpStatus.OK);
     }
 
     @PostMapping("/beverages/bottles")
@@ -139,7 +128,7 @@ public class BeverageControllerImpl implements BeverageController {
             log.info("Bottle creation contained errors: " + beverageCreateDto.toString());
             model.addAttribute("beverageCreateDto", beverageCreateDto);
             model.addAttribute("beverages", beverageService.getAllBeveragesWithDetails());
-            return "beverages";
+            return "bevereges";
         }
         beverageService.createBottle(beverageCreateDto);
         return "redirect:/beverages";
@@ -152,10 +141,10 @@ public class BeverageControllerImpl implements BeverageController {
             log.info("Crate creation contained errors: " + beverageCreateDto.toString());
             model.addAttribute("beverageCreateDto", beverageCreateDto);
             model.addAttribute("beverages", beverageService.getAllBeveragesWithDetails());
-            return "beverages";
+            return "bevereges";
         }
         beverageService.createCrate(beverageCreateDto);
-        return "beverages";
+        return "bevereges";
     }
 
     @DeleteMapping("/beverages/{id}")
@@ -164,24 +153,6 @@ public class BeverageControllerImpl implements BeverageController {
         beverageService.deleteBeverage(id);
         return "redirect:/beverages";
     }
-
-    @GetMapping("/beverages/{id}")
-    public String getBeverageById(@PathVariable Long id, HttpSession session, Model model) {
-        //log.info("Received a id for deletion: " + id);
-        BeverageResponseDto beverage = beverageService.findBeverageById(id);
-        model.addAttribute("beverage", beverage);
-        return "beverage";
-    }
-
-    //Test code to view data
-//    @ResponseBody
-//    @GetMapping(value = "beverages/update/{id}",  produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<BeverageResponseDto> showUpdateForm(@PathVariable("id") Long beverageId, Model model) {
-//        BeverageResponseDto beverageResponseDto = beverageService.findBeverageById(beverageId);
-//        BeverageCreateDto beverageCreateDto = modelMapper.map(beverageResponseDto, BeverageCreateDto.class);
-//        model.addAttribute("beverage", beverageCreateDto);
-//        return new ResponseEntity<>(beverageResponseDto, HttpStatus.OK);
-//    }
 
     @GetMapping("beverages/update/{id}")
     public String showUpdateForm(@PathVariable("id") Long beverageId, Model model) {

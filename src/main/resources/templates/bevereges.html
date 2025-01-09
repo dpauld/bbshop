@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beverages List</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .card {
+            max-width: 18rem;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Beverages</h1>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4" th:each="beverage : ${beverages}">
+                    <div class="card shadow-sm">
+                        <a th:href="@{/beverages/{id}(id=${beverage.id})}">
+                            <img th:src="${beverage.picture}" class="card-img-top" th:alt="${beverage.name}">
+                        </a>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${beverage.name}"></h5>
+                            <p class="card-text">
+                                Price: $<span th:text="${beverage.price}"></span><br>
+                                In Stock: <span th:text="${beverage.inStock}"></span>
+                            </p>
+                            <div class="mt-3">
+                                <form th:action="@{/basket/add}" th:method="post">
+                                    <input type="hidden" name="beverageId" th:value="${beverage.id}">
+                                    <button type="submit" class="btn btn-outline-primary btn-block"
+                                            th:disabled="${beverage.inStock == 0}">
+                                        <span th:if="${beverage.inStock > 0}" class="fa fa-cart-plus"></span>
+                                        <span th:text="${beverage.inStock > 0 ? 'Add to Basket' : 'Out of Stock'}"></span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Pagination -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                        <a class="page-link" th:href="@{/beverages(page=${currentPage - 1}, size=${pageSize})}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item" th:each="page : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == page} ? 'active'">
+                        <a class="page-link" th:href="@{/beverages(page=${page}, size=${pageSize})}" th:text="${page}"></a>
+                    </li>
+                    <li class="page-item" th:classappend="${isLastPage} ? 'disabled'">
+                        <a class="page-link" th:href="@{/beverages(page=${currentPage + 1}, size=${pageSize})}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<div th:replace="~{footer :: footer}"></div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

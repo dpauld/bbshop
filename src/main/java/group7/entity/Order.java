@@ -44,6 +44,8 @@ public class Order {
     @Column(name = "price", nullable = false)
     private double price;
 
+    private String orderStatus="Pending";
+
     //Merge will make sure, any changes made to user should reflect here.
     @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

@@ -1,5 +1,6 @@
 package group7.controller.controllerImpl;
 
+import group7.dto.BeverageResponseDto;
 import group7.dto.PaginatedResponseDto;
 import group7.entity.Beverage;
 import group7.properties.PaginationProperties;
@@ -34,18 +35,12 @@ public class TestController {
         this.paginationProperties = paginationProperties;
     }
     @GetMapping(value = "/beveragesJson", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PaginatedResponseDto<Beverage>> getAllBeveragesPaginated(Model model,
-                                                                                   @RequestParam(value="page", required = false) Integer pageNumber,
-                                                                                   @RequestParam(value="size", required = false) Integer pageSize,
-                                                                                   @RequestParam(value="sort", required = false) String sortBy,
-                                                                                   @RequestParam(value="direction", required = false) String sortDir){
-        // Use default values from the PaginationProperties bean if parameters are null
-        pageNumber = (pageNumber != null) ? pageNumber : paginationProperties.getPageNumber();
-        pageSize = (pageSize != null) ? pageSize : paginationProperties.getBeveragePageSize();
-        sortBy = (sortBy != null) ? sortBy : paginationProperties.getSortBy();
-        sortDir = (sortDir != null) ? sortDir : paginationProperties.getSortDir();
-
-        PaginatedResponseDto<Beverage> paginatedResponseDto = this.beverageService.getAllBeveragesPaginated(pageNumber, pageSize, sortBy, sortDir);
+    public ResponseEntity<PaginatedResponseDto<BeverageResponseDto>> getAllBeveragesPaginated(Model model,
+                                                                                   @RequestParam(value="page", required = false, defaultValue = "#{paginationProperties.pageNumber}") Integer pageNumber,
+                                                                                   @RequestParam(value="size", required = false, defaultValue = "#{paginationProperties.beveragePageSize}") Integer pageSize,
+                                                                                   @RequestParam(value="sort", required = false, defaultValue = "#{paginationProperties.sortBy}") String sortBy,
+                                                                                   @RequestParam(value="direction", required = false, defaultValue = "#{paginationProperties.sortDir}") String sortDir){
+        PaginatedResponseDto<BeverageResponseDto> paginatedResponseDto = this.beverageService.getAllBeveragesPaginated(pageNumber, pageSize, sortBy, sortDir);
         model.addAttribute("beverages", paginatedResponseDto.getContent());
         model.addAttribute("currentPage", paginatedResponseDto.getPageNumber());
         model.addAttribute("pageSize", paginatedResponseDto.getPageSize());
@@ -54,4 +49,16 @@ public class TestController {
         // model.addAttribute("movie", new Movie());
         return new ResponseEntity<>(paginatedResponseDto,HttpStatus.OK);
     }
+
+//    @GetMapping(value = "/bevjson", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<PaginatedResponseDto<Beverage>> getAllBeveragesPaginated2(Model model){
+//        PaginatedResponseDto<Beverage> paginatedResponseDto = this.beverageService.getAllBeveragesPaginated(1, 10, "Id", "ASC");
+//        model.addAttribute("beverages", paginatedResponseDto.getContent());
+//        model.addAttribute("currentPage", paginatedResponseDto.getPageNumber());
+//        model.addAttribute("pageSize", paginatedResponseDto.getPageSize());
+//        model.addAttribute("totalPages", paginatedResponseDto.getTotalPages());
+//        model.addAttribute("isLastPage", paginatedResponseDto.isLastPage());
+//        // model.addAttribute("movie", new Movie());
+//        return new ResponseEntity<>(paginatedResponseDto,HttpStatus.OK);
+//    }
 }

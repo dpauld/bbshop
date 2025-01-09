@@ -7,6 +7,7 @@ import group7.entity.Beverage;
 import group7.entity.Order;
 import group7.entity.OrderItem;
 import group7.exception.MissingAddressException;
+import group7.exception.OrderCancellationException;
 import group7.exception.ResourceNotFoundException;
 import group7.repository.OrderItemRepository;
 import group7.repository.OrderRepository;
@@ -99,6 +100,35 @@ public class OrderServiceImpl implements OrderService {
         //if everything went right, time to clear the basket
         basket.clearBasket();
         return order;
+    }
+
+    @Transactional
+    public void cancelOrder(Long orderId) {
+        // Retrieve the order by ID
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order with ID " + orderId + " not found."));
+        String orderStatus = order.getOrderStatus();
+        if (orderStatus.equalsIgnoreCase("confirmed") ||
+                orderStatus.equalsIgnoreCase("shipped") ||
+                orderStatus.equalsIgnoreCase("delivered")||
+                orderStatus.equalsIgnoreCase("completed")||
+                orderStatus.equalsIgnoreCase("cancelled")
+        ) {
+            throw new OrderCancellationException("Cannot cancel an order that has already been in processing.");
+        }
+        order.setOrderStatus("Cancelled");
+        // Add the quantities back to stock for each item in the order
+        for (OrderItem orderItem : order.getOrderItems()) {
+            Beverage beverage = orderItem.getBeverage();
+            log.info(beverage.toString());
+            if (beverage != null) {
+                int updatedStock = beverage.getInStock() + orderItem.getQuantity();
+                beverage.setInStock(updatedStock);
+                beverageService.update(beverage); // Save the updated stock
+            }
+        }
+        // Mark the order as cancelled
+        orderRepository.save(order); // Persist the changes
     }
 
 //    @Override

@@ -16,4 +16,6 @@ public interface OrderService {
    Boolean deleteOrderById(Long id);
 
    List<Order> findOrdersByUserIdWithItems(Long userId);
+
+   public void cancelOrder(Long orderId);
 }

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beverage Shop</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: url('https://source.unsplash.com/1600x900/?beverages') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        .section-title {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+        .product-card img {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{navbar :: navbar}"></div>
+<div class="container-fluid">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="display-5 text-dark">Welcome to the Bamberg Beverage Shop</h1>
+        <p class="lead text-dark">Quench your thirst with our amazing collection of beverages!</p>
+        <a href="/beverages" class="btn btn-primary btn-lg mt-3">Shop Now</a>
+    </div>
+
+    <div class="container mt-4">
+        <!-- Section 1: Alcoholic Beverages -->
+        <div class="mb-5">
+            <h2 class="section-title">Thirsty to enjoy some alcohol?</h2>
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4" th:each="beverage : ${alcoholicBeverages}">
+                    <div class="card product-card shadow-sm">
+                        <img th:src="${beverage.picture}" class="card-img-top" th:alt="${beverage.name}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${beverage.name}"></h5>
+                            <p class="card-text">Price: $<span th:text="${beverage.price}"></span></p>
+                            <a th:href="@{/beverages/{id}(id=${beverage.id})}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Crates -->
+        <div class="mb-5">
+            <h2 class="section-title">Need a Crate for your party?</h2>
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4" th:each="crate : ${crates}">
+                    <div class="card product-card shadow-sm">
+                        <img th:src="${crate.picture}" class="card-img-top" th:alt="${crate.name}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${crate.name}"></h5>
+                            <p class="card-text">Price: $<span th:text="${crate.price}"></span></p>
+                            <a th:href="@{/beverages/{id}(id=${crate.id})}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Bottles -->
+        <div class="mb-5">
+            <h2 class="section-title">Single Bottles, Perfect for Every Occasion</h2>
+            <div class="row">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4" th:each="bottle : ${bottles}">
+                    <div class="card product-card shadow-sm">
+                        <img th:src="${bottle.picture}" class="card-img-top" th:alt="${bottle.name}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${bottle.name}"></h5>
+                            <p class="card-text">Price: $<span th:text="${bottle.price}"></span></p>
+                            <a th:href="@{/beverages/{id}(id=${bottle.id})}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Featured Suppliers -->
+<!--        <div class="mb-5">-->
+<!--            <h2 class="section-title">Our Trusted Suppliers</h2>-->
+<!--            <ul class="list-group">-->
+<!--                <li class="list-group-item" th:each="supplier : ${suppliers}" th:text="${supplier}"></li>-->
+<!--            </ul>-->
+<!--        </div>-->
+
+        <!-- Special Offers Section -->
+        <div id="offers" class="mt-5">
+            <h2 class="section-title">Special Offers Just for You</h2>
+            <p>Check out our exclusive discounts and bundles to save more!</p>
+            <a href="/specialOffers" class="btn btn-warning btn-lg">Explore Offers</a>
+        </div>
+    </div>
+</div>
+<div th:replace="~{footer :: footer}"></div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

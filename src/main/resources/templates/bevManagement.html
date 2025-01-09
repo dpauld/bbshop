@@ -162,14 +162,14 @@
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" class="form-control" th:field="*{name}" required>
-<!--            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>-->
+            <!--            <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>-->
             <span class="text-danger" th:errors="*{name}" th:if="${#fields.hasErrors('name')}"></span>
         </div>
         <div class="form-group">
             <label for="price">Price</label>
             <input type="number" step="0.01" id="price" name="price" class="form-control" th:field="*{price}" required>
             <span class="text-danger" th:errors="*{price}" th:if="${#fields.hasErrors('price')}"></span>
-<!--            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>-->
+            <!--            <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>-->
         </div>
         <div class="form-group">
             <label for="inStock">In Stock</label>

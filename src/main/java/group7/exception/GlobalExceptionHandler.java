@@ -51,4 +51,10 @@ public class GlobalExceptionHandler {
         String username = principal.getName();
         return "redirect:/profile";
     }
+
+    @ExceptionHandler(OrderCancellationException.class)
+    public String handleOrderCancellationException(OrderCancellationException ex, RedirectAttributes redirectAttributes, Principal principal) {
+        redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        return "redirect:/orders";
+    }
 }

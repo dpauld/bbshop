@@ -81,9 +81,10 @@ public class BeverageServiceImpl implements BeverageService {
         }
         return beverageResponseDtos;
     }
+
     //pagination
     @Override
-    public PaginatedResponseDto<Beverage> getAllBeveragesPaginated(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+    public PaginatedResponseDto<Beverage> getAllBeveragesPaginatedOld(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
         //if desc passed as value then sort by descending order, otherwise sort by ascending
         Sort sortObj = sortDir.equalsIgnoreCase("desc")?Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
 
@@ -97,9 +98,15 @@ public class BeverageServiceImpl implements BeverageService {
 
         Page<Beverage> pageBeverages = beverageRepository.findAll(pageable);
 
+        // Adjust pageNumber if out of range
+        if (pageNumber >= pageBeverages.getTotalPages() && pageBeverages.getTotalPages() > 0) {
+            pageable = PageRequest.of(pageBeverages.getTotalPages() - 1, pageSize, sortObj);
+            pageBeverages = beverageRepository.findAll(pageable);
+        }
+
         //get the post chunk
         List<Beverage> beverages = pageBeverages.getContent();
-        //List<Beverage> beverageResponseDTO = beveragesToBeverageResponseDTOList(beverages);
+        log.info(beverages.toString());
 
         //create PaginatedResponseDto and set its properties
         PaginatedResponseDto<Beverage> beveragePaginatedResponseDto = new PaginatedResponseDto<>();
@@ -113,6 +120,49 @@ public class BeverageServiceImpl implements BeverageService {
         return beveragePaginatedResponseDto;
     }
 
+    @Override
+    public PaginatedResponseDto<BeverageResponseDto> getAllBeveragesPaginated(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+        //if desc passed as value then sort by descending order, otherwise sort by ascending
+        Sort sortObj = sortDir.equalsIgnoreCase("desc")?Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
+
+        Pageable pageable = null;
+        try {
+            pageable = PageRequest.of(pageNumber, pageSize, sortObj);
+        } catch (Exception e) {
+            // This catches IllegalArgument exception when parameter value passed as negative and zeros(in some cases) pageSize=-1 or pageNumber=-10 or sortBy="randomText"
+            throw new ResourceNotFoundException("Oops, something went wrong. Please try again later.");
+        }
+
+        Page<Beverage> pageBeverages = beverageRepository.findAll(pageable);
+
+        // Adjust pageNumber if out of range
+        if (pageNumber >= pageBeverages.getTotalPages() && pageBeverages.getTotalPages() > 0) {
+            pageable = PageRequest.of(pageBeverages.getTotalPages() - 1, pageSize, sortObj);
+            pageBeverages = beverageRepository.findAll(pageable);
+        }
+
+        //get the post chunk
+        List<Beverage> beverages = pageBeverages.getContent();
+        log.info(beverages.toString());
+
+        //create PaginatedResponseDto and set its properties
+        // PaginatedResponseDto<Beverage> beveragePaginatedResponseDto = new PaginatedResponseDto<>();
+        //beveragePaginatedResponseDto.setContent(beverages);//provide dto if there is any
+
+        PaginatedResponseDto<BeverageResponseDto> beveragePaginatedResponseDto = new PaginatedResponseDto<>();
+        List<BeverageResponseDto> beverageRespDtos = modelMapper.mapList(beverages, BeverageResponseDto.class);
+        // Assign type based on noOfBottles using ternary operator
+        beverageRespDtos.forEach(dto -> dto.setType(dto.getNoOfBottles() > 0 ? "Crate" : "Bottle"));
+
+        beveragePaginatedResponseDto.setContent(beverageRespDtos);
+        beveragePaginatedResponseDto.setPageNumber(pageNumber);
+        beveragePaginatedResponseDto.setPageNumber(pageNumber);
+        beveragePaginatedResponseDto.setPageSize(pageSize);
+        beveragePaginatedResponseDto.setTotalElements(pageBeverages.getTotalElements());
+        beveragePaginatedResponseDto.setTotalPages(pageBeverages.getTotalPages());
+        beveragePaginatedResponseDto.setLastPage(pageBeverages.isLast());
+        return beveragePaginatedResponseDto;
+    }
 
     @Override
     public BeverageResponseDto findBeverageById(Long id) {
@@ -162,6 +212,11 @@ public class BeverageServiceImpl implements BeverageService {
        Beverage savedBeverage = beverageRepository.save(beverage);
 
        return modelMapper.map(savedBeverage, BeverageResponseDto.class);
+    }
+
+    @Override
+    public Beverage update(Beverage beverage) {
+        return beverageRepository.save(beverage);
     }
 
     @Override
