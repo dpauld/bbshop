@@ -4,8 +4,6 @@ import group7.entity.Beverage;
 import group7.entity.Bottle;
 import group7.entity.Crate;
 import group7.service.BeverageService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
