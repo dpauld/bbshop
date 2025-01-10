@@ -1,4 +1,4 @@
 package group7.validation.group;
 
-public class CreateGroup {
+public interface CreateGroup {
 }

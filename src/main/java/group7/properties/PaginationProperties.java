@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "pagination")
 //@ConfigurationPropertiesScan
 public class PaginationProperties {
-    private int beveragePageSize=5;
+    private int beveragePageSize=6;
     private int userPageSize=10;
     private int orderPageSize=10;
     private int pageNumber=1;

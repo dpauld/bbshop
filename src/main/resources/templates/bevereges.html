@@ -20,17 +20,20 @@
 <div th:replace="~{navbar :: navbar}"></div>
 <div class="container mt-4">
     <h1 class="text-center mb-4">Beverages</h1>
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" th:if="${success}">
+        <strong>Success!</strong> <span th:text="${success}"></span>
+    </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="row">
-                <div class="col-sm-6 col-md-4 col-lg-3 mb-4" th:each="beverage : ${beverages}">
-                    <div class="card shadow-sm">
+            <div class="row d-flex align-items-stretch">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4 rounded" th:each="beverage : ${beverages}">
+                    <div class="card h-100 shadow-sm">
                         <a th:href="@{/beverages/{id}(id=${beverage.id})}">
-                            <img th:src="${beverage.picture}" class="card-img-top" th:alt="${beverage.name}">
+                            <img th:src="${beverage.picture}" class="card-img-top img-fluid" th:alt="${beverage.name}" style="object-fit: cover;">
                         </a>
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${beverage.name}"></h5>
-                            <p class="card-text">
+                        <div class="card-body bg-light">
+                            <h5 class="card-title text-truncate" th:text="${beverage.name}"></h5>
+                            <p class="card-text text-truncate">
                                 Price: $<span th:text="${beverage.price}"></span><br>
                                 In Stock: <span th:text="${beverage.inStock}"></span>
                             </p>
@@ -74,5 +77,13 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    setTimeout(() => {
+        const alert = document.querySelector('.alert');
+        if (alert) {
+            alert.classList.remove('show');
+        }
+    }, 5000); // Dismiss after 5 seconds
+</script>
 </body>
 </html>

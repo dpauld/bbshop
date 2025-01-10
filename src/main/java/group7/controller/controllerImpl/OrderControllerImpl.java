@@ -24,36 +24,24 @@ public class OrderControllerImpl implements OrderController {
         this.orderService = orderService;
     }
 
+    @Override
     @PostMapping
     public String createOrder(RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
         Order order = orderService.createOrder(user.getId());
-        redirectAttributes.addFlashAttribute("message", "Order created successfully!");
-        return "redirect:/orders";
+        redirectAttributes.addFlashAttribute("success", "Order created successfully!");
+        return "redirect:/profile/orders";
     }
 
-    @Override
-    @GetMapping(value="")
-    public String getAllOrders(Model model) {
-        List<Order> orders = orderService.getAllOrders();
-        model.addAttribute("orders", orders);
-        return "orders";  // Render the order list view
-    }
-
-//    @GetMapping(value="/json")
-//    public ResponseEntity<List<Order>> getAllOrdersJson(Model model) {
-//        List<Order> orders = orderService.getAllOrders();
-//        //model.addAttribute("orders", orders);
-//        return new ResponseEntity<>(orders,HttpStatus.OK);  // Render the order list view
-//    }
-//
      //cancelling order, not deleting order data
-    @PostMapping("/{id}/cancel")
+     @Override
+     @PostMapping("/{id}/cancel")
     public String cancelOrder(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         orderService.cancelOrder(id);
         redirectAttributes.addFlashAttribute("success", "Order cancelled successfully!");
-        return "redirect:/orders";
+        return "redirect:/profile/orders";
     }
 
+    @Override
     @DeleteMapping(value="/{id}")
     public String deleteOrderById(Model model, @PathVariable Long id) {
         Boolean status = orderService.deleteOrderById(id);
@@ -61,10 +49,22 @@ public class OrderControllerImpl implements OrderController {
         return "redirect:/orders";  // Render the order list view
     }
 
+    @Override
     @GetMapping(value="/{id}")
     public String getOrderById(Model model, @PathVariable Long id) {
         Order order = orderService.getOrderById(id);
         model.addAttribute("order", order);
         return "order";  // Render the order list view
     }
+
+    /**getAllOrder is mainly handle by AdminController and Profile controller, giving them editable access**/
+
+    //this is for test purpose to see the data in JSON
+    //    @GetMapping(value="/json")
+//    public ResponseEntity<List<Order>> getAllOrdersJson(Model model) {
+//        List<Order> orders = orderService.getAllOrders();
+//        //model.addAttribute("orders", orders);
+//        return new ResponseEntity<>(orders,HttpStatus.OK);  // Render the order list view
+//    }
+
 }

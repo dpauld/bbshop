@@ -26,7 +26,7 @@ public abstract class Beverage {
     @NotNull(message = "name cannot be null")
     @NotEmpty(message = "name cannot be empty")
     @NotBlank(message = "name is required.")
-    @Pattern(regexp = "^[a-zA-Z0-9 ÄäÜüÖöß_-]+$", message = "only letters, digits, - , _ , umlauts allowed.")
+    @Pattern(regexp = "^[a-zA-Z0-9 ÄäÜüÖöß_-|.%,]+$", message = "name contains invalid characters.")
     @Column(name = "name", nullable = false)
     protected String name;
 

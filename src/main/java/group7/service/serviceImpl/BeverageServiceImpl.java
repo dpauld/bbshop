@@ -40,23 +40,7 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     // CRUD Operations
-    @Transactional
-    public Bottle createBottle(String name, double price, int inStock, String picture,
-                               double volume, boolean isAlcoholic, double volumePercent, String supplier) {
-        Bottle bottle = new Bottle(name, price, inStock, picture, volume, isAlcoholic, volumePercent, supplier);
-        return beverageRepository.save(bottle);
-    }
-
-    public Crate createCrate(String name, double price, int inStock, String picture, int noOfBottles, Bottle bottle) {
-        Crate crate = new Crate(name, price, inStock, picture, noOfBottles, bottle);
-        return beverageRepository.save(crate);
-    }
-
     @Override
-    public List<Beverage> getAllBeverages() {
-       return beverageRepository.findAll();
-    }
-
     public List<BeverageResponseDto> getAllBeveragesWithDetails() {
         List<Beverage> beverages = beverageRepository.findAll();
         List<BeverageResponseDto> beverageResponseDtos = new ArrayList<>();
@@ -82,42 +66,9 @@ public class BeverageServiceImpl implements BeverageService {
         return beverageResponseDtos;
     }
 
-    //pagination
     @Override
-    public PaginatedResponseDto<Beverage> getAllBeveragesPaginatedOld(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
-        //if desc passed as value then sort by descending order, otherwise sort by ascending
-        Sort sortObj = sortDir.equalsIgnoreCase("desc")?Sort.by(sortBy).descending():Sort.by(sortBy).ascending();
-
-        Pageable pageable = null;
-        try {
-            pageable = PageRequest.of(pageNumber, pageSize, sortObj);
-        } catch (Exception e) {
-            // This catches IllegalArgument exception when parameter value passed as negative and zeros(in some cases) pageSize=-1 or pageNumber=-10 or sortBy="randomText"
-            throw new ResourceNotFoundException("Oops, something went wrong. Please try again later.");
-        }
-
-        Page<Beverage> pageBeverages = beverageRepository.findAll(pageable);
-
-        // Adjust pageNumber if out of range
-        if (pageNumber >= pageBeverages.getTotalPages() && pageBeverages.getTotalPages() > 0) {
-            pageable = PageRequest.of(pageBeverages.getTotalPages() - 1, pageSize, sortObj);
-            pageBeverages = beverageRepository.findAll(pageable);
-        }
-
-        //get the post chunk
-        List<Beverage> beverages = pageBeverages.getContent();
-        log.info(beverages.toString());
-
-        //create PaginatedResponseDto and set its properties
-        PaginatedResponseDto<Beverage> beveragePaginatedResponseDto = new PaginatedResponseDto<>();
-        beveragePaginatedResponseDto.setContent(beverages);//provide dto if there is any
-        beveragePaginatedResponseDto.setPageNumber(pageNumber);
-        beveragePaginatedResponseDto.setPageNumber(pageNumber);
-        beveragePaginatedResponseDto.setPageSize(pageSize);
-        beveragePaginatedResponseDto.setTotalElements(pageBeverages.getTotalElements());
-        beveragePaginatedResponseDto.setTotalPages(pageBeverages.getTotalPages());
-        beveragePaginatedResponseDto.setLastPage(pageBeverages.isLast());
-        return beveragePaginatedResponseDto;
+    public List<Beverage> getAllBeverages() {
+        return beverageRepository.findAll();
     }
 
     @Override
@@ -182,13 +133,13 @@ public class BeverageServiceImpl implements BeverageService {
     }
 
     @Override
-    public Void deleteBeverage(Long beverageId) throws ResourceNotFoundException{
+    public void deleteBeverage(Long beverageId) throws ResourceNotFoundException{
         Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()->new ResourceNotFoundException("Beverage", "Id", beverageId));
         log.info("Deleting the beverage: " + beverage.toString());
         beverageRepository.delete(beverage);
-        return null;
     }
 
+    //takes dto and then updates
     @Override
     public BeverageResponseDto updateBeverage(BeverageCreateDto beverageCreateDto, Long beverageId) throws ResourceNotFoundException{
         Beverage beverage = this.beverageRepository.findById(beverageId).orElseThrow(()->new ResourceNotFoundException("Beverage", "Id", beverageId));
@@ -214,6 +165,7 @@ public class BeverageServiceImpl implements BeverageService {
        return modelMapper.map(savedBeverage, BeverageResponseDto.class);
     }
 
+    //takes beverage entity and then updates
     @Override
     public Beverage update(Beverage beverage) {
         return beverageRepository.save(beverage);
@@ -251,35 +203,11 @@ public class BeverageServiceImpl implements BeverageService {
         return modelMapper.map(savedBottle, Bottle.class);
     }
 
+    //A single beverage method to handle all,
     @Override
     public Beverage createBeverage(BeverageCreateDto beverageCreateDto) {
+        // Implementation for future.
         return null;
-    }
-
-    @Override
-    public List<Beverage> getSoldBeverages() {
-        // Implementation for sold beverages if needed
-        return List.of();
-    }
-
-    public BeverageResponseDto findBottleById(Long id) {
-        Beverage beverage = beverageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bottle", "Id", id));
-        if (beverage instanceof Bottle bottle) {
-            return modelMapper.map(bottle, BeverageResponseDto.class);
-        } else {
-            throw new ResourceNotFoundException("Bottle", "Id", id);
-        }
-    }
-
-    public BeverageResponseDto findCrateById(Long id) {
-        Beverage beverage = beverageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Crate", "Id", id));
-        if (beverage instanceof Crate crate) {
-            BeverageResponseDto beverageResponseDto = modelMapper.map(crate, BeverageResponseDto.class);
-            beverageResponseDto.setType("crate");
-            return beverageResponseDto;
-        } else {
-            throw new ResourceNotFoundException("Crate", "Id", id);
-        }
     }
 
     @Transactional
@@ -308,5 +236,27 @@ public class BeverageServiceImpl implements BeverageService {
     @Override
     public Beverage getBeverageById(Long id) {
         return beverageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Beverage", "Id", id));
+    }
+
+    @Override
+    public BeverageResponseDto findBottleById(Long id) throws ResourceNotFoundException {
+        Beverage beverage = beverageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Bottle", "Id", id));
+        if (beverage instanceof Bottle bottle) {
+            return modelMapper.map(bottle, BeverageResponseDto.class);
+        } else {
+            throw new ResourceNotFoundException("Bottle", "Id", id);
+        }
+    }
+
+    @Override
+    public BeverageResponseDto findCrateById(Long id) throws ResourceNotFoundException {
+        Beverage beverage = beverageRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Crate", "Id", id));
+        if (beverage instanceof Crate crate) {
+            BeverageResponseDto beverageResponseDto = modelMapper.map(crate, BeverageResponseDto.class);
+            beverageResponseDto.setType("crate");
+            return beverageResponseDto;
+        } else {
+            throw new ResourceNotFoundException("Crate", "Id", id);
+        }
     }
 }

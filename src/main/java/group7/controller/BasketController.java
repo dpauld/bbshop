@@ -12,7 +12,7 @@ public interface BasketController {
     String viewBasket(Model model, String error, Long errorBeverageId);
 
     // Method to add a beverage to the basket
-    String addBeverageToBasket(Long beverageId);
+    String addBeverageToBasket(Long beverageId, RedirectAttributes redirectAttributes);
 
     // Method to remove a beverage from the basket
     String removeBeverageFromBasket(Long beverageId);
@@ -23,6 +23,6 @@ public interface BasketController {
     // Method to clear all items in the basket
     String clearBasket();
 
-    // (Optional) Method for checkout logic, if needed
+    // (Optional) Method for checkout logic, to check shipping and payment requiremnts
     // String checkout(RedirectAttributes redirectAttributes);
 }

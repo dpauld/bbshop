@@ -30,10 +30,13 @@
                 <a class="nav-link" href="/basket">Basket</a>
             </li>
             <li class="d-block nav-item">
-                <a class="nav-link" href="/orders">Orders</a>
+                <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')"  href="/admin/orders">Orders</a>
             </li>
             <li class="d-block nav-item">
-                <a class="nav-link" href="/admin/beverages">BevManage</a>
+                <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')"  href="/admin/beverages">BevManage</a>
+            </li>
+            <li class="d-block nav-item">
+                <a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')"  href="/users">Users</a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -46,6 +49,7 @@
                         <label class="dropdown-item" sec:authentication="principal.authorities">Action</label>
                         <label class="dropdown-item" sec:authentication="principal.fullName">Action</label>
                         <label class="dropdown-item" sec:authentication="principal.birthday">Action</label>
+                        <hr/>
                         <a class="dropdown-item" th:href="@{/profile/{username}(username=${#authentication.name})}">Profile</a>
                         <a class="dropdown-item" th:href="@{/profile/orders}">Orders</a>
                     </div>

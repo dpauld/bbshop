@@ -24,4 +24,6 @@ public interface BasketService {
     List<BasketItemDto> getItemsInBasket();
 
     double getTotalPrice();
+
+    public boolean isBasketEmpty();
 }

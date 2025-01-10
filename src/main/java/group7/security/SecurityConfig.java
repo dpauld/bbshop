@@ -38,11 +38,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvcMatcher) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-//                        .requestMatchers(mvcMatcher.pattern("/users"), mvcMatcher.pattern("/h2-console/**")).hasRole("ADMIN")
-//                        .requestMatchers(mvcMatcher.pattern("/order")).hasAnyRole("ADMIN", "USER")
-//                        .requestMatchers(mvcMatcher.pattern("/bevarages")).permitAll()
+                        .requestMatchers(mvcMatcher.pattern("/users"), mvcMatcher.pattern("/admin/**"), mvcMatcher.pattern("/h2-console/**")).hasRole("ADMIN")
+                        .requestMatchers(mvcMatcher.pattern("/order**")).hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(mvcMatcher.pattern("/beverages/**")).permitAll()
+                        .requestMatchers(mvcMatcher.pattern("/basket**")).permitAll()
                         .requestMatchers(mvcMatcher.pattern("/*")).permitAll()
-                                .requestMatchers(mvcMatcher.pattern("/beverages/bottles")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form

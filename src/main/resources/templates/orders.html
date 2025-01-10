@@ -61,7 +61,9 @@
                 <form th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" style="display:inline;">
                     <button type="submit"
                             class="btn btn-danger btn-sm"
-                            th:disabled="${order.getOrderStatus() != null and order.getOrderStatus().equals('Cancelled')}">Cancel</button>
+                            th:disabled="${#authentication.principal.role == 'USER' ? (order.getOrderStatus() != null and !order.getOrderStatus().equals('Pending')) : (order.getOrderStatus() != null and order.getOrderStatus().equals('Cancelled'))}">
+                        Cancel
+                    </button>
                 </form>
 
                 <!-- Edit Button (hidden for now) -->

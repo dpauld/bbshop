@@ -1,5 +1,6 @@
 package group7.controller.controllerImpl;
 
+import group7.controller.UserProfileController;
 import group7.dto.AddressRequestDto;
 import group7.entity.Order;
 import group7.service.OrderService;
@@ -23,27 +24,30 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping
-public class UserProfileController {
+@RequestMapping(value = "/profile")
+public class UserProfileControllerImpl implements UserProfileController {
 
     private final AddressServiceImpl addressService;
     private final UserService userService;
     private final OrderService orderService;
 
     @Autowired
-    public UserProfileController(AddressServiceImpl addressService, UserService userService, OrderService orderService) {
+    public UserProfileControllerImpl(AddressServiceImpl addressService, UserService userService, OrderService orderService) {
         this.addressService = addressService;
         this.userService = userService;
         this.orderService = orderService;
     }
 
-    @GetMapping(value = "/profile/{username}")
-    public String profile(@AuthenticationPrincipal User user, Model model) {
+    @GetMapping(value = "/{username}")
+    @Override
+    public String getProfile(@AuthenticationPrincipal User user, Model model) {
         return "redirect:/profile";
     }
-    @GetMapping(value = "/profile")
+
+    @Override
+    @GetMapping(value = "")
     @Transactional
-    public String getUserProfile(Model model, @AuthenticationPrincipal User user) {
+    public String getUserProfile(@AuthenticationPrincipal User user, Model model) {
         User userData = userService.findByUsername(user.getUsername());
         //used to show the addresses
         model.addAttribute("user", user);
@@ -55,7 +59,7 @@ public class UserProfileController {
     }
 
     //for test
-    @GetMapping(value = "/profileJson")
+    @GetMapping(value = "/json")
     @Transactional
     public ResponseEntity<List<Order>> getUserProfileJson(Model model, @AuthenticationPrincipal User user) {
         User userData = userService.findByUsername(user.getUsername());
@@ -64,8 +68,9 @@ public class UserProfileController {
         return new ResponseEntity<>(userData.getOrders(), HttpStatus.OK);
     }
 
-//addresses under user
-    @PostMapping("/profile/addresses")
+    /** addresses under user **/
+    @Override
+    @PostMapping("/addresses")
     public String addAddress(@RequestParam("type") String type, @ModelAttribute("newAddress") @Valid AddressRequestDto addressReqDto,
                              BindingResult result, Model model, @AuthenticationPrincipal User user) {
         if (result.hasErrors()) {
@@ -83,14 +88,16 @@ public class UserProfileController {
         return "redirect:/profile";
     }
 
-    @DeleteMapping("/profile/addresses/{addressId}")
+    @Override
+    @DeleteMapping("/addresses/{addressId}")
     public String deleteAddress(@PathVariable("addressId") Long addressId, @AuthenticationPrincipal User user) {
         userService.removeAddress(addressId, user.getId());
         return "redirect:/profile";
     }
 
     //orders under user
-    @GetMapping(value="/profile/orders")
+    @Override
+    @GetMapping(value="/orders")
     public String getOrdersByUser(Model model, RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
         //LazyIntitalization error
         //List<Order> orders = userService.getUsersOrderById(user.getId());

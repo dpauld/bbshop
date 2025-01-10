@@ -4,8 +4,10 @@ import group7.configuration.customClasses.CustomModelMapper;
 import group7.controller.AdminController;
 import group7.dto.BeverageCreateDto;
 import group7.dto.BeverageResponseDto;
+import group7.entity.Order;
 import group7.properties.PaginationProperties;
 import group7.service.BeverageService;
+import group7.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,14 +26,17 @@ public class AdminControllerImpl implements AdminController {
     //private final BasketService basketService;
     private final PaginationProperties paginationProperties;
     private final CustomModelMapper modelMapper;
+    private final OrderService orderService;
 
     @Autowired
-    public AdminControllerImpl(BeverageService beverageService, PaginationProperties paginationProperties, CustomModelMapper modelMapper) {
+    public AdminControllerImpl(BeverageService beverageService, PaginationProperties paginationProperties, CustomModelMapper modelMapper, OrderService orderService) {
         this.beverageService = beverageService;
         this.paginationProperties = paginationProperties;
         this.modelMapper = modelMapper;
+        this.orderService = orderService;
     }
 
+    @Override
     @GetMapping("/beverages")
     public String getAllBeverages(Model model) {
         //List<Beverage> beverages = beverageService.getAllBeverages();
@@ -47,5 +52,13 @@ public class AdminControllerImpl implements AdminController {
 
         model.addAttribute("beverages", beverages);
         return "bevManagement";
+    }
+
+    @Override
+    @GetMapping(value="/orders")
+    public String getAllOrders(Model model) {
+        List<Order> orders = orderService.getAllOrders();
+        model.addAttribute("orders", orders);
+        return "orders";  // Render the order list view
     }
 }

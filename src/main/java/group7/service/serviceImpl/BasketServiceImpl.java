@@ -82,25 +82,32 @@ import java.util.List;
 @Service
 public class BasketServiceImpl implements BasketService {
 
-    @Autowired
     private Basket basket;
-    @Autowired
     private BeverageRepository beverageRepository;
-    @Autowired
     private CustomModelMapper modelMapper;
 
+    @Autowired
+    public BasketServiceImpl(Basket basket, BeverageRepository beverageRepository, CustomModelMapper modelMapper) {
+        this.basket = basket;
+        this.beverageRepository = beverageRepository;
+        this.modelMapper = modelMapper;
+    }
+
+    @Override
     public void addItemToBasket(Long beverageId) {
         Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()-> new ResourceNotFoundException("Beverage", "id", beverageId));
         BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
         basket.addBeverage(beverageDto);
     }
 
+    @Override
     public void removeItemFromBasket(Long beverageId) {
         Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()-> new ResourceNotFoundException("Beverage", "id", beverageId));
         BeverageResponseDto beverageDto = modelMapper.map(beverage, BeverageResponseDto.class);
         basket.removeBeverage(beverageDto);
     }
 
+    @Override
     public boolean updateItemQuantity(Long beverageId, int quantity) {
         Beverage beverage = beverageRepository.findById(beverageId).orElseThrow(()-> new ResourceNotFoundException("Beverage", "id", beverageId));
         if (quantity > beverage.getInStock()) {
@@ -111,6 +118,7 @@ public class BasketServiceImpl implements BasketService {
         return true;
     }
 
+    @Override
     public Long checkout() {
         List<BasketItemDto> beverages = getItemsInBasket();
         for (BasketItemDto item : beverages) {
@@ -131,18 +139,22 @@ public class BasketServiceImpl implements BasketService {
         return basket;
     }
 
+    @Override
     public void clearBasket() {
         basket.clearBasket();
     }
 
+    @Override
     public List<BasketItemDto> getItemsInBasket() {
         return basket.getItems();
     }
 
+    @Override
     public double getTotalPrice() {
         return basket.getTotalPrice();
     }
 
+    @Override
     public boolean isBasketEmpty() {
         if (basket == null || basket.getItems().isEmpty()) {
             return true;

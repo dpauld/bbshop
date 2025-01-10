@@ -17,5 +17,5 @@ public interface OrderService {
 
    List<Order> findOrdersByUserIdWithItems(Long userId);
 
-   public void cancelOrder(Long orderId);
+   void cancelOrder(Long orderId);
 }

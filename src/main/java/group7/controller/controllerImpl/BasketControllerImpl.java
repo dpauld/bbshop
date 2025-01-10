@@ -117,9 +117,10 @@ public class BasketControllerImpl implements BasketController {
 
     @Override
     @PostMapping("/add")
-    public String addBeverageToBasket(@RequestParam Long beverageId) {
+    public String addBeverageToBasket(@RequestParam Long beverageId, RedirectAttributes redirectAttributes) {
         basketService.addItemToBasket(beverageId);
-        return "redirect:/basket";
+        redirectAttributes.addFlashAttribute("success", "Beverage added to Basket!");
+        return "redirect:/beverages";
     }
 
     @Override

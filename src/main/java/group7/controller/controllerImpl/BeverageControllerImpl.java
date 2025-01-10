@@ -21,11 +21,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Slf4j
 @Controller
+@RequestMapping("/beverages")
 public class BeverageControllerImpl implements BeverageController {
 
     private final BeverageService beverageService;
@@ -51,7 +53,8 @@ public class BeverageControllerImpl implements BeverageController {
      * Url might look like /beverages?page=0&size=10&sort=name&direction=asc
      *
      */
-    @GetMapping("/beverages")
+    @Override
+    @GetMapping("")
     public String getAllBeveragesPaginated(Model model,
                                            @RequestParam(value="page", required = false, defaultValue = "#{paginationProperties.pageNumber}") Integer pageNumber,
                                            @RequestParam(value="size", required = false, defaultValue = "#{paginationProperties.beveragePageSize}") Integer pageSize,
@@ -72,7 +75,8 @@ public class BeverageControllerImpl implements BeverageController {
 
     }
 
-    @GetMapping("/beverages/{id}")
+    @Override
+    @GetMapping("/{id}")
     public String getBeverageById(@PathVariable Long id, HttpSession session, Model model) {
         //log.info("Received a id for deletion: " + id);
         BeverageResponseDto beverage = beverageService.findBeverageById(id);
@@ -80,7 +84,8 @@ public class BeverageControllerImpl implements BeverageController {
         return "beverage";
     }
 
-    @GetMapping(value = "/beverages/crates/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @GetMapping(value = "/crates/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<Crate>> getAllCratesJson(Model model) {
         //model.addAttribute("crates", beverageService.getAllCrates());
@@ -110,7 +115,8 @@ public class BeverageControllerImpl implements BeverageController {
 //    }
 
     //this is used to fetch data to populate the crate form to select a bottle
-    @GetMapping(value = "/beverages/bottles/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Override
+    @GetMapping(value = "/bottles/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<Bottle>>  getAllBotllesJson(Model model) {
         //model.addAttribute("bottles", beverageService.getAllBottles());
@@ -121,40 +127,47 @@ public class BeverageControllerImpl implements BeverageController {
         return new ResponseEntity<>(bottles, HttpStatus.OK);
     }
 
-    @PostMapping("/beverages/bottles")
-    public String createBottle(@Validated(BottleGroup.class) BeverageCreateDto beverageCreateDto, Errors errors, Model model) {
+    @PostMapping("/bottles")
+    @Override
+    public String createBottle(@Validated(BottleGroup.class) BeverageCreateDto beverageCreateDto, Errors errors, Model model, RedirectAttributes redirectAttributes) {
         log.info("POSTed a new Bottle: " + beverageCreateDto);
         if (errors.hasErrors()) {
             log.info("Bottle creation contained errors: " + beverageCreateDto.toString());
             model.addAttribute("beverageCreateDto", beverageCreateDto);
             model.addAttribute("beverages", beverageService.getAllBeveragesWithDetails());
-            return "bevereges";
+            return "bevManagement";
         }
         beverageService.createBottle(beverageCreateDto);
-        return "redirect:/beverages";
+        redirectAttributes.addFlashAttribute("success", "Beverage created successfully!");
+        return "redirect:/admin/beverages";
     }
 
-    @PostMapping("/beverages/crates")
-    public String createCrate(@Validated(CrateGroup.class) @ModelAttribute("beverageCreateDto") BeverageCreateDto beverageCreateDto, Errors errors, Model model) {
+    @PostMapping("/crates")
+    @Override
+    public String createCrate(@Validated(CrateGroup.class) @ModelAttribute("beverageCreateDto") BeverageCreateDto beverageCreateDto, Errors errors, Model model, RedirectAttributes redirectAttributes) {
         log.info("POSTed a new crate: " + beverageCreateDto);
         if (errors.hasErrors()) {
             log.info("Crate creation contained errors: " + beverageCreateDto.toString());
             model.addAttribute("beverageCreateDto", beverageCreateDto);
             model.addAttribute("beverages", beverageService.getAllBeveragesWithDetails());
-            return "bevereges";
+            return "bevManagement";
         }
         beverageService.createCrate(beverageCreateDto);
-        return "bevereges";
+        redirectAttributes.addFlashAttribute("success", "Beverage created successfully!");
+        return "redirect:/admin/beverages";
     }
 
-    @DeleteMapping("/beverages/{id}")
-    public String deleteBeverage(@PathVariable Long id, HttpSession session) {
+    @DeleteMapping("/{id}")
+    @Override
+    public String deleteBeverage(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttributes) {
         log.info("Received a id for deletion: " + id);
         beverageService.deleteBeverage(id);
-        return "redirect:/beverages";
+        redirectAttributes.addFlashAttribute("success", "Beverage deleted successfully!");
+        return "redirect:/admin/beverages";
     }
 
-    @GetMapping("beverages/update/{id}")
+    @GetMapping("/update/{id}")
+    @Override
     public String showUpdateForm(@PathVariable("id") Long beverageId, Model model) {
         BeverageResponseDto beverageResponseDto = beverageService.findBeverageById(beverageId);
         BeverageCreateDto beverageCreateDto = modelMapper.map(beverageResponseDto, BeverageCreateDto.class);
@@ -162,24 +175,28 @@ public class BeverageControllerImpl implements BeverageController {
         return "beverageUpdateForm";
     }
 
-    @PutMapping("/beverages/bottles/{id}")
+    @PutMapping("/bottles/{id}")
+    @Override
     public String updateBottle(@PathVariable Long id,
                                @Validated(BottleGroup.class) @ModelAttribute("beverage") BeverageCreateDto beverageCreateDto,
-                               Model model) {
+                               Model model, RedirectAttributes redirectAttributes) {
         log.info("Received a id for update: " + id);
         BeverageResponseDto updatedBeverageResponseDto = beverageService.updateBeverage(beverageCreateDto, id);
         log.info("Bottle updated: " + updatedBeverageResponseDto.toString());
-        return "redirect:/beverages";
+        redirectAttributes.addFlashAttribute("success", "Beverage updated successfully!");
+        return "redirect:/admin/beverages";
     }
 
-    @PutMapping("/beverages/crates/{id}")
+    @PutMapping("/crates/{id}")
+    @Override
     public String updateCrate(@PathVariable Long id,
                               @Validated(CrateGroup.class)  @ModelAttribute("beverage") BeverageCreateDto beverageCreateDto,
-                              Model model) {
+                              Model model, RedirectAttributes redirectAttributes) {
         log.info("Received a id for update: " + id);
         BeverageResponseDto updatedBeverageResponseDto = beverageService.updateBeverage(beverageCreateDto, id);
         log.info("Crate updated: " + updatedBeverageResponseDto.toString());
-        return "redirect:/beverages";
+        redirectAttributes.addFlashAttribute("success", "Beverage updated successfully!");
+        return "redirect:/admin/beverages";
     }
 //
 //    @PostMapping("/bottles")

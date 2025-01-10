@@ -10,5 +10,5 @@ public interface AdminController {
      * @return The name of the view that displays the beverages list (e.g., "beverages").
      */
      public String getAllBeverages(Model model);
-
+     public String getAllOrders(Model model);
 }
