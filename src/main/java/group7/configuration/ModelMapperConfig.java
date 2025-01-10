@@ -1,7 +1,5 @@
 package group7.configuration;
 
-//import group7.dto.AddBeverageRequestDTO;
-//import group7.dto.BeverageResponseDTO;
 import group7.configuration.customClasses.CustomModelMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -27,12 +25,6 @@ public class ModelMapperConfig extends ModelMapper {
 
         // Commented out: This line attempts to set a null value handling strategy if we don't want to skip nulls, but for now the strategy is not specified.
         //modelMapper.setNullValueMappingStrategy(MatchingStrategies.);
-
-        // Mapping with abstract inheritance
-//        modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.FromEntityConverter(modelMapper));
-//        modelMapper.getConfiguration().getConverters().add(0, new BeverageResponseDTO.ToEntityConverter(modelMapper));
-//        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.FromEntityConverter(modelMapper));
-//        modelMapper.getConfiguration().getConverters().add(0, new AddBeverageRequestDTO.ToEntityConverter(modelMapper));
 
         return modelMapper;
     }

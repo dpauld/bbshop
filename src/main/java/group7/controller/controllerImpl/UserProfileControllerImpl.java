@@ -3,6 +3,7 @@ package group7.controller.controllerImpl;
 import group7.controller.UserProfileController;
 import group7.dto.AddressRequestDto;
 import group7.entity.Order;
+import group7.service.AddressService;
 import group7.service.OrderService;
 import group7.service.serviceImpl.AddressServiceImpl;
 import group7.users.User;
@@ -27,12 +28,12 @@ import java.util.List;
 @RequestMapping(value = "/profile")
 public class UserProfileControllerImpl implements UserProfileController {
 
-    private final AddressServiceImpl addressService;
+    private final AddressService addressService;
     private final UserService userService;
     private final OrderService orderService;
 
     @Autowired
-    public UserProfileControllerImpl(AddressServiceImpl addressService, UserService userService, OrderService orderService) {
+    public UserProfileControllerImpl(AddressService addressService, UserService userService, OrderService orderService) {
         this.addressService = addressService;
         this.userService = userService;
         this.orderService = orderService;

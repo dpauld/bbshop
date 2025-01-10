@@ -13,7 +13,5 @@ public class PaginatedResponseDto<T> {
     private Long totalElements;
     private Integer totalPages;
     private boolean lastPage;
-
-    // Getters and Setters (omitted for brevity)
-
+    
 }
