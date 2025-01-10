@@ -1,11 +1,14 @@
-package group7.users;
+package group7.service.serviceImpl;
 
 import group7.configuration.customClasses.CustomModelMapper;
 import group7.dto.AddressRequestDto;
 import group7.entity.Address;
 import group7.entity.Order;
+import group7.entity.User;
 import group7.exception.ResourceNotFoundException;
+import group7.repository.UserRepository;
 import group7.service.AddressService;
+import group7.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -21,17 +24,15 @@ import java.util.Set;
 
 @Slf4j
 @Service
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
-    private final ModelMapper modelMapper;
     private UserRepository userRepo;
-    private AddressService  addressService;
+    private AddressService addressService;
 
     @Autowired
-    public UserService(UserRepository userRepo, AddressService addressService, CustomModelMapper modelMapper) {
+    public UserServiceImpl(UserRepository userRepo, AddressService addressService) {
         this.userRepo = userRepo;
         this.addressService = addressService;
-        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -136,4 +137,19 @@ public class UserService implements UserDetailsService {
 
         return !user.getBillingAddresses().contains(address) && !user.getDeliveryAddresses().contains(address);
     }
+    @Override
+    public List<User> getAllUsers() {
+        return (List<User>) userRepo.findAll();
+    }
+
+    @Override
+    public void save(User user) {
+        userRepo.save(user);
+    }
+
+    @Override
+    public long count(){
+        return userRepo.count();
+    }
 }
+

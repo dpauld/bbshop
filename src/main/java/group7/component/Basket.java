@@ -58,10 +58,6 @@ public class Basket {
         items.clear();
     }
 
-    public List<BasketItemDto> getItems() {
-        return items;
-    }
-
     public double getTotalPrice() {
         return items.stream()
                 .mapToDouble(item -> item.getBeverage().getPrice() * item.getQuantity())

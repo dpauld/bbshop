@@ -1,7 +1,7 @@
 package group7.repository;
 
 import group7.entity.Address;
-import group7.entity.User_;
+import group7.entity.User;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -101,14 +101,14 @@ public class AddressRepositoryUnitTest {
 
     private Address getSampleAddress() {
         userRepository.deleteAll();
-        User_ user = new User_(
+        User user = new User(
+                "johndoe",
                 "John Doe",
                 "123",
                 LocalDate.of(1970, 1, 1),
-                null,
-                null,null
+                "Admin"
         );
-        User_ savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
         return new Address("Wall Street", "1", "12345");
     }

@@ -1,6 +1,6 @@
 package group7.controller;
 
-import group7.users.User;
+import group7.entity.User;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;

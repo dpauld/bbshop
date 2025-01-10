@@ -3,11 +3,10 @@ package group7.controller.controllerImpl;
 import group7.controller.UserProfileController;
 import group7.dto.AddressRequestDto;
 import group7.entity.Order;
+import group7.entity.User;
 import group7.service.AddressService;
 import group7.service.OrderService;
-import group7.service.serviceImpl.AddressServiceImpl;
-import group7.users.User;
-import group7.users.UserService;
+import group7.service.UserService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -108,7 +107,7 @@ public class UserProfileControllerImpl implements UserProfileController {
     }
 
     //test
-    //issue:2025-01-08T16:33:39.211+01:00  WARN 139786 --- [group7] [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: group7.users.User.billingAddresses: could not initialize proxy - no Session]
+    //issue:2025-01-08T16:33:39.211+01:00  WARN 139786 --- [group7] [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.hibernate.LazyInitializationException: failed to lazily initialize a collection of role: group7.entity.User.billingAddresses: could not initialize proxy - no Session]
 //    @GetMapping(value="/ordersjson",produces = {MediaType.APPLICATION_JSON_VALUE})
 //    public ResponseEntity<List<Order>> getOrdersByUserr(Model model, RedirectAttributes redirectAttributes, @AuthenticationPrincipal User user) {
 //        log.info("getOrdersByUserr");

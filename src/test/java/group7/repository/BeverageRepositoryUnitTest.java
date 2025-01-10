@@ -54,12 +54,12 @@ public class BeverageRepositoryUnitTest {
         return new Bottle(
                 "Coke",
                 1.0,
+                12,
                 "https://cdn.huntoffice.co.uk/images/P/ARN10943.jpg",
                 1.0,
                 false,
                 0.0,
-                "Coca Cola company",
-                1
+                "Coca Cola company"
         );
     }
 
@@ -67,10 +67,19 @@ public class BeverageRepositoryUnitTest {
         return new Crate(
                 "SampleCrate",
                 1.5,
+                10,
                 "https://t4.ftcdn.net/jpg/03/00/47/33/360_F_300473329_08cy1w5rbmzxLgCaOwgHIYEymVAAJTh9.jpg",
                 1,
-                1,
-                bottle
+                new Bottle(
+                        "Coke",
+                        1.0,
+                        12,
+                        "https://cdn.huntoffice.co.uk/images/P/ARN10943.jpg",
+                        1.0,
+                        false,
+                        0.0,
+                        "Coca Cola company"
+                )
         );
     }
 

@@ -1,8 +1,6 @@
-package group7.users;
+package group7.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import group7.entity.Address;
-import group7.entity.Order;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -153,5 +151,14 @@ public class User implements UserDetails {          // interface from Spring Sec
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void setPassword(String number) {
+    }
+
+    public void setBirthday(LocalDate veryOldBirthday) {
+    }
+
+    public void setUsername(Object o) {
     }
 }

@@ -1,6 +1,9 @@
-package group7.users;
+package group7.controller.controllerImpl;
 
 
+import group7.repository.OrderRepository;
+import group7.repository.UserRepository;
+import group7.users.RegistrationForm;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 @Controller
 @RequestMapping(value = "/register")
-public class RegistrationController {
+public class RegistrationControllerImpl {
 
     private UserRepository userRepo;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationController(UserRepository userRepo, PasswordEncoder passwordEncoder) {
+    public RegistrationControllerImpl(UserRepository userRepo, PasswordEncoder passwordEncoder) {
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
     }

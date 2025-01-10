@@ -1,11 +1,9 @@
 package group7.controller;
 
 import group7.dto.AddressRequestDto;
-import group7.users.User;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import group7.entity.User;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 

@@ -1,9 +1,8 @@
 package group7.users;
 
 
-import group7.validation.annotation.UniqueUsername;
-import group7.validation.annotation.ValidBirthday;
-import jakarta.persistence.Column;
+import group7.entity.OrderItem;
+import group7.entity.User;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;

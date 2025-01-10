@@ -1,5 +1,6 @@
-package group7.users;
+package group7.repository;
 
+import group7.entity.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
