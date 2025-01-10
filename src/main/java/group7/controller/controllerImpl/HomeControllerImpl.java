@@ -1,5 +1,6 @@
 package group7.controller.controllerImpl;
 
+import group7.controller.HomeController;
 import group7.entity.Beverage;
 import group7.entity.Bottle;
 import group7.entity.Crate;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @Controller
-public class HomeControllerImpl {
+public class HomeControllerImpl implements HomeController {
     BeverageService beverageService;
 
     public HomeControllerImpl(BeverageService beverageService) {

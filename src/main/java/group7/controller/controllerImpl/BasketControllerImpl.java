@@ -15,8 +15,12 @@ import java.util.List;
 @RequestMapping("/basket")
 public class BasketControllerImpl implements BasketController {
 
-    @Autowired
     private BasketServiceImpl basketService;
+
+    @Autowired
+    public BasketControllerImpl(BasketServiceImpl basketService) {
+        this.basketService = basketService;
+    }
 
     @Override
     @GetMapping

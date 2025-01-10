@@ -22,8 +22,8 @@ inside other controllers, giving access to only admin roles  */
 @Controller
 @RequestMapping("admin/")
 public class AdminControllerImpl implements AdminController {
+
     private final BeverageService beverageService;
-    //private final BasketService basketService;
     private final PaginationProperties paginationProperties;
     private final CustomModelMapper modelMapper;
     private final OrderService orderService;
