@@ -1,5 +1,6 @@
 package group7.controller;
 
+import group7.dto.OrderResponseDTO;
 import group7.entity.Order;
 import group7.entity.User;
 import group7.service.OrderService;
@@ -71,7 +72,7 @@ public class OrderControllerIntegrationTest {
     @Transactional
     public void testGetOrderById() throws Exception {
         Long mockOrderId = 1L;
-        Order mockOrder = new Order();
+        OrderResponseDTO mockOrder = new OrderResponseDTO();
         mockOrder.setId(mockOrderId);
         when(orderService.getOrderById(mockOrderId)).thenReturn(mockOrder);
 
@@ -86,7 +87,7 @@ public class OrderControllerIntegrationTest {
     @Test
     @Transactional
     public void testGetAllOrders() throws Exception {
-        List<Order> orders = Arrays.asList(new Order(), new Order());
+        List<OrderResponseDTO> orders = Arrays.asList(new OrderResponseDTO(), new OrderResponseDTO());
         when(orderService.getAllOrders()).thenReturn(orders);
 
         mvc.perform(get(BASE_PATH)

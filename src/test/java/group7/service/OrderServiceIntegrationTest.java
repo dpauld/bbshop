@@ -1,6 +1,7 @@
 package group7.service;
 
 import group7.dto.BeverageCreateDto;
+import group7.dto.OrderResponseDTO;
 import group7.entity.*;
 import group7.exception.ResourceNotFoundException;
 import group7.repository.AddressRepository;
@@ -92,7 +93,7 @@ public class OrderServiceIntegrationTest {
         assertEquals(0, orderService.getAllOrders().size());
 
         Order order = orderService.createOrder(user.getId());
-        Order foundOrder = orderService.getOrderById(order.getId());
+        OrderResponseDTO foundOrder = orderService.getOrderById(order.getId());
 
         assertNotNull(foundOrder);
         assertEquals(1, orderService.getAllOrders().size());
@@ -103,7 +104,7 @@ public class OrderServiceIntegrationTest {
     public void testFindOrdersByUserIdWithItems() {
         orderService.createOrder(user.getId());
 
-        List<Order> orders = orderService.findOrdersByUserIdWithItems(user.getId());
+        List<OrderResponseDTO> orders = orderService.findOrdersByUserIdWithItems(user.getId());
 
         assertNotNull(orders);
         assertEquals(1, orders.size());

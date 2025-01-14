@@ -71,6 +71,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItems = new ArrayList<>();
         double totalPrice = 0;
         //log.info(basket.toString());
+        int index = 1;
         for (BasketItemDto basketItem : basket.getItems()) {
             BeverageResponseDto beverageRespDto = basketItem.getBeverage();
             //Beverage beverage = modelMapper.map(beverageRespDto, Beverage.class);//model mapper producing error
@@ -83,10 +84,11 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setPrice(unitPrice);
             orderItem.setBeverage(beverage);
             //might need to change when I know what position actually is.
-            orderItem.setPosition(Integer.toString(quantity));
+            orderItem.setPosition(Integer.toString(index));
             orderItems.add(orderItem);
             // Calculate total price
             totalPrice += unitPrice * quantity;
+            index++;
         }
 
         Order order = new Order();

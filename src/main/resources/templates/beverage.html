@@ -27,16 +27,13 @@
             <p><strong>In Stock:</strong> <span th:text="${beverage.inStock}">Stock</span> left</p>
             <p><strong>Type:</strong> <span th:text="${beverage.type}">Type</span></p>
             <p><strong>Alcoholic:</strong> <span th:text="${beverage.isAlcoholic ? 'Yes' : 'No'}">Alcoholic</span></p>
-            <p><strong>Supplier:</strong> <span th:text="${beverage.supplier}">Supplier</span></p>
+            <p><strong>Alcohol Percentage:</strong> <span th:text="${beverage.volumePercent}">Alcohol Percentage</span>%</p>
+            <p><strong>Volume:</strong> <span th:text="${beverage.volume}">Volume</span> ml</p>
 
-            <div th:if="${beverage.type == 'bottle'}">
-                <p><strong>Volume:</strong> <span th:text="${beverage.volume}">Volume</span> ml</p>
-                <p><strong>Volume Percentage:</strong> <span th:text="${beverage.volumePercent}">Volume Percentage</span>%</p>
-            </div>
-
-            <div th:if="${beverage.type == 'crate'}">
+            <div th:if="${#strings.equalsIgnoreCase(beverage.type, 'crate')}">
                 <p><strong>Number of Bottles:</strong> <span th:text="${beverage.noOfBottles}">Number of Bottles</span></p>
             </div>
+            <p><strong>Supplier:</strong> <span th:text="${beverage.supplier}">Supplier</span></p>
 
             <!-- Add to Cart Buttons -->
             <div class="mt-3">

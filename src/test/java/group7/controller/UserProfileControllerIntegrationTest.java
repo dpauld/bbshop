@@ -1,6 +1,7 @@
 package group7.controller;
 
 import group7.dto.AddressRequestDto;
+import group7.dto.OrderResponseDTO;
 import group7.entity.Order;
 import group7.entity.User;
 import group7.service.OrderService;
@@ -99,7 +100,7 @@ public class UserProfileControllerIntegrationTest {
 
     @Test
     public void testGetOrdersByUser() throws Exception {
-        List<Order> orders = Arrays.asList(new Order(), new Order());
+        List<OrderResponseDTO> orders = Arrays.asList(new OrderResponseDTO(), new OrderResponseDTO());
         when(orderService.findOrdersByUserIdWithItems(user.getId())).thenReturn(orders);
 
         mvc.perform(get("/profile/orders")
@@ -114,7 +115,7 @@ public class UserProfileControllerIntegrationTest {
     public void testGetUserProfileJson() throws Exception {
         when(userService.findByUsername(user.getUsername())).thenReturn(user);
 
-        List<Order> orders = Arrays.asList(new Order(), new Order());
+        List<OrderResponseDTO> orders = Arrays.asList(new OrderResponseDTO(), new OrderResponseDTO());
         when(userService.findByUsername(user.getUsername())).thenReturn(user);
         when(orderService.findOrdersByUserIdWithItems(user.getId())).thenReturn(orders);
 

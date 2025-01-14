@@ -27,7 +27,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static util.AuthenticationManager.*;
 
-
 @TestPropertySource(locations = "classpath:application-test.properties")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
 @AutoConfigureMockMvc
@@ -101,7 +100,7 @@ public class BasketControllerIntegrationTest {
                         .with(csrf())
                         .param("beverageId", String.valueOf(beverageId)))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/beverages"));
+                .andExpect(redirectedUrl("/basket"));
     }
 
     @Test
