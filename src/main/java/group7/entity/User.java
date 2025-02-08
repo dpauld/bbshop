@@ -66,6 +66,7 @@ import java.util.*;
 public class User implements UserDetails {          // interface from Spring Security
 
     private final String username;
+    private final String email;
     private final String password;
     private final String fullName;
     private final LocalDate birthday;
@@ -97,18 +98,20 @@ public class User implements UserDetails {          // interface from Spring Sec
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    public User(String username, String password, String fullName, LocalDate birthday, String role) {
+    public User(String username, String email, String password, String fullName, LocalDate birthday, String role) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.birthday = birthday;
         this.role = role;
     }
 
-    public User(String username, String password, String fullName, LocalDate birthday, String role, Set<Address> billingAddresses,
+    public User(String username, String email, String password, String fullName, LocalDate birthday, String role, Set<Address> billingAddresses,
                 Set<Address> deliveryAddresses,
                 List<Order> orders) {
         this.username = username;
+        this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.birthday = birthday;

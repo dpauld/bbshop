@@ -151,5 +151,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public long count(){
         return userRepo.count();
     }
+
+    public boolean isUsernameAvailable(String username) {
+        return !userRepo.existsByUsernameIgnoreCase(username); // More efficient
+    }
+
+    public boolean isEmailAvailable(String email) {
+        return !userRepo.existsByEmailIgnoreCase(email); // Example
+    }
 }
 

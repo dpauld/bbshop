@@ -11,6 +11,12 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Long> {
 
     public User findUserByUsername(String username) throws UsernameNotFoundException;
+    //public boolean existsByUsernameIgnoreCase(String username) throws UsernameNotFoundException;//for postgress not preferred, as postgress is case sensitive
+    //public boolean existsByEmailIgnoreCase(String email) throws UsernameNotFoundException;//same reason
+    @Query(value = "SELECT EXISTS (SELECT 1 FROM users WHERE LOWER(username) = LOWER(:username))", nativeQuery = true)
+    boolean existsByUsernameIgnoreCase(String username);
+    @Query(value = "SELECT EXISTS (SELECT 1 FROM users WHERE LOWER(email) = LOWER(:email))", nativeQuery = true)
+    boolean existsByEmailIgnoreCase(String email);
 
     @EntityGraph(value = "User.withOrdersAndAddresses", type = EntityGraph.EntityGraphType.LOAD)
     User findByUsername(String username) throws UsernameNotFoundException;

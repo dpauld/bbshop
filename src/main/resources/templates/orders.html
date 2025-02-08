@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,8 @@
             <th>Order ID</th>
             <th>Price</th>
             <th>Items</th>
+            <!-- New Order By column, visible only to ADMIN users -->
+            <th sec:authorize="hasRole('ROLE_ADMIN')">Order By</th>
             <th>Status</th>
             <th>Actions</th>
         </tr>
@@ -53,6 +55,8 @@
                     </li>
                 </ul>
             </td>
+            <!-- Display Order By only for ADMIN -->
+            <td sec:authorize="hasRole('ROLE_ADMIN')" th:text="${order.user.username}"></td>
             <td>
                 <span class="badge badge-warning" th:text="${order.getOrderStatus()}">Pending</span> <!-- You can replace this with actual order status if needed -->
             </td>
@@ -61,7 +65,8 @@
                 <form th:action="@{/orders/{id}/cancel(id=${order.id})}" method="post" style="display:inline;">
                     <button type="submit"
                             class="btn btn-danger btn-sm"
-                            th:disabled="${#authentication.principal.role == 'USER' ? (order.getOrderStatus() != null and !order.getOrderStatus().equals('Pending')) : (order.getOrderStatus() != null and order.getOrderStatus().equals('Cancelled'))}">
+                            th:disabled="${#authentication.getAuthorities().contains('ROLE_USER') == 'USER' ? (order.getOrderStatus() != null and !(order.getOrderStatus().equals('Pending') or order.getOrderStatus().equals('Confirmed'))) : (order.getOrderStatus() != null and order.getOrderStatus().equals('Cancelled'))}">
+                        <!--th:disabled="${(#authentication.principal.role('USER') and order.orderStatus != 'Pending') or (#authentication.principal.role('ADMIN') and order.orderStatus == 'Cancelled')}">-->
                         Cancel
                     </button>
                 </form>

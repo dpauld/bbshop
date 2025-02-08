@@ -20,4 +20,6 @@ public interface UserService {
 
     long count();
 
+    public boolean isEmailAvailable(String email);
+    public boolean isUsernameAvailable(String username);
 }
