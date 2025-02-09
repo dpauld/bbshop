@@ -2,14 +2,16 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.0'
 	id 'io.spring.dependency-management' version '1.1.6'
+	id 'com.google.cloud.tools.appengine-appyaml' version '2.8.0'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '21'
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(17)
+		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
 
@@ -38,8 +40,23 @@ dependencies {
 
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	// added manually
+	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:4.8.4'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+//Configuring the App Engine Plugin, thus specifying how the app will be deployed.
+appengine {
+	stage {
+		artifact = bootJar.archiveFile.get()
+	}
+	deploy {
+		version = "1"
+		projectId = "bbshop-de" // read the config locally from gcloud cli
+		stopPreviousVersion = true  // default - stop the current version
+		promote = true  // default - & make this the current version
+	}
 }
