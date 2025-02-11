@@ -33,7 +33,9 @@ dependencies {
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	runtimeOnly 'com.h2database:h2'
+	//runtimeOnly 'com.h2database:h2' //commented out since
+	runtimeOnly 'org.postgresql:postgresql:42.6.0'
+	//implementation 'com.google.cloud.sql:postgres-socket-factory:1.15.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
@@ -42,6 +44,14 @@ dependencies {
 
 	// added manually
 	implementation 'com.google.cloud:spring-cloud-gcp-dependencies:4.8.4'
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-sql-postgresql:4.8.4'
+
+	//added later for errors
+	implementation 'org.postgresql:postgresql:42.6.0' // Changed to implementation
+	// https://mvnrepository.com/artifact/com.google.cloud/spring-cloud-gcp-starter-secretmanager
+	implementation 'com.google.cloud:spring-cloud-gcp-starter-secretmanager:4.8.4'
+
+
 }
 
 tasks.named('test') {
@@ -58,5 +68,16 @@ appengine {
 		projectId = "bbshop-de" // read the config locally from gcloud cli
 		stopPreviousVersion = true  // default - stop the current version
 		promote = true  // default - & make this the current version
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			exclude '**/test/**' // Exclude test directory (if needed)
+		}
+		resources {
+			exclude 'application-test.properties'
+		}
 	}
 }

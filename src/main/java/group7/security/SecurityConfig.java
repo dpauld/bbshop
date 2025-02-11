@@ -13,6 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
@@ -52,7 +54,10 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .passwordParameter("password")
                         .permitAll()
                 )
-                .csrf(request -> request.ignoringRequestMatchers(PathRequest.toH2Console()))
+                //.csrf(request -> request.ignoringRequestMatchers(PathRequest.toH2Console()))
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/public/**") // Ignore CSRF for public APIs (example)
+                )
                 .headers(headers -> headers.frameOptions(option -> option.sameOrigin()))
                 .logout((logout) -> logout.permitAll().invalidateHttpSession(true).deleteCookies("JSESSIONID").logoutSuccessUrl("/"));
         return http.build();
