@@ -14,7 +14,7 @@ public class BeverageCreateDto {
 
     @NotNull(message = "name cannot be null", groups = {BeverageGroup.class})
     @NotEmpty(message = "name cannot be empty", groups = {BeverageGroup.class})
-    @Pattern(regexp = "^[a-zA-Z0-9 ÄäÜüÖöß_-|.%,]+$", message = "name contains invalid characters.", groups = {BeverageGroup.class})
+    @Pattern(regexp = "^[a-zA-Z0-9 ÄäÜüÖöß_\\-|.%,]+$", message = "name contains invalid characters.", groups = {BeverageGroup.class})
     private String name;
 
     @Positive(message = "price must be greater than 0", groups = {BeverageGroup.class})

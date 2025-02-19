@@ -1,6 +1,18 @@
 # group7
 
+BBShop is an ecommerce project to sell beverages.
 
+Home page looks like this,
+![BBSHOP Home Page](readmeImages/bbshop_home.png)
+
+A list of beverages,
+![BBSHOP Home Page](readmeImages/bbshop_beverages_list.png)
+
+Beverage details webpage,
+![BBSHOP Home Page](readmeImages/bbshop_beverage_details.png)
+
+A video demonstration of the project,
+[BBSHOP video on YouTube](https://youtu.be/X2QBUuIvyC8)
 
 ## Getting started
 
