@@ -1,4 +1,4 @@
-# group7
+# BBSHOP
 
 BBShop is an ecommerce project to sell beverages.
 
